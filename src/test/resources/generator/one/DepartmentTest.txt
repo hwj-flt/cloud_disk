@@ -1,0 +1,109 @@
+目标package: generator.one
+
+当前时间：
+2020-9-18
+11:02:39
+2020-09-18 11:02:39
+
+所有配置的属性信息:
+targetPackage - generator.one
+templateFormatter - tk.mybatis.mapper.generator.formatter.FreemarkerTemplateFormatter
+templatePath - generator/test-one.ftl
+targetProject - src/test/resources
+fileName - ${tableClass.shortClassName}Test.txt
+
+实体和表的信息：
+表名：department
+变量名：department
+小写名：department
+类名：Department
+全名：com.dgut.cloud_disk.pojo.Department
+包名：com.dgut.cloud_disk.pojo
+
+列的信息：
+=====================================
+主键：
+    -------------------------------------
+    列名：DEPART_ID
+    列类型：VARCHAR
+    字段名：departId
+    注释：群组ID
+    类型包名：java.lang
+    类型短名：String
+    类型全名：java.lang.String
+    是否主键：false
+    是否可空：false
+    是否为BLOB列：false
+    是否为String列：true
+    是否为字符串列：true
+    是否为日期列：false
+    是否为时间列：false
+    是否为序列列：false
+    列长度：32
+    列精度：0
+
+基础列：
+    -------------------------------------
+    列名：DEPART_NAME
+    列类型：VARCHAR
+    字段名：departName
+    注释：群组名称
+    类型包名：java.lang
+    类型短名：String
+    类型全名：java.lang.String
+    是否主键：false
+    是否可空：false
+    是否为BLOB列：false
+    是否为String列：true
+    是否为字符串列：true
+    是否为日期列：false
+    是否为时间列：false
+    是否为序列列：false
+    列长度：20
+    列精度：0
+    -------------------------------------
+    列名：DEPART_ROOT
+    列类型：VARCHAR
+    字段名：departRoot
+    注释：群组文件夹根目录ID
+    类型包名：java.lang
+    类型短名：String
+    类型全名：java.lang.String
+    是否主键：false
+    是否可空：false
+    是否为BLOB列：false
+    是否为String列：true
+    是否为字符串列：true
+    是否为日期列：false
+    是否为时间列：false
+    是否为序列列：false
+    列长度：32
+    列精度：0
+    -------------------------------------
+    列名：DEPART_TIME
+    列类型：TIMESTAMP
+    字段名：departTime
+    注释：群组创建时间
+    类型包名：java.util
+    类型短名：Date
+    类型全名：java.util.Date
+    是否主键：false
+    是否可空：false
+    是否为BLOB列：false
+    是否为String列：false
+    是否为字符串列：false
+    是否为日期列：false
+    是否为时间列：false
+    是否为序列列：false
+    列长度：19
+    列精度：0
+
+Blob列：
+
+=====================================
+全部列：
+列名 - 字段名
+    DEPART_ID - departId
+    DEPART_NAME - departName
+    DEPART_ROOT - departRoot
+    DEPART_TIME - departTime

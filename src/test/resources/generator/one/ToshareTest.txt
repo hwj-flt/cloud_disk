@@ -1,0 +1,204 @@
+目标package: generator.one
+
+当前时间：
+2020-9-18
+11:02:39
+2020-09-18 11:02:39
+
+所有配置的属性信息:
+targetPackage - generator.one
+templateFormatter - tk.mybatis.mapper.generator.formatter.FreemarkerTemplateFormatter
+templatePath - generator/test-one.ftl
+targetProject - src/test/resources
+fileName - ${tableClass.shortClassName}Test.txt
+
+实体和表的信息：
+表名：toshare
+变量名：toshare
+小写名：toshare
+类名：Toshare
+全名：com.dgut.cloud_disk.pojo.Toshare
+包名：com.dgut.cloud_disk.pojo
+
+列的信息：
+=====================================
+主键：
+    -------------------------------------
+    列名：SHARE_ID
+    列类型：VARCHAR
+    字段名：shareId
+    注释：分享表ID
+    类型包名：java.lang
+    类型短名：String
+    类型全名：java.lang.String
+    是否主键：false
+    是否可空：false
+    是否为BLOB列：false
+    是否为String列：true
+    是否为字符串列：true
+    是否为日期列：false
+    是否为时间列：false
+    是否为序列列：false
+    列长度：32
+    列精度：0
+
+基础列：
+    -------------------------------------
+    列名：SHARE_USER_ID
+    列类型：VARCHAR
+    字段名：shareUserId
+    注释：分享人ID
+    类型包名：java.lang
+    类型短名：String
+    类型全名：java.lang.String
+    是否主键：false
+    是否可空：false
+    是否为BLOB列：false
+    是否为String列：true
+    是否为字符串列：true
+    是否为日期列：false
+    是否为时间列：false
+    是否为序列列：false
+    列长度：32
+    列精度：0
+    -------------------------------------
+    列名：SHARE_TO_USER_ID
+    列类型：VARCHAR
+    字段名：shareToUserId
+    注释：被分享人ID
+    类型包名：java.lang
+    类型短名：String
+    类型全名：java.lang.String
+    是否主键：false
+    是否可空：false
+    是否为BLOB列：false
+    是否为String列：true
+    是否为字符串列：true
+    是否为日期列：false
+    是否为时间列：false
+    是否为序列列：false
+    列长度：32
+    列精度：0
+    -------------------------------------
+    列名：SHARE_TIME
+    列类型：TIMESTAMP
+    字段名：shareTime
+    注释：分享时间
+    类型包名：java.util
+    类型短名：Date
+    类型全名：java.util.Date
+    是否主键：false
+    是否可空：false
+    是否为BLOB列：false
+    是否为String列：false
+    是否为字符串列：false
+    是否为日期列：false
+    是否为时间列：false
+    是否为序列列：false
+    列长度：19
+    列精度：0
+    -------------------------------------
+    列名：SHARE_EXPIRE
+    列类型：TIMESTAMP
+    字段名：shareExpire
+    注释：分享有效期
+    类型包名：java.util
+    类型短名：Date
+    类型全名：java.util.Date
+    是否主键：false
+    是否可空：false
+    是否为BLOB列：false
+    是否为String列：false
+    是否为字符串列：false
+    是否为日期列：false
+    是否为时间列：false
+    是否为序列列：false
+    列长度：19
+    列精度：0
+    -------------------------------------
+    列名：SHARE_TYPE
+    列类型：TINYINT
+    字段名：shareType
+    注释：1-私密分享文件 2-私密分享文件夹 3-外链分享文件 4-外链分享文件夹
+    类型包名：java.lang
+    类型短名：Byte
+    类型全名：java.lang.Byte
+    是否主键：false
+    是否可空：false
+    是否为BLOB列：false
+    是否为String列：false
+    是否为字符串列：false
+    是否为日期列：false
+    是否为时间列：false
+    是否为序列列：false
+    列长度：3
+    列精度：0
+    -------------------------------------
+    列名：SHARE_FILE_ID
+    列类型：VARCHAR
+    字段名：shareFileId
+    注释：分享文件ID
+    类型包名：java.lang
+    类型短名：String
+    类型全名：java.lang.String
+    是否主键：false
+    是否可空：true
+    是否为BLOB列：false
+    是否为String列：true
+    是否为字符串列：true
+    是否为日期列：false
+    是否为时间列：false
+    是否为序列列：false
+    列长度：32
+    列精度：0
+    -------------------------------------
+    列名：SHARE_DIRECT_ID
+    列类型：VARCHAR
+    字段名：shareDirectId
+    注释：分享文件夹ID
+    类型包名：java.lang
+    类型短名：String
+    类型全名：java.lang.String
+    是否主键：false
+    是否可空：true
+    是否为BLOB列：false
+    是否为String列：true
+    是否为字符串列：true
+    是否为日期列：false
+    是否为时间列：false
+    是否为序列列：false
+    列长度：32
+    列精度：0
+    -------------------------------------
+    列名：SHARE_CODE
+    列类型：VARCHAR
+    字段名：shareCode
+    注释：分享密码
+    类型包名：java.lang
+    类型短名：String
+    类型全名：java.lang.String
+    是否主键：false
+    是否可空：true
+    是否为BLOB列：false
+    是否为String列：true
+    是否为字符串列：true
+    是否为日期列：false
+    是否为时间列：false
+    是否为序列列：false
+    列长度：7
+    列精度：0
+
+Blob列：
+
+=====================================
+全部列：
+列名 - 字段名
+    SHARE_ID - shareId
+    SHARE_USER_ID - shareUserId
+    SHARE_TO_USER_ID - shareToUserId
+    SHARE_TIME - shareTime
+    SHARE_EXPIRE - shareExpire
+    SHARE_TYPE - shareType
+    SHARE_FILE_ID - shareFileId
+    SHARE_DIRECT_ID - shareDirectId
+    SHARE_CODE - shareCode

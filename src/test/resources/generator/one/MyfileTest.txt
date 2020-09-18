@@ -1,0 +1,166 @@
+目标package: generator.one
+
+当前时间：
+2020-9-18
+11:02:39
+2020-09-18 11:02:39
+
+所有配置的属性信息:
+targetPackage - generator.one
+templateFormatter - tk.mybatis.mapper.generator.formatter.FreemarkerTemplateFormatter
+templatePath - generator/test-one.ftl
+targetProject - src/test/resources
+fileName - ${tableClass.shortClassName}Test.txt
+
+实体和表的信息：
+表名：myfile
+变量名：myfile
+小写名：myfile
+类名：Myfile
+全名：com.dgut.cloud_disk.pojo.Myfile
+包名：com.dgut.cloud_disk.pojo
+
+列的信息：
+=====================================
+主键：
+    -------------------------------------
+    列名：FILE_ID
+    列类型：VARCHAR
+    字段名：fileId
+    注释：文件ID
+    类型包名：java.lang
+    类型短名：String
+    类型全名：java.lang.String
+    是否主键：false
+    是否可空：false
+    是否为BLOB列：false
+    是否为String列：true
+    是否为字符串列：true
+    是否为日期列：false
+    是否为时间列：false
+    是否为序列列：false
+    列长度：32
+    列精度：0
+
+基础列：
+    -------------------------------------
+    列名：FILE_LINK
+    列类型：VARCHAR
+    字段名：fileLink
+    注释：文件链接
+    类型包名：java.lang
+    类型短名：String
+    类型全名：java.lang.String
+    是否主键：false
+    是否可空：false
+    是否为BLOB列：false
+    是否为String列：true
+    是否为字符串列：true
+    是否为日期列：false
+    是否为时间列：false
+    是否为序列列：false
+    列长度：500
+    列精度：0
+    -------------------------------------
+    列名：FILE_SIZE
+    列类型：DECIMAL
+    字段名：fileSize
+    注释：文件大小
+    类型包名：java.math
+    类型短名：BigDecimal
+    类型全名：java.math.BigDecimal
+    是否主键：false
+    是否可空：false
+    是否为BLOB列：false
+    是否为String列：false
+    是否为字符串列：false
+    是否为日期列：false
+    是否为时间列：false
+    是否为序列列：false
+    列长度：13
+    列精度：6
+    -------------------------------------
+    列名：FILE_TYPE
+    列类型：VARCHAR
+    字段名：fileType
+    注释：文件类型
+    类型包名：java.lang
+    类型短名：String
+    类型全名：java.lang.String
+    是否主键：false
+    是否可空：false
+    是否为BLOB列：false
+    是否为String列：true
+    是否为字符串列：true
+    是否为日期列：false
+    是否为时间列：false
+    是否为序列列：false
+    列长度：11
+    列精度：0
+    -------------------------------------
+    列名：FILE_UPLOAD_TIME
+    列类型：TIMESTAMP
+    字段名：fileUploadTime
+    注释：上传时间
+    类型包名：java.util
+    类型短名：Date
+    类型全名：java.util.Date
+    是否主键：false
+    是否可空：false
+    是否为BLOB列：false
+    是否为String列：false
+    是否为字符串列：false
+    是否为日期列：false
+    是否为时间列：false
+    是否为序列列：false
+    列长度：19
+    列精度：0
+    -------------------------------------
+    列名：FILE_UPLOAD_ID
+    列类型：VARCHAR
+    字段名：fileUploadId
+    注释：上传用户ID
+    类型包名：java.lang
+    类型短名：String
+    类型全名：java.lang.String
+    是否主键：false
+    是否可空：false
+    是否为BLOB列：false
+    是否为String列：true
+    是否为字符串列：true
+    是否为日期列：false
+    是否为时间列：false
+    是否为序列列：false
+    列长度：32
+    列精度：0
+    -------------------------------------
+    列名：FILE_REFERE
+    列类型：TINYINT
+    字段名：fileRefere
+    注释：引用文件夹个数
+    类型包名：java.lang
+    类型短名：Byte
+    类型全名：java.lang.Byte
+    是否主键：false
+    是否可空：false
+    是否为BLOB列：false
+    是否为String列：false
+    是否为字符串列：false
+    是否为日期列：false
+    是否为时间列：false
+    是否为序列列：false
+    列长度：3
+    列精度：0
+
+Blob列：
+
+=====================================
+全部列：
+列名 - 字段名
+    FILE_ID - fileId
+    FILE_LINK - fileLink
+    FILE_SIZE - fileSize
+    FILE_TYPE - fileType
+    FILE_UPLOAD_TIME - fileUploadTime
+    FILE_UPLOAD_ID - fileUploadId
+    FILE_REFERE - fileRefere

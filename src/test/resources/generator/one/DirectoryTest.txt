@@ -1,0 +1,223 @@
+目标package: generator.one
+
+当前时间：
+2020-9-18
+11:02:39
+2020-09-18 11:02:39
+
+所有配置的属性信息:
+targetPackage - generator.one
+templateFormatter - tk.mybatis.mapper.generator.formatter.FreemarkerTemplateFormatter
+templatePath - generator/test-one.ftl
+targetProject - src/test/resources
+fileName - ${tableClass.shortClassName}Test.txt
+
+实体和表的信息：
+表名：directory
+变量名：directory
+小写名：directory
+类名：Directory
+全名：com.dgut.cloud_disk.pojo.Directory
+包名：com.dgut.cloud_disk.pojo
+
+列的信息：
+=====================================
+主键：
+    -------------------------------------
+    列名：DIRECT_ID
+    列类型：VARCHAR
+    字段名：directId
+    注释：文件夹ID
+    类型包名：java.lang
+    类型短名：String
+    类型全名：java.lang.String
+    是否主键：false
+    是否可空：false
+    是否为BLOB列：false
+    是否为String列：true
+    是否为字符串列：true
+    是否为日期列：false
+    是否为时间列：false
+    是否为序列列：false
+    列长度：32
+    列精度：0
+
+基础列：
+    -------------------------------------
+    列名：PARENT_DIRECT_ID
+    列类型：VARCHAR
+    字段名：parentDirectId
+    注释：父文件夹ID
+    类型包名：java.lang
+    类型短名：String
+    类型全名：java.lang.String
+    是否主键：false
+    是否可空：false
+    是否为BLOB列：false
+    是否为String列：true
+    是否为字符串列：true
+    是否为日期列：false
+    是否为时间列：false
+    是否为序列列：false
+    列长度：32
+    列精度：0
+    -------------------------------------
+    列名：DIRECT_NAME
+    列类型：VARCHAR
+    字段名：directName
+    注释：文件夹名
+    类型包名：java.lang
+    类型短名：String
+    类型全名：java.lang.String
+    是否主键：false
+    是否可空：false
+    是否为BLOB列：false
+    是否为String列：true
+    是否为字符串列：true
+    是否为日期列：false
+    是否为时间列：false
+    是否为序列列：false
+    列长度：32
+    列精度：0
+    -------------------------------------
+    列名：DIRECT_CREATE_TIME
+    列类型：TIMESTAMP
+    字段名：directCreateTime
+    注释：创建时间
+    类型包名：java.util
+    类型短名：Date
+    类型全名：java.util.Date
+    是否主键：false
+    是否可空：false
+    是否为BLOB列：false
+    是否为String列：false
+    是否为字符串列：false
+    是否为日期列：false
+    是否为时间列：false
+    是否为序列列：false
+    列长度：19
+    列精度：0
+    -------------------------------------
+    列名：DIRECT_CREATE_ID
+    列类型：VARCHAR
+    字段名：directCreateId
+    注释：创建用户ID
+    类型包名：java.lang
+    类型短名：String
+    类型全名：java.lang.String
+    是否主键：false
+    是否可空：false
+    是否为BLOB列：false
+    是否为String列：true
+    是否为字符串列：true
+    是否为日期列：false
+    是否为时间列：false
+    是否为序列列：false
+    列长度：32
+    列精度：0
+    -------------------------------------
+    列名：DIRECT_TYPE
+    列类型：TINYINT
+    字段名：directType
+    注释：1-个人根目录 2-部门根目录 3-个人文件夹 4-部门文件夹 5-个人回收站
+    类型包名：java.lang
+    类型短名：Byte
+    类型全名：java.lang.Byte
+    是否主键：false
+    是否可空：false
+    是否为BLOB列：false
+    是否为String列：false
+    是否为字符串列：false
+    是否为日期列：false
+    是否为时间列：false
+    是否为序列列：false
+    列长度：3
+    列精度：0
+    -------------------------------------
+    列名：DIRECT_BELONG_USER
+    列类型：VARCHAR
+    字段名：directBelongUser
+    注释：所属用户ID
+    类型包名：java.lang
+    类型短名：String
+    类型全名：java.lang.String
+    是否主键：false
+    是否可空：true
+    是否为BLOB列：false
+    是否为String列：true
+    是否为字符串列：true
+    是否为日期列：false
+    是否为时间列：false
+    是否为序列列：false
+    列长度：32
+    列精度：0
+    -------------------------------------
+    列名：DIRECT_BELONG_DEPART
+    列类型：VARCHAR
+    字段名：directBelongDepart
+    注释：所属群组ID
+    类型包名：java.lang
+    类型短名：String
+    类型全名：java.lang.String
+    是否主键：false
+    是否可空：true
+    是否为BLOB列：false
+    是否为String列：true
+    是否为字符串列：true
+    是否为日期列：false
+    是否为时间列：false
+    是否为序列列：false
+    列长度：32
+    列精度：0
+    -------------------------------------
+    列名：DIRECT_DELETE
+    列类型：TINYINT
+    字段名：directDelete
+    注释：1-不在回收站 2-在回收站
+    类型包名：java.lang
+    类型短名：Byte
+    类型全名：java.lang.Byte
+    是否主键：false
+    是否可空：false
+    是否为BLOB列：false
+    是否为String列：false
+    是否为字符串列：false
+    是否为日期列：false
+    是否为时间列：false
+    是否为序列列：false
+    列长度：3
+    列精度：0
+    -------------------------------------
+    列名：DIRECT_SIZE
+    列类型：DECIMAL
+    字段名：directSize
+    注释：文件夹大小
+    类型包名：java.math
+    类型短名：BigDecimal
+    类型全名：java.math.BigDecimal
+    是否主键：false
+    是否可空：false
+    是否为BLOB列：false
+    是否为String列：false
+    是否为字符串列：false
+    是否为日期列：false
+    是否为时间列：false
+    是否为序列列：false
+    列长度：13
+    列精度：6
+
+Blob列：
+
+=====================================
+全部列：
+列名 - 字段名
+    DIRECT_ID - directId
+    PARENT_DIRECT_ID - parentDirectId
+    DIRECT_NAME - directName
+    DIRECT_CREATE_TIME - directCreateTime
+    DIRECT_CREATE_ID - directCreateId
+    DIRECT_TYPE - directType
+    DIRECT_BELONG_USER - directBelongUser
+    DIRECT_BELONG_DEPART - directBelongDepart
+    DIRECT_DELETE - directDelete
+    DIRECT_SIZE - directSize
