@@ -8,7 +8,6 @@ import org.apache.ibatis.annotations.Mapper;
 *
 * @author mapper-generator
 */
-@Mapper
 public interface DepartmentUserMapper extends tk.mybatis.mapper.common.Mapper<DepartmentUser> {
 
 }

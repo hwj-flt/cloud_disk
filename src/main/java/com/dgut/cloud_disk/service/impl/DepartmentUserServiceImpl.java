@@ -10,7 +10,7 @@ import java.util.List;
 
 @Service
 public class DepartmentUserServiceImpl implements DepartmentUserService {
-    @Autowired
+    @Autowired(required = false)
     private DepartmentUserMapper departmentUserMapper;
     @Override
     public List<DepartmentUser> allUser() {
