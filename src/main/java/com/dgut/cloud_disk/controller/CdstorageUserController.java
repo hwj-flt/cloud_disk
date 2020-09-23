@@ -16,7 +16,8 @@ public class CdstorageUserController {
     private CdstorageUserService cdstorageUserService;
     @RequestMapping("/all")
     public List<CdstorageUser> allUser(){
-        System.out.println("------"+cdstorageUserService.allUser());
+        
+        System.out.println("---"+cdstorageUserService.allUser());
         return cdstorageUserService.allUser();
     }
 
