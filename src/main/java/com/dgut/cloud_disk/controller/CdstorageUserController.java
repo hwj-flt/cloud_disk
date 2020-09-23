@@ -1,5 +1,6 @@
 package com.dgut.cloud_disk.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.dgut.cloud_disk.pojo.CdstorageUser;
 import com.dgut.cloud_disk.service.CdstorageUserService;
@@ -14,8 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import com.issCollege.util.RandomChar;
-
-import javax.servlet.http.HttpServletRequest;
 import java.util.UUID;
 
 @RestController
@@ -233,7 +232,7 @@ public class CdstorageUserController {
     /**
      * 根据token返回用户信息
      * @param token redis中的键
-     * @return 返回操作结果
+     * @return 返回用户信息
      */
     @RequestMapping("/user/userInfo")
     public JSONResult userInfo(String token) throws JsonProcessingException {
@@ -243,9 +242,9 @@ public class CdstorageUserController {
         ObjectMapper mapper = new ObjectMapper();
         CdstorageUser user = mapper.readValue(tokenValue, CdstorageUser.class);
         if (tokenValue == null){
-            return new JSONResult(500,"参数错误",user);
+            return new JSONResult(500,"参数错误", null);
         }
-        return new JSONResult(tokenValue);
+        return new JSONResult(JSONObject.toJSON(user));
     }
 
     /**
