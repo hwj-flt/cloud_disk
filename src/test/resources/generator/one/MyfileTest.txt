@@ -1,16 +1,16 @@
 目标package: generator.one
 
 当前时间：
-2020-9-18
-11:02:39
-2020-09-18 11:02:39
+2020年9月23日
+下午3:10:31
+2020-09-23 15:10:31
 
 所有配置的属性信息:
-targetPackage - generator.one
-templateFormatter - tk.mybatis.mapper.generator.formatter.FreemarkerTemplateFormatter
-templatePath - generator/test-one.ftl
-targetProject - src/test/resources
 fileName - ${tableClass.shortClassName}Test.txt
+templateFormatter - tk.mybatis.mapper.generator.formatter.FreemarkerTemplateFormatter
+targetProject - src/test/resources
+targetPackage - generator.one
+templatePath - generator/test-one.ftl
 
 实体和表的信息：
 表名：myfile
