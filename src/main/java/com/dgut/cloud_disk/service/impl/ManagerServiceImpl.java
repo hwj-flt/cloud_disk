@@ -15,11 +15,11 @@ public class ManagerServiceImpl implements ManagerService {
     @Autowired(required = false)
     private DepartmentUserMapper departmentUserMapper;
     @Override
-    public int delDepartUser(String [] userIds,String departId) {
+    public int delDepartUser(String departId,String [] userIds) {
         Example example = new Example(DepartmentUser.class);
         Example.Criteria criteria = example.createCriteria();
-        List ids = Arrays.asList(userIds);
         criteria.andEqualTo("duDepartId",departId);
+        List ids = Arrays.asList(userIds);
         criteria.andIn("duUserId",ids);
         return departmentUserMapper.deleteByExample(example);
     }

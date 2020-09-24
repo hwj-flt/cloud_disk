@@ -19,7 +19,7 @@ public class ManagerController {
         String token = jsonObject.getString("token");
         String departID = jsonObject.getString("departId");
         String [] userIDs = jsonObject.getString("userIDs").replace("[","").replace("]","").split(",");
-        if (managerService.delDepartUser(userIDs,departID) == userIDs.length){
+        if (managerService.delDepartUser(departID,userIDs) >0){
             return new JSONResult(200,"删除成功",null);
         }else {
             return JSONResult.errorMsg("参数错误");

@@ -50,6 +50,10 @@ public class CdstorageUserController {
         if(user == null){
             return JSONResult.errorMsg("该用户不存在");
         }
+        //判断用户是否被禁用
+        if(user.getUserStatus()==(byte) 0){
+            return JSONResult.errorMsg("用户被禁用，请找管理员解禁");
+        }
         //检查密码是否正确
         if(!user.getUserPassword().equals(userPassword)) {
             return JSONResult.errorMsg("密码错误");

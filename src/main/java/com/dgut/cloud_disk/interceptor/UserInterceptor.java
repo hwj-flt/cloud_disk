@@ -5,6 +5,7 @@ import com.dgut.cloud_disk.util.JSONResult;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 import redis.clients.jedis.Jedis;
@@ -18,7 +19,8 @@ import java.io.PrintWriter;
 public class UserInterceptor implements HandlerInterceptor {
     @Autowired
     private JedisPool jedisPool;
-
+    @Value("${redis.defaultTokenValidTime}")
+    private Integer tokenValidTime;
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
@@ -54,7 +56,7 @@ public class UserInterceptor implements HandlerInterceptor {
             return false;
         }
         //从token对象中取得有效时间（当时登录时存的，可能是站点默认值，可能是用户填写的具体时间长，也可能是永远记住-1），重新设置redis中的key的有效时间，完成刷新
-        jedis.expire(token,600);
+        jedis.expire(token,tokenValidTime);
         jedis.close();
         return HandlerInterceptor.super.preHandle(request, response, handler);
     }
