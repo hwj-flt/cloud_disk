@@ -5,9 +5,9 @@ import com.dgut.cloud_disk.pojo.CdstorageUser;
 import com.dgut.cloud_disk.pojo.vo.CdstorageUserVo;
 import com.dgut.cloud_disk.service.CdstorageUserService;
 import com.dgut.cloud_disk.util.JSONResult;
+import com.dgut.cloud_disk.util.SendCodeUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -69,7 +69,7 @@ public class CdstorageUserController {
             return new JSONResult(400,"禁用用户失败",null);
         }
 	}
-    
+
     /**
      *用户登录
      * @return 成功返回 code状态码 ,firstLogin首次登录, token 在redis存储的键 , permission用户权限
@@ -233,8 +233,13 @@ public class CdstorageUserController {
         //修改密码
         if (!userService.updateUserPassword(userPhone,userPassword)){
             return new JSONResult(500,"修改密码失败",null);
-
         }
+        //更新redis里的token的值
+        CdstorageUser user = userService.queryByUserMobie(userPhone);
+        ObjectMapper mapper = new ObjectMapper();
+        jedis.set(token,mapper.writeValueAsString(user));
+        jedis.close();
+        return new JSONResult(200,"登录成功",null);
     }
     /**
      * 批量用户解禁
@@ -260,10 +265,12 @@ public class CdstorageUserController {
     @CrossOrigin
     @ResponseBody
     public JSONResult updateUser(@RequestBody CdstorageUserVo cdstorageUserVo){
-        int num = userService.updateUser(cdstorageUserVo);
+        int num = userService.updateUser1(cdstorageUserVo);
         if(num>0){
             return new JSONResult(200,"更新用户成功",null);
-		}
+		}else{
+            return new JSONResult(500,"更新用户失败",null);
+        }
 	}
 
 
@@ -432,6 +439,6 @@ public class CdstorageUserController {
         jedis.close();
         return JSONResult.ok("修改成功");
     }
-	
+
 
 }

@@ -33,7 +33,7 @@ public interface CdstorageUserService {
      * @param cdstorageUserVo
      * @return 数据库影响条数
      */
-    public int updateUser(CdstorageUserVo cdstorageUserVo);
+    public int updateUser1(CdstorageUserVo cdstorageUserVo);
 
     /**
      * 用户名进行查询
@@ -57,5 +57,9 @@ public interface CdstorageUserService {
      * @return 手机号查询结果
      */
     public List<CdstorageUser> selByUserPhone(String token,String userMobie);
+
+    CdstorageUser queryByUserMobie(String userName);
+    boolean updateUserPassword(String userPhone,String userPassword);
+    boolean updateUser(CdstorageUser user);
 
 }

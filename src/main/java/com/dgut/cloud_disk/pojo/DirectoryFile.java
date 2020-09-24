@@ -29,7 +29,7 @@ public class DirectoryFile implements Serializable {
      * 1-未被删除 2被删除
      */
     @Column(name = "`DF_GARBAGE`")
-    private Integer dfGarbage;
+    private Byte dfGarbage;
 
     /**
      * 删除时间
@@ -104,7 +104,7 @@ public class DirectoryFile implements Serializable {
      *
      * @return DF_GARBAGE - 1-未被删除 2被删除
      */
-    public Integer getDfGarbage() {
+    public Byte getDfGarbage() {
         return dfGarbage;
     }
 
@@ -113,7 +113,7 @@ public class DirectoryFile implements Serializable {
      *
      * @param dfGarbage 1-未被删除 2被删除
      */
-    public void setDfGarbage(Integer dfGarbage) {
+    public void setDfGarbage(Byte dfGarbage) {
         this.dfGarbage = dfGarbage;
     }
 

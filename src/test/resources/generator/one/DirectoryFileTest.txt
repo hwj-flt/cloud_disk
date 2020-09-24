@@ -2,8 +2,8 @@
 
 当前时间：
 2020-9-24
-10:35:55
-2020-09-24 10:35:55
+23:58:18
+2020-09-24 23:58:18
 
 所有配置的属性信息:
 targetPackage - generator.one
@@ -81,12 +81,12 @@ fileName - ${tableClass.shortClassName}Test.txt
     列精度：0
     -------------------------------------
     列名：DF_GARBAGE
-    列类型：INTEGER
+    列类型：TINYINT
     字段名：dfGarbage
     注释：1-未被删除 2被删除
     类型包名：java.lang
-    类型短名：Integer
-    类型全名：java.lang.Integer
+    类型短名：Byte
+    类型全名：java.lang.Byte
     是否主键：false
     是否可空：false
     是否为BLOB列：false
@@ -95,7 +95,7 @@ fileName - ${tableClass.shortClassName}Test.txt
     是否为日期列：false
     是否为时间列：false
     是否为序列列：false
-    列长度：10
+    列长度：3
     列精度：0
     -------------------------------------
     列名：DF_DELETE_TIME

@@ -18,7 +18,7 @@ public class CdstorageUser implements Serializable {
      * 工号
      */
     @Column(name = "`USER_WORK_ID`")
-    private Integer userWorkId;
+    private Long userWorkId;
 
     /**
      * 用户名
@@ -117,7 +117,7 @@ public class CdstorageUser implements Serializable {
      *
      * @return USER_WORK_ID - 工号
      */
-    public Integer getUserWorkId() {
+    public Long getUserWorkId() {
         return userWorkId;
     }
 
@@ -126,7 +126,7 @@ public class CdstorageUser implements Serializable {
      *
      * @param userWorkId 工号
      */
-    public void setUserWorkId(Integer userWorkId) {
+    public void setUserWorkId(Long userWorkId) {
         this.userWorkId = userWorkId;
     }
 
