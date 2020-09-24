@@ -47,8 +47,8 @@ public class CdstorageUser implements Serializable {
     /**
      * 手机号码
      */
-    @Column(name = "`USER_MOBILE`")
-    private String userMobile;
+    @Column(name = "`USER_MOBIE`")
+    private String userMobie;
 
     /**
      * 邮箱地址
@@ -205,19 +205,19 @@ public class CdstorageUser implements Serializable {
     /**
      * 获取手机号码
      *
-     * @return USER_MOBILE - 手机号码
+     * @return USER_MOBIE - 手机号码
      */
-    public String getUserMobile() {
-        return userMobile;
+    public String getUserMobie() {
+        return userMobie;
     }
 
     /**
      * 设置手机号码
      *
-     * @param userMobile 手机号码
+     * @param userMobie 手机号码
      */
-    public void setUserMobile(String userMobile) {
-        this.userMobile = userMobile;
+    public void setUserMobie(String userMobie) {
+        this.userMobie = userMobie;
     }
 
     /**

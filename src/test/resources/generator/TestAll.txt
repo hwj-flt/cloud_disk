@@ -2,9 +2,9 @@
 
 <!-- http://freemarker.apache.org/docs/ref_builtins_date.html -->
 当前时间：
-2020-9-18
-16:52:41
-2020-09-18 16:52:41
+2020-9-24
+10:35:55
+2020-09-24 10:35:55
 
 所有配置的属性信息:
 targetPackage - generator
@@ -29,7 +29,7 @@ fileName - TestAll.txt
         列名：DEPART_ID
         列类型：VARCHAR
         字段名：departId
-        注释：群组ID
+        注释：部门ID
         类型包名：java.lang
         类型短名：String
         类型全名：java.lang.String
@@ -49,7 +49,7 @@ fileName - TestAll.txt
         列名：DEPART_NAME
         列类型：VARCHAR
         字段名：departName
-        注释：群组名称
+        注释：部门名称
         类型包名：java.lang
         类型短名：String
         类型全名：java.lang.String
@@ -67,7 +67,7 @@ fileName - TestAll.txt
         列名：DEPART_ROOT
         列类型：VARCHAR
         字段名：departRoot
-        注释：群组文件夹根目录ID
+        注释：部门文件夹根目录ID
         类型包名：java.lang
         类型短名：String
         类型全名：java.lang.String
@@ -82,22 +82,22 @@ fileName - TestAll.txt
         列长度：32
         列精度：0
         -------------------------------------
-        列名：DEPART_TIME
-        列类型：TIMESTAMP
-        字段名：departTime
-        注释：群组创建时间
-        类型包名：java.util
-        类型短名：Date
-        类型全名：java.util.Date
+        列名：DEPART_GARBAGE
+        列类型：VARCHAR
+        字段名：departGarbage
+        注释：部门垃圾箱文件夹ID
+        类型包名：java.lang
+        类型短名：String
+        类型全名：java.lang.String
         是否主键：false
         是否可空：false
         是否为BLOB列：false
-        是否为String列：false
-        是否为字符串列：false
+        是否为String列：true
+        是否为字符串列：true
         是否为日期列：false
         是否为时间列：false
         是否为序列列：false
-        列长度：19
+        列长度：32
         列精度：0
 
     Blob列：
@@ -107,7 +107,7 @@ fileName - TestAll.txt
         DEPART_ID - departId
         DEPART_NAME - departName
         DEPART_ROOT - departRoot
-        DEPART_TIME - departTime
+        DEPART_GARBAGE - departGarbage
 ****************************************************************************************
 实体和表的信息：
 表名：directory_file
@@ -177,31 +177,13 @@ fileName - TestAll.txt
         列长度：32
         列精度：0
         -------------------------------------
-        列名：DF_FILE_NAME
-        列类型：VARCHAR
-        字段名：dfFileName
-        注释：文件名
-        类型包名：java.lang
-        类型短名：String
-        类型全名：java.lang.String
-        是否主键：false
-        是否可空：false
-        是否为BLOB列：false
-        是否为String列：true
-        是否为字符串列：true
-        是否为日期列：false
-        是否为时间列：false
-        是否为序列列：false
-        列长度：32
-        列精度：0
-        -------------------------------------
         列名：DF_GARBAGE
-        列类型：TINYINT
+        列类型：INTEGER
         字段名：dfGarbage
         注释：1-未被删除 2被删除
         类型包名：java.lang
-        类型短名：Byte
-        类型全名：java.lang.Byte
+        类型短名：Integer
+        类型全名：java.lang.Integer
         是否主键：false
         是否可空：false
         是否为BLOB列：false
@@ -210,7 +192,7 @@ fileName - TestAll.txt
         是否为日期列：false
         是否为时间列：false
         是否为序列列：false
-        列长度：3
+        列长度：10
         列精度：0
         -------------------------------------
         列名：DF_DELETE_TIME
@@ -256,7 +238,6 @@ fileName - TestAll.txt
         DIRECT_FILE_ID - directFileId
         DF_DIRECT_ID - dfDirectId
         DF_FILE_ID - dfFileId
-        DF_FILE_NAME - dfFileName
         DF_GARBAGE - dfGarbage
         DF_DELETE_TIME - dfDeleteTime
         DF_DELETE_ID - dfDeleteId
@@ -366,12 +347,12 @@ fileName - TestAll.txt
         列精度：0
         -------------------------------------
         列名：SHARE_TYPE
-        列类型：TINYINT
+        列类型：INTEGER
         字段名：shareType
         注释：1-私密分享文件 2-私密分享文件夹 3-外链分享文件 4-外链分享文件夹
         类型包名：java.lang
-        类型短名：Byte
-        类型全名：java.lang.Byte
+        类型短名：Integer
+        类型全名：java.lang.Integer
         是否主键：false
         是否可空：false
         是否为BLOB列：false
@@ -380,7 +361,7 @@ fileName - TestAll.txt
         是否为日期列：false
         是否为时间列：false
         是否为序列列：false
-        列长度：3
+        列长度：10
         列精度：0
         -------------------------------------
         列名：SHARE_FILE_ID
@@ -644,6 +625,24 @@ fileName - TestAll.txt
         是否为序列列：false
         列长度：13
         列精度：6
+        -------------------------------------
+        列名：DIRECT_DELETE_TIME
+        列类型：TIMESTAMP
+        字段名：directDeleteTime
+        注释：删除文件的时间
+        类型包名：java.util
+        类型短名：Date
+        类型全名：java.util.Date
+        是否主键：false
+        是否可空：false
+        是否为BLOB列：false
+        是否为String列：false
+        是否为字符串列：false
+        是否为日期列：false
+        是否为时间列：false
+        是否为序列列：false
+        列长度：19
+        列精度：0
 
     Blob列：
 =====================================
@@ -659,6 +658,7 @@ fileName - TestAll.txt
         DIRECT_BELONG_DEPART - directBelongDepart
         DIRECT_DELETE - directDelete
         DIRECT_SIZE - directSize
+        DIRECT_DELETE_TIME - directDeleteTime
 ****************************************************************************************
 实体和表的信息：
 表名：myfile
@@ -692,6 +692,24 @@ fileName - TestAll.txt
 
     基础列：
         -------------------------------------
+        列名：FILE_NAME
+        列类型：VARCHAR
+        字段名：fileName
+        注释：文件名
+        类型包名：java.lang
+        类型短名：String
+        类型全名：java.lang.String
+        是否主键：false
+        是否可空：false
+        是否为BLOB列：false
+        是否为String列：true
+        是否为字符串列：true
+        是否为日期列：false
+        是否为时间列：false
+        是否为序列列：false
+        列长度：32
+        列精度：0
+        -------------------------------------
         列名：FILE_LINK
         列类型：VARCHAR
         字段名：fileLink
@@ -707,7 +725,7 @@ fileName - TestAll.txt
         是否为日期列：false
         是否为时间列：false
         是否为序列列：false
-        列长度：500
+        列长度：128
         列精度：0
         -------------------------------------
         列名：FILE_SIZE
@@ -783,12 +801,12 @@ fileName - TestAll.txt
         列精度：0
         -------------------------------------
         列名：FILE_REFERE
-        列类型：TINYINT
+        列类型：INTEGER
         字段名：fileRefere
         注释：引用文件夹个数
         类型包名：java.lang
-        类型短名：Byte
-        类型全名：java.lang.Byte
+        类型短名：Integer
+        类型全名：java.lang.Integer
         是否主键：false
         是否可空：false
         是否为BLOB列：false
@@ -797,7 +815,7 @@ fileName - TestAll.txt
         是否为日期列：false
         是否为时间列：false
         是否为序列列：false
-        列长度：3
+        列长度：10
         列精度：0
 
     Blob列：
@@ -805,6 +823,7 @@ fileName - TestAll.txt
 全部列：
     列名 - 字段名
         FILE_ID - fileId
+        FILE_NAME - fileName
         FILE_LINK - fileLink
         FILE_SIZE - fileSize
         FILE_TYPE - fileType
@@ -847,7 +866,7 @@ fileName - TestAll.txt
         列名：DU_DEPART_ID
         列类型：VARCHAR
         字段名：duDepartId
-        注释：群组ID
+        注释：部门ID
         类型包名：java.lang
         类型短名：String
         类型全名：java.lang.String
@@ -883,9 +902,7 @@ fileName - TestAll.txt
         列名：DU_PERMISSION
         列类型：DECIMAL
         字段名：duPermission
-        注释：11111111-文档管理员（上传、下载、删除、创建文件夹、分享、复制、移动、重命名）
-            10000000-群组成员权限1（上传）
-            每一权限位对应相应的功能
+        注释：1-部门管理员（上传、下载、重命名、移动、删除）2-部门成员（上传、下载、保存到自己的文件夹）
         类型包名：java.lang
         类型短名：Integer
         类型全名：java.lang.Integer
@@ -897,7 +914,7 @@ fileName - TestAll.txt
         是否为日期列：false
         是否为时间列：false
         是否为序列列：false
-        列长度：8
+        列长度：6
         列精度：0
 
     Blob列：

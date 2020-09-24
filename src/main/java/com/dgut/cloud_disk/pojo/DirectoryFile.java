@@ -26,16 +26,10 @@ public class DirectoryFile implements Serializable {
     private String dfFileId;
 
     /**
-     * 文件名
-     */
-    @Column(name = "`DF_FILE_NAME`")
-    private String dfFileName;
-
-    /**
      * 1-未被删除 2被删除
      */
     @Column(name = "`DF_GARBAGE`")
-    private Byte dfGarbage;
+    private Integer dfGarbage;
 
     /**
      * 删除时间
@@ -106,29 +100,11 @@ public class DirectoryFile implements Serializable {
     }
 
     /**
-     * 获取文件名
-     *
-     * @return DF_FILE_NAME - 文件名
-     */
-    public String getDfFileName() {
-        return dfFileName;
-    }
-
-    /**
-     * 设置文件名
-     *
-     * @param dfFileName 文件名
-     */
-    public void setDfFileName(String dfFileName) {
-        this.dfFileName = dfFileName;
-    }
-
-    /**
      * 获取1-未被删除 2被删除
      *
      * @return DF_GARBAGE - 1-未被删除 2被删除
      */
-    public Byte getDfGarbage() {
+    public Integer getDfGarbage() {
         return dfGarbage;
     }
 
@@ -137,7 +113,7 @@ public class DirectoryFile implements Serializable {
      *
      * @param dfGarbage 1-未被删除 2被删除
      */
-    public void setDfGarbage(Byte dfGarbage) {
+    public void setDfGarbage(Integer dfGarbage) {
         this.dfGarbage = dfGarbage;
     }
 

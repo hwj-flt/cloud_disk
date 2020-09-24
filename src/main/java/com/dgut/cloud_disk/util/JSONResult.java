@@ -63,7 +63,7 @@ public class JSONResult {
 
 	public JSONResult(Object data) {
 		this.status = 200;
-		this.msg = "OK";
+		this.msg = "";
 		this.data = data;
 	}
 

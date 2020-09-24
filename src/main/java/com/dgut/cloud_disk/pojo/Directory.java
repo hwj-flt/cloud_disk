@@ -68,6 +68,12 @@ public class Directory implements Serializable {
     @Column(name = "`DIRECT_SIZE`")
     private BigDecimal directSize;
 
+    /**
+     * 删除文件的时间
+     */
+    @Column(name = "`DIRECT_DELETE_TIME`")
+    private Date directDeleteTime;
+
     private static final long serialVersionUID = 1L;
 
     /**
@@ -248,5 +254,23 @@ public class Directory implements Serializable {
      */
     public void setDirectSize(BigDecimal directSize) {
         this.directSize = directSize;
+    }
+
+    /**
+     * 获取删除文件的时间
+     *
+     * @return DIRECT_DELETE_TIME - 删除文件的时间
+     */
+    public Date getDirectDeleteTime() {
+        return directDeleteTime;
+    }
+
+    /**
+     * 设置删除文件的时间
+     *
+     * @param directDeleteTime 删除文件的时间
+     */
+    public void setDirectDeleteTime(Date directDeleteTime) {
+        this.directDeleteTime = directDeleteTime;
     }
 }

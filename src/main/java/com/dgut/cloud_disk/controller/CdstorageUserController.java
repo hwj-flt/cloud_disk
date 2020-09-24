@@ -1,27 +1,5 @@
 package com.dgut.cloud_disk.controller;
 
-<<<<<<< HEAD
-import com.dgut.cloud_disk.pojo.CdstorageUser;
-import com.dgut.cloud_disk.service.CdstorageUserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
-
-@RestController
-@RequestMapping("/user")
-public class CdstorageUserController {
-
-    @Autowired
-    private CdstorageUserService cdstorageUserService;
-    @RequestMapping("/all")
-    public List<CdstorageUser> allUser(){
-        System.out.println("------"+cdstorageUserService.allUser());
-        return cdstorageUserService.allUser();
-    }
-
-=======
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.dgut.cloud_disk.pojo.CdstorageUser;
@@ -38,6 +16,13 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import com.issCollege.util.RandomChar;
 import java.util.UUID;
+import com.dgut.cloud_disk.pojo.CdstorageUser;
+import com.dgut.cloud_disk.service.CdstorageUserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/cloud")
@@ -291,5 +276,4 @@ public class CdstorageUserController {
         jedis.close();
         return JSONResult.ok("修改成功");
     }
->>>>>>> origin/zjl
 }
