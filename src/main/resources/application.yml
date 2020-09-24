@@ -13,6 +13,11 @@ spring:
       test-on-borrow: true
       stat-view-servlet:
         allow: true
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql
 mybatis:
   mapper-locations:
     - classpath*:mapper/*.xml
