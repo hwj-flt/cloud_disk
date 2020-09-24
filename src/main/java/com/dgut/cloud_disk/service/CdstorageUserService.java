@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface CdstorageUserService {
     public List<CdstorageUser> allUser();
+
 }

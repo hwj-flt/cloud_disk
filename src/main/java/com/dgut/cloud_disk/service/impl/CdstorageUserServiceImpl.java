@@ -15,6 +15,7 @@ public class CdstorageUserServiceImpl implements CdstorageUserService {
     @Override
     public List<CdstorageUser> allUser() {
         List<CdstorageUser>  users= cdstorageUserMapper.selectAll();
+
         return users;
     }
 }
