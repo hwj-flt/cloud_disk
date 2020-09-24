@@ -2,9 +2,9 @@ server:
   port: 8280
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/cloud_storage?useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/cloud_storage?serverTimezone=UTC
     username: root
-    password: 123456
+    password: 123
     driver-class-name: com.mysql.jdbc.Driver
     druid:
       initial-size: 1
@@ -21,3 +21,7 @@ pagehelper:
 mybatis:
   mapper-locations:
     - classpath*:mapper/*.xml
+space:
+  size: 1000
+upload:
+  path: upload/

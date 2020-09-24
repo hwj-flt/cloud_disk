@@ -41,7 +41,7 @@ public class Toshare implements Serializable {
      * 1-私密分享文件 2-私密分享文件夹 3-外链分享文件 4-外链分享文件夹
      */
     @Column(name = "`SHARE_TYPE`")
-    private Byte shareType;
+    private Integer shareType;
 
     /**
      * 分享文件ID
@@ -158,7 +158,7 @@ public class Toshare implements Serializable {
      *
      * @return SHARE_TYPE - 1-私密分享文件 2-私密分享文件夹 3-外链分享文件 4-外链分享文件夹
      */
-    public Byte getShareType() {
+    public Integer getShareType() {
         return shareType;
     }
 
@@ -167,7 +167,7 @@ public class Toshare implements Serializable {
      *
      * @param shareType 1-私密分享文件 2-私密分享文件夹 3-外链分享文件 4-外链分享文件夹
      */
-    public void setShareType(Byte shareType) {
+    public void setShareType(Integer shareType) {
         this.shareType = shareType;
     }
 

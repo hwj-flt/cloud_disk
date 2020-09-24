@@ -1,9 +1,9 @@
 目标package: generator.one
 
 当前时间：
-2020-9-18
-16:52:41
-2020-09-18 16:52:41
+2020-9-24
+10:35:55
+2020-09-24 10:35:55
 
 所有配置的属性信息:
 targetPackage - generator.one
@@ -205,6 +205,24 @@ fileName - ${tableClass.shortClassName}Test.txt
     是否为序列列：false
     列长度：13
     列精度：6
+    -------------------------------------
+    列名：DIRECT_DELETE_TIME
+    列类型：TIMESTAMP
+    字段名：directDeleteTime
+    注释：删除文件的时间
+    类型包名：java.util
+    类型短名：Date
+    类型全名：java.util.Date
+    是否主键：false
+    是否可空：false
+    是否为BLOB列：false
+    是否为String列：false
+    是否为字符串列：false
+    是否为日期列：false
+    是否为时间列：false
+    是否为序列列：false
+    列长度：19
+    列精度：0
 
 Blob列：
 
@@ -221,3 +239,4 @@ Blob列：
     DIRECT_BELONG_DEPART - directBelongDepart
     DIRECT_DELETE - directDelete
     DIRECT_SIZE - directSize
+    DIRECT_DELETE_TIME - directDeleteTime
