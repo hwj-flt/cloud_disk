@@ -3,22 +3,25 @@ package com.dgut.cloud_disk.util;
 import com.github.qcloudsms.SmsSingleSender;
 import com.github.qcloudsms.SmsSingleSenderResult;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.stereotype.Component;
 
+@Configuration
+@PropertySource(value = "classpath:tencentConfig.properties")
 public class SendCodeUtil {
     @Value("${tencent.appId}")
-    private static Integer appId;
+    private Integer appId;
     @Value("${tencent.appKey}")
-    private static String appKey;
+    private String appKey;
     @Value("${tencent.templateId}")
-    private static Integer templateId;
+    private Integer templateId;
     @Value("${tencent.smsSign}")
-    private static String smsSign;
-    @Value("${tencent.smsEffectiveTime}")
-    private static String smsEffectiveTime;
-    public static String sendMsg(String phoneNum,String code){
+    private String smsSign;
+    public String sendMsg(String phoneNum,String code){
         String res = "";
         try {
-            String[] params = {code,smsEffectiveTime};
+            String[] params = {code};
             SmsSingleSender smsSingleSender = new SmsSingleSender(appId, appKey);
             // 签名参数未提供或者为空时，会使用默认签名发送短信
             SmsSingleSenderResult smsSingleSenderResult = smsSingleSender.sendWithParam("86", phoneNum,

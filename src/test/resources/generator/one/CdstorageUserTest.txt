@@ -1,9 +1,9 @@
 目标package: generator.one
 
 当前时间：
-2020年9月23日
-下午3:10:31
-2020-09-23 15:10:31
+2020年9月24日
+下午2:24:41
+2020-09-24 14:24:41
 
 所有配置的属性信息:
 fileName - ${tableClass.shortClassName}Test.txt
@@ -134,9 +134,9 @@ templatePath - generator/test-one.ftl
     列长度：32
     列精度：0
     -------------------------------------
-    列名：USER_MOBILE
+    列名：USER_MOBIE
     列类型：VARCHAR
-    字段名：userMobile
+    字段名：userMobie
     注释：手机号码
     类型包名：java.lang
     类型短名：String
@@ -289,7 +289,7 @@ Blob列：
     USER_SEX - userSex
     USER_TIME - userTime
     USER_PASSWORD - userPassword
-    USER_MOBILE - userMobile
+    USER_MOBIE - userMobie
     USER_EMAIL - userEmail
     USER_ROOT_ID - userRootId
     USER_GARBAGE - userGarbage
