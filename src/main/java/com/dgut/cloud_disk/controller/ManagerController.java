@@ -17,10 +17,9 @@ public class ManagerController {
     @RequestMapping("/delDepartUserByIds")
     public JSONResult delDepartUserByIds(@RequestBody JSONObject jsonObject){
         String token = jsonObject.getString("token");
-        String departID = jsonObject.getString("departID");
-        String [] userIDs = jsonObject.getString("userIDs").split(",");
-        System.out.println(token+departID+userIDs);
-        if (managerService.delDepartUser(userIDs,departID)){
+        String departID = jsonObject.getString("departId");
+        String [] userIDs = jsonObject.getString("userIDs").replace("[","").replace("]","").split(",");
+        if (managerService.delDepartUser(userIDs,departID) == userIDs.length){
             return new JSONResult(200,"删除成功",null);
         }else {
             return JSONResult.errorMsg("参数错误");
