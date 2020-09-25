@@ -16,7 +16,6 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
 import javax.annotation.Resource;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -41,7 +40,7 @@ public class DirectoryFileController {
             return new JSONResult(500,"删除失败！","");
         }
     }
-    @RequestMapping("/deleteDorDF")
+        @RequestMapping("/deleteDorDF")
     public JSONResult deleteDirectoryFileOrDirectory(int type,String id){
         //1-文件夹，2-文件
         if(DFService.deleteDorDF(type,id)){
@@ -112,12 +111,10 @@ public class DirectoryFileController {
         toshare.setShareTime(date);
         toshare.setShareExpire(new Date(date.getTime() + shareTime * 1000L));
         toshare.setShareCode(Code);
-        if(Fid!=null){
-            //1-私密分享文件 2-私密分享文件夹 3-外链分享文件 4-外链分享文件夹
+        if(Fid!=null&&Did!=null){
+            //1-私密分享文件 2-私密分享文件夹 3-外链分享文件 ！！外链分享只分享文件
             toshare.setShareType((byte) 3);
             toshare.setShareFileId(Fid);
-        }else if(Did!=null){
-            toshare.setShareType((byte) 4);
             toshare.setShareDirectId(Did);
         }else{
             return new JSONResult(500,"分享失败！","");
@@ -132,7 +129,14 @@ public class DirectoryFileController {
         int i =DFService.VerifyCode(shareID,code);
         //无密码或密码正确时i=1，有密码但没有输入密码时i=-1，有密码但输入密码错误时i=-2
         if(i==1){
-            return new JSONResult(200,"可以访问！","");
+            //需返回fileName，shareTime，downloadURL
+            String fileName=DFService.getFileNameByID(shareID);
+            Date shareTime=DFService.getShareTimeByID(shareID);
+            JSONObject obj=new JSONObject();
+            obj.put("fileName",fileName);
+            obj.put("shareTime",shareTime);
+
+            return new JSONResult(200,"可以访问！",obj);
         }else if(i==-1){
             return new JSONResult(606,"需要密码！","");
         }else {

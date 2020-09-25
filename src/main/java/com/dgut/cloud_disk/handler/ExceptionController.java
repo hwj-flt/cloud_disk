@@ -12,7 +12,6 @@ public class ExceptionController {
     JSONResult handlerException(Exception e) {
         return JSONResult.errorMsg("程序错误");
     }
-
     @ExceptionHandler(value = ParameterException.class)
     JSONResult handlerParameterException(Exception e) {
         return JSONResult.errorMsg(e.getMessage());
