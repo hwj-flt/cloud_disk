@@ -23,7 +23,7 @@ import java.util.UUID;
 
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/cloud")
 public class CdstorageUserController {
 
     @Autowired
@@ -438,7 +438,7 @@ public class CdstorageUserController {
         jedis.close();
         return JSONResult.ok("修改成功");
     }
-    @RequestMapping("/cloud/user/manage/sup/allManages")
+    @RequestMapping("/user/manage/sup/allManages")
     public JSONResult allManages(){
         System.out.println(userService.allManages());
         List<CdstorageUser> cdstorageUsers=userService.allManages();
@@ -446,7 +446,7 @@ public class CdstorageUserController {
         return new JSONResult(JSONResult.build(200,null,jsonArray));
     }
 
-    @PostMapping("/cloud/user/manage/sup/addManage")
+    @PostMapping("/user/manage/sup/addManage")
     @ResponseBody
     @CrossOrigin
     public JSONResult addManage(@RequestBody CdstorageUser cdstorageUser){
@@ -459,7 +459,7 @@ public class CdstorageUserController {
     }
 
 
-    @PostMapping("/cloud/user/manage/sup/delManage")
+    @PostMapping("/user/manage/sup/delManage")
     @ResponseBody
     @CrossOrigin
     public JSONResult delManage(@RequestBody CdstorageUser cdstorageUser) {
