@@ -1,5 +1,6 @@
 package com.dgut.cloud_disk.service.impl;
 
+import com.dgut.cloud_disk.config.ObsConfig;
 import com.dgut.cloud_disk.mapper.DirectoryFileMapper;
 import com.dgut.cloud_disk.mapper.DirectoryMapper;
 import com.dgut.cloud_disk.mapper.ToshareMapper;
@@ -26,6 +27,8 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
     private DirectoryMapper Dmapper;
     @Resource
     private ToshareMapper toshareMapper;
+    @Autowired
+    private ObsConfig obsConfig;
     @Override
     public List<DirectoryFile> allFile() {
         List<DirectoryFile> file=DFmapper.selectAll();
@@ -106,9 +109,9 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
      */
     @Override
     public String fileDownload(String objectname) {
-        String ak = "VSTWKTJ92NZAI2VJ14PJ";
-        String sk = "5tpC64qnXaOFpw5zwKV0vnZoEQAVCjpE0s6BomQg";
-        String endPoint = "obs.cn-north-4.myhuaweicloud.com";
+        String ak = obsConfig.getAccessKeyId();
+        String sk = obsConfig.getSecretAccessKey();
+        String endPoint = obsConfig.getEndpoint();
 
         // 创建ObsClient实例
         ObsClient obsClient = new ObsClient(ak, sk, endPoint);

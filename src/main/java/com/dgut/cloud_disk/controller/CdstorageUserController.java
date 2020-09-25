@@ -220,7 +220,6 @@ public class CdstorageUserController {
     public JSONResult checkPhoneCode1(@RequestBody JSONObject json) {
         String userPhone = json.getString("userPhone");
         String checkNum = json.getString("checkNum");
-        String userPassword = json.getString("userPassword");
         Jedis jedis = jedisPool.getResource();
         //从redis查出验证码
         String phoneCode = jedis.get(userPhone);
@@ -232,15 +231,22 @@ public class CdstorageUserController {
         //验证码校验
         if (!checkNum.equals(phoneCode)){
             return new JSONResult(500,"验证码错误",null);
+        }else {
+            return new JSONResult(200,"验证码正确",null);
         }
+
+    }
+    @RequestMapping("/forgetPassword/updatePass")
+    public JSONResult updatePass(@RequestBody JSONObject json){
+        String userPassword = json.getString("userPassword");
+        String userPhone = json.getString("userPhone");
         //修改密码
         if (!userService.updateUserPassword(userPhone,userPassword)){
             return new JSONResult(500,"修改密码失败",null);
         }else {
-            return new JSONResult(400,"更新用户失败",null);
+            return new JSONResult(200,"修改成功",null);
         }
     }
-
 	/**
      * 退出登录
      * @return 操作结果
