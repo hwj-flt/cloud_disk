@@ -1,16 +1,16 @@
 目标package: generator.one
 
 当前时间：
-2020年9月25日
-上午9:50:01
-2020-09-25 09:50:01
+2020-9-25
+15:16:54
+2020-09-25 15:16:54
 
 所有配置的属性信息:
-fileName - ${tableClass.shortClassName}Test.txt
-templateFormatter - tk.mybatis.mapper.generator.formatter.FreemarkerTemplateFormatter
-targetProject - src/test/resources
 targetPackage - generator.one
+templateFormatter - tk.mybatis.mapper.generator.formatter.FreemarkerTemplateFormatter
 templatePath - generator/test-one.ftl
+targetProject - src/test/resources
+fileName - ${tableClass.shortClassName}Test.txt
 
 实体和表的信息：
 表名：directory_file
@@ -124,7 +124,7 @@ templatePath - generator/test-one.ftl
     类型短名：Date
     类型全名：java.util.Date
     是否主键：false
-    是否可空：false
+    是否可空：true
     是否为BLOB列：false
     是否为String列：false
     是否为字符串列：false
