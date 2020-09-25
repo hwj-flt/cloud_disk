@@ -81,6 +81,9 @@ public class CdstorageUserServiceImpl implements CdstorageUserService {
         if(cdstorageUserVo.getUserSize()!=null){
             cdstorageUser.setUserSize(cdstorageUserVo.getUserSize());
         }
+        System.out.println(cdstorageUser);
+        cdstorageUser.setUserSex(cdstorageUser.getUserSex());
+        System.out.println(cdstorageUser);
         int num = cdstorageUserMapper.updateByPrimaryKey(cdstorageUser);
         return num;
     }
