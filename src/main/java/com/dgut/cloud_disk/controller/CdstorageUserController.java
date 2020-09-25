@@ -190,8 +190,13 @@ public class CdstorageUserController {
             //不正确返回json
             return JSONResult.errorMsg("手机号错误");
         }
-        JSONObject jsonObject = new JSONObject();
         Jedis jedis = jedisPool.getResource();
+        //查询redis是否已经有存入验证码，有则刷新验证码时间并返回重复发送的错误提示
+        if (jedis.get(userPhone)!=null){
+            jedis.expire(user.getUserMobie(),codeValidTime);
+            return new JSONResult(500,"重复发送",null);
+        }
+        JSONObject jsonObject = new JSONObject();
         //生成6位数字随机数作为验证码
         String code = RandomChar.getRandomChar(6,3);
         //用手机号作为redis的key，值为验证码
