@@ -5,7 +5,7 @@ import com.dgut.cloud_disk.util.JSONResult;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-@RestControllerAdvice
+/*@RestControllerAdvice
 public class ExceptionController {
 
     @ExceptionHandler(value = Exception.class)
@@ -16,4 +16,4 @@ public class ExceptionController {
     JSONResult handlerParameterException(Exception e) {
         return JSONResult.errorMsg(e.getMessage());
     }
-}
+}*/

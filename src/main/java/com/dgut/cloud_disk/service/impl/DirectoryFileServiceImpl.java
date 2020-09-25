@@ -2,10 +2,16 @@ package com.dgut.cloud_disk.service.impl;
 
 import com.dgut.cloud_disk.mapper.DirectoryFileMapper;
 import com.dgut.cloud_disk.mapper.DirectoryMapper;
+import com.dgut.cloud_disk.mapper.MyfileMapper;
 import com.dgut.cloud_disk.mapper.ToshareMapper;
 import com.dgut.cloud_disk.pojo.DirectoryFile;
+import com.dgut.cloud_disk.pojo.Myfile;
 import com.dgut.cloud_disk.pojo.Toshare;
 import com.dgut.cloud_disk.service.DirectoryFileService;
+import com.obs.services.ObsClient;
+import com.obs.services.model.HttpMethodEnum;
+import com.obs.services.model.TemporarySignatureRequest;
+import com.obs.services.model.TemporarySignatureResponse;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
@@ -21,6 +27,8 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
     private DirectoryMapper Dmapper;
     @Resource
     private ToshareMapper toshareMapper;
+    @Resource
+    private MyfileMapper myfileMapper;
     @Override
     public List<DirectoryFile> allFile() {
         List<DirectoryFile> file=DFmapper.selectAll();
@@ -109,8 +117,109 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
         Example.Criteria criteria=example.createCriteria();
         criteria.andEqualTo("dfDirectId",toshare.getShareDirectId()).andEqualTo("dfFileId",toshare.getShareFileId());
         DirectoryFile directoryFile=DFmapper.selectOneByExample(example);
-
+        //System.out.println(directoryFile.getDfFileName()+"");
         return directoryFile.getDfFileName();
     }
 
+    @Override
+    public String getFileLinkByID(String id) {
+        Toshare toshare=toshareMapper.selectByPrimaryKey(id);
+
+        Myfile myfile=myfileMapper.selectByPrimaryKey(toshare.getShareFileId());
+        String FileLink=myfile.getFileLink();
+        return FileLink;
+    }
+
+    @Override
+    public String fileDownload(String objectname) {
+        String ak = "VSTWKTJ92NZAI2VJ14PJ";
+        String sk = "5tpC64qnXaOFpw5zwKV0vnZoEQAVCjpE0s6BomQg";
+        String endPoint = "obs.cn-north-4.myhuaweicloud.com";
+
+        // 创建ObsClient实例
+        ObsClient obsClient = new ObsClient(ak, sk, endPoint);
+        // URL有效期，3600秒
+        long expireSeconds = 3600L;
+        TemporarySignatureRequest request = new TemporarySignatureRequest(HttpMethodEnum.GET, expireSeconds);
+        request.setBucketName("obs-dgut-lh");
+        request.setObjectKey(objectname);
+        TemporarySignatureResponse response = obsClient.createTemporarySignature(request);
+        return response.getSignedUrl();
+    }
+
+    /**
+     * 根据文件夹id和文件id进行数据库查询
+     * @param directID 文件夹id
+     * @param fileID 文件id
+     * @return
+     */
+    @Override
+    public DirectoryFile selectFileById(String directID, String fileID) {
+
+        Example example = new Example(DirectoryFile.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("dfDirectId", directID);
+        criteria.andEqualTo("dfFileId",fileID);
+        DirectoryFile directoryFile = DFmapper.selectOneByExample(example);
+        return directoryFile;
+
+    }
+
+    /**
+     * 文件重命名
+     * @param directoryFile 文件和文件夹映射表对象
+     * @param directID 文件夹id
+     * @param fileID 文件id
+     * @return 1.重命名成功，0.重命名失败
+     */
+    @Override
+    public int ReFilename(DirectoryFile directoryFile,String directID, String fileID) {
+        //修改文件映射表的文件命名
+        Example example = new Example(DirectoryFile.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("dfDirectId", directID);
+        criteria.andEqualTo("dfFileId",fileID);
+        int i = DFmapper.updateByExampleSelective(directoryFile, example);
+        return i;
+    }
+
+    /**
+     * 文件复制到指定文件夹里
+     * @param directoryFile 文件夹
+     * @return 1：成功  0：失败
+     */
+    @Override
+    public int copyToDirect(DirectoryFile directoryFile) {
+        int i = DFmapper.insertSelective(directoryFile);
+        return i;
+    }
+
+    /**
+     *根据文件id查询
+     * @param fileID 文件id
+     * @return 映射表对象
+     */
+    @Override
+    public DirectoryFile selectFileById(String fileID) {
+        Example example = new Example(DirectoryFile.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("dfFileId",fileID);
+        DirectoryFile directoryFile = DFmapper.selectOneByExample(example);
+        return directoryFile;
+    }
+
+    /**
+     * 根据文件夹id遍历映射表
+     * @param directID 文件夹id
+     * @return 遍历集合
+     */
+    @Override
+    public List<DirectoryFile> selectFileByDirectId(String directID) {
+        Example example = new Example(DirectoryFile.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("dfDirectId",directID);
+        List<DirectoryFile> list = DFmapper.selectByExample(example);
+        return list;
+    }
 }
+
