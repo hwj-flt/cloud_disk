@@ -61,5 +61,8 @@ public interface CdstorageUserService {
     CdstorageUser queryByUserMobie(String userName);
     boolean updateUserPassword(String userPhone,String userPassword);
     boolean updateUser(CdstorageUser user);
+    public List<CdstorageUser> allManages();
+    public boolean addManage(String userId);
+    public boolean delManage(String userId);
 
 }

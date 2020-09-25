@@ -1,16 +1,16 @@
 目标package: generator.one
 
 当前时间：
-2020-9-24
-23:58:18
-2020-09-24 23:58:18
+2020年9月25日
+上午9:50:01
+2020-09-25 09:50:01
 
 所有配置的属性信息:
-targetPackage - generator.one
-templateFormatter - tk.mybatis.mapper.generator.formatter.FreemarkerTemplateFormatter
-templatePath - generator/test-one.ftl
-targetProject - src/test/resources
 fileName - ${tableClass.shortClassName}Test.txt
+templateFormatter - tk.mybatis.mapper.generator.formatter.FreemarkerTemplateFormatter
+targetProject - src/test/resources
+targetPackage - generator.one
+templatePath - generator/test-one.ftl
 
 实体和表的信息：
 表名：department
@@ -27,7 +27,7 @@ fileName - ${tableClass.shortClassName}Test.txt
     列名：DEPART_ID
     列类型：VARCHAR
     字段名：departId
-    注释：部门ID
+    注释：群组ID
     类型包名：java.lang
     类型短名：String
     类型全名：java.lang.String
@@ -47,7 +47,7 @@ fileName - ${tableClass.shortClassName}Test.txt
     列名：DEPART_NAME
     列类型：VARCHAR
     字段名：departName
-    注释：部门名称
+    注释：群组名称
     类型包名：java.lang
     类型短名：String
     类型全名：java.lang.String
@@ -65,7 +65,7 @@ fileName - ${tableClass.shortClassName}Test.txt
     列名：DEPART_ROOT
     列类型：VARCHAR
     字段名：departRoot
-    注释：部门文件夹根目录ID
+    注释：群组文件夹根目录ID
     类型包名：java.lang
     类型短名：String
     类型全名：java.lang.String
@@ -80,22 +80,22 @@ fileName - ${tableClass.shortClassName}Test.txt
     列长度：32
     列精度：0
     -------------------------------------
-    列名：DEPART_GARBAGE
-    列类型：VARCHAR
-    字段名：departGarbage
-    注释：部门垃圾箱文件夹ID
-    类型包名：java.lang
-    类型短名：String
-    类型全名：java.lang.String
+    列名：DEPART_TIME
+    列类型：TIMESTAMP
+    字段名：departTime
+    注释：群组创建时间
+    类型包名：java.util
+    类型短名：Date
+    类型全名：java.util.Date
     是否主键：false
     是否可空：false
     是否为BLOB列：false
-    是否为String列：true
-    是否为字符串列：true
+    是否为String列：false
+    是否为字符串列：false
     是否为日期列：false
     是否为时间列：false
     是否为序列列：false
-    列长度：32
+    列长度：19
     列精度：0
 
 Blob列：
@@ -106,4 +106,4 @@ Blob列：
     DEPART_ID - departId
     DEPART_NAME - departName
     DEPART_ROOT - departRoot
-    DEPART_GARBAGE - departGarbage
+    DEPART_TIME - departTime

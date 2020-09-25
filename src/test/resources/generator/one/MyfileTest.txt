@@ -1,16 +1,16 @@
 目标package: generator.one
 
 当前时间：
-2020-9-24
-23:58:18
-2020-09-24 23:58:18
+2020年9月25日
+上午9:50:01
+2020-09-25 09:50:01
 
 所有配置的属性信息:
-targetPackage - generator.one
-templateFormatter - tk.mybatis.mapper.generator.formatter.FreemarkerTemplateFormatter
-templatePath - generator/test-one.ftl
-targetProject - src/test/resources
 fileName - ${tableClass.shortClassName}Test.txt
+templateFormatter - tk.mybatis.mapper.generator.formatter.FreemarkerTemplateFormatter
+targetProject - src/test/resources
+targetPackage - generator.one
+templatePath - generator/test-one.ftl
 
 实体和表的信息：
 表名：myfile
@@ -44,24 +44,6 @@ fileName - ${tableClass.shortClassName}Test.txt
 
 基础列：
     -------------------------------------
-    列名：FILE_NAME
-    列类型：VARCHAR
-    字段名：fileName
-    注释：文件名
-    类型包名：java.lang
-    类型短名：String
-    类型全名：java.lang.String
-    是否主键：false
-    是否可空：false
-    是否为BLOB列：false
-    是否为String列：true
-    是否为字符串列：true
-    是否为日期列：false
-    是否为时间列：false
-    是否为序列列：false
-    列长度：32
-    列精度：0
-    -------------------------------------
     列名：FILE_LINK
     列类型：VARCHAR
     字段名：fileLink
@@ -77,7 +59,7 @@ fileName - ${tableClass.shortClassName}Test.txt
     是否为日期列：false
     是否为时间列：false
     是否为序列列：false
-    列长度：128
+    列长度：500
     列精度：0
     -------------------------------------
     列名：FILE_SIZE
@@ -153,12 +135,12 @@ fileName - ${tableClass.shortClassName}Test.txt
     列精度：0
     -------------------------------------
     列名：FILE_REFERE
-    列类型：INTEGER
+    列类型：TINYINT
     字段名：fileRefere
     注释：引用文件夹个数
     类型包名：java.lang
-    类型短名：Integer
-    类型全名：java.lang.Integer
+    类型短名：Byte
+    类型全名：java.lang.Byte
     是否主键：false
     是否可空：false
     是否为BLOB列：false
@@ -167,7 +149,7 @@ fileName - ${tableClass.shortClassName}Test.txt
     是否为日期列：false
     是否为时间列：false
     是否为序列列：false
-    列长度：10
+    列长度：3
     列精度：0
 
 Blob列：
@@ -176,7 +158,6 @@ Blob列：
 全部列：
 列名 - 字段名
     FILE_ID - fileId
-    FILE_NAME - fileName
     FILE_LINK - fileLink
     FILE_SIZE - fileSize
     FILE_TYPE - fileType

@@ -1,5 +1,6 @@
 package com.dgut.cloud_disk.controller;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.dgut.cloud_disk.pojo.CdstorageUser;
 import com.dgut.cloud_disk.pojo.vo.CdstorageUserVo;
@@ -20,8 +21,6 @@ import redis.clients.jedis.JedisPool;
 import com.issCollege.util.RandomChar;
 import java.util.UUID;
 
-import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/user")
@@ -302,11 +301,11 @@ public class CdstorageUserController {
         jedis.close();
         return new JSONResult(200, "", jsonObject);
     }
-   /* *
+   /**
      * 验证手机验证码并修改密码
-     * @param userPhone 手机号
-     * @param checkNum 验证码
-     * @param userPassword 新密码
+     * userPhone 手机号
+     * checkNum 验证码
+     * userPassword 新密码
      * @return 返回操作结果
      */
     @RequestMapping("/forgetPassword/checkPhoneCode")
@@ -415,10 +414,10 @@ public class CdstorageUserController {
         return new JSONResult(JSONObject.toJSON(user));
     }
 
-   /* *
+   /**
      *修改手机号或邮箱
-     * @param user 前端传入的用户信息封装成CdstorageUser
-     * @param token redis中的键
+     * user 前端传入的用户信息封装成CdstorageUser
+     * token redis中的键
      * @return 操作结果
      * @throws JsonProcessingException 字符串转化错误
      */
@@ -439,6 +438,35 @@ public class CdstorageUserController {
         jedis.close();
         return JSONResult.ok("修改成功");
     }
+    @RequestMapping("/cloud/user/manage/sup/allManages")
+    public JSONResult allManages(){
+        System.out.println(userService.allManages());
+        List<CdstorageUser> cdstorageUsers=userService.allManages();
+        JSONArray jsonArray = (JSONArray) JSONArray.toJSON(cdstorageUsers);
+        return new JSONResult(JSONResult.build(200,null,jsonArray));
+    }
+
+    @PostMapping("/cloud/user/manage/sup/addManage")
+    @ResponseBody
+    @CrossOrigin
+    public JSONResult addManage(@RequestBody CdstorageUser cdstorageUser){
+        if(userService.addManage(cdstorageUser.getUserId())){
+            return new JSONResult(JSONResult.ok());
+        }
+        else{
+            return new JSONResult(JSONResult.errorMsg("访问无权限"));
+        }
+    }
 
 
+    @PostMapping("/cloud/user/manage/sup/delManage")
+    @ResponseBody
+    @CrossOrigin
+    public JSONResult delManage(@RequestBody CdstorageUser cdstorageUser) {
+        if (userService.delManage(cdstorageUser.getUserId())) {
+            return new JSONResult(JSONResult.build(200, null, null));
+        } else {
+            return new JSONResult(JSONResult.errorMsg("访问无权限"));
+        }
+    }
 }

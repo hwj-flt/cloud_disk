@@ -1,16 +1,16 @@
 目标package: generator.one
 
 当前时间：
-2020-9-24
-23:58:19
-2020-09-24 23:58:19
+2020年9月25日
+上午9:50:01
+2020-09-25 09:50:01
 
 所有配置的属性信息:
-targetPackage - generator.one
-templateFormatter - tk.mybatis.mapper.generator.formatter.FreemarkerTemplateFormatter
-templatePath - generator/test-one.ftl
-targetProject - src/test/resources
 fileName - ${tableClass.shortClassName}Test.txt
+templateFormatter - tk.mybatis.mapper.generator.formatter.FreemarkerTemplateFormatter
+targetProject - src/test/resources
+targetPackage - generator.one
+templatePath - generator/test-one.ftl
 
 实体和表的信息：
 表名：cdstorage_user
@@ -45,12 +45,12 @@ fileName - ${tableClass.shortClassName}Test.txt
 基础列：
     -------------------------------------
     列名：USER_WORK_ID
-    列类型：BIGINT
+    列类型：INTEGER
     字段名：userWorkId
     注释：工号
     类型包名：java.lang
-    类型短名：Long
-    类型全名：java.lang.Long
+    类型短名：Integer
+    类型全名：java.lang.Integer
     是否主键：false
     是否可空：false
     是否为BLOB列：false
@@ -59,7 +59,7 @@ fileName - ${tableClass.shortClassName}Test.txt
     是否为日期列：false
     是否为时间列：false
     是否为序列列：false
-    列长度：19
+    列长度：10
     列精度：0
     -------------------------------------
     列名：USER_NAME

@@ -13,7 +13,7 @@ public class DepartmentUser implements Serializable {
     private String departUserId;
 
     /**
-     * 部门ID
+     * 群组ID
      */
     @Column(name = "`DU_DEPART_ID`")
     private String duDepartId;
@@ -25,7 +25,9 @@ public class DepartmentUser implements Serializable {
     private String duUserId;
 
     /**
-     * 1-部门管理员（上传、下载、重命名、移动、删除）2-部门成员（上传、下载、保存到自己的文件夹）
+     * 11111111-文档管理员（上传、下载、删除、创建文件夹、分享、复制、移动、重命名）
+            10000000-群组成员权限1（上传）
+            每一权限位对应相应的功能
      */
     @Column(name = "`DU_PERMISSION`")
     private Integer duPermission;
@@ -51,18 +53,18 @@ public class DepartmentUser implements Serializable {
     }
 
     /**
-     * 获取部门ID
+     * 获取群组ID
      *
-     * @return DU_DEPART_ID - 部门ID
+     * @return DU_DEPART_ID - 群组ID
      */
     public String getDuDepartId() {
         return duDepartId;
     }
 
     /**
-     * 设置部门ID
+     * 设置群组ID
      *
-     * @param duDepartId 部门ID
+     * @param duDepartId 群组ID
      */
     public void setDuDepartId(String duDepartId) {
         this.duDepartId = duDepartId;
@@ -87,18 +89,26 @@ public class DepartmentUser implements Serializable {
     }
 
     /**
-     * 获取1-部门管理员（上传、下载、重命名、移动、删除）2-部门成员（上传、下载、保存到自己的文件夹）
+     * 获取11111111-文档管理员（上传、下载、删除、创建文件夹、分享、复制、移动、重命名）
+            10000000-群组成员权限1（上传）
+            每一权限位对应相应的功能
      *
-     * @return DU_PERMISSION - 1-部门管理员（上传、下载、重命名、移动、删除）2-部门成员（上传、下载、保存到自己的文件夹）
+     * @return DU_PERMISSION - 11111111-文档管理员（上传、下载、删除、创建文件夹、分享、复制、移动、重命名）
+            10000000-群组成员权限1（上传）
+            每一权限位对应相应的功能
      */
     public Integer getDuPermission() {
         return duPermission;
     }
 
     /**
-     * 设置1-部门管理员（上传、下载、重命名、移动、删除）2-部门成员（上传、下载、保存到自己的文件夹）
+     * 设置11111111-文档管理员（上传、下载、删除、创建文件夹、分享、复制、移动、重命名）
+            10000000-群组成员权限1（上传）
+            每一权限位对应相应的功能
      *
-     * @param duPermission 1-部门管理员（上传、下载、重命名、移动、删除）2-部门成员（上传、下载、保存到自己的文件夹）
+     * @param duPermission 11111111-文档管理员（上传、下载、删除、创建文件夹、分享、复制、移动、重命名）
+            10000000-群组成员权限1（上传）
+            每一权限位对应相应的功能
      */
     public void setDuPermission(Integer duPermission) {
         this.duPermission = duPermission;

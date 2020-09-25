@@ -26,6 +26,12 @@ public class DirectoryFile implements Serializable {
     private String dfFileId;
 
     /**
+     * 文件名
+     */
+    @Column(name = "`DF_FILE_NAME`")
+    private String dfFileName;
+
+    /**
      * 1-未被删除 2被删除
      */
     @Column(name = "`DF_GARBAGE`")
@@ -97,6 +103,24 @@ public class DirectoryFile implements Serializable {
      */
     public void setDfFileId(String dfFileId) {
         this.dfFileId = dfFileId;
+    }
+
+    /**
+     * 获取文件名
+     *
+     * @return DF_FILE_NAME - 文件名
+     */
+    public String getDfFileName() {
+        return dfFileName;
+    }
+
+    /**
+     * 设置文件名
+     *
+     * @param dfFileName 文件名
+     */
+    public void setDfFileName(String dfFileName) {
+        this.dfFileName = dfFileName;
     }
 
     /**

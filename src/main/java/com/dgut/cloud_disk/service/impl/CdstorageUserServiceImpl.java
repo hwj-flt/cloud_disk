@@ -154,4 +154,47 @@ public class CdstorageUserServiceImpl implements CdstorageUserService {
         }
         return false;
     }
+    @Override
+    public List<CdstorageUser> allManages() {
+        Example example = new Example(CdstorageUser.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("userPermission", 2);
+        return cdstorageUserMapper.selectByExample(example);
+    }
+
+    @Override
+    public boolean addManage(String userId) {
+        Example example = new Example(CdstorageUser.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("userId", userId);
+        CdstorageUser cdstorageUser = cdstorageUserMapper.selectOneByExample(example);
+        if (cdstorageUser == null) {
+            return false;
+        } else {
+            cdstorageUser.setUserPermission(2);
+            if (cdstorageUserMapper.updateByPrimaryKey(cdstorageUser) == 1) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+
+    @Override
+    public boolean delManage(String userId) {
+        Example example = new Example(CdstorageUser.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("userId", userId);
+        CdstorageUser cdstorageUser = cdstorageUserMapper.selectOneByExample(example);
+        if (cdstorageUser == null) {
+            return false;
+        } else {
+            cdstorageUser.setUserPermission(1);
+            if (cdstorageUserMapper.updateByPrimaryKey(cdstorageUser) == 1) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
 }
