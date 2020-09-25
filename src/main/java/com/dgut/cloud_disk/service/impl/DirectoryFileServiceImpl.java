@@ -46,34 +46,29 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
        }
 
     }
-
+    
     @Override
     public Boolean deleteDorDF(int type, String id) {
-        return null;
-    }
-
-//    @Override
-//    public Boolean deleteDorDF(int type, String id) {
-//        int i=0;
-//        if(type==1){
-//            //删除文件夹需要删除所有子文件夹及其子文件夹
-//            List<String> list =Dmapper.selectIdByPid(id);
-//            Dmapper.deleteByPrimaryKey(id);
-//            Dmapper.deleteDirectoryByPId(id);
-//                for(int n=0;n<list.size();n++){
-//                    //System.out.println(list.get(n));
-//                    i=Dmapper.deleteDirectoryByPId(list.get(n));
-//                }
-//        }else if(type==2){
-//            i=DFmapper.deleteByPrimaryKey(id);
-//        }
-//        System.out.println(i);
-//            if(i>0){
-//                return true;
-//            }else {
-//                return false;
-//            }
-//        }
+        int i=0;
+        if(type==1){
+            //删除文件夹需要删除所有子文件夹及其子文件夹
+            List<String> list =Dmapper.selectIdByPid(id);
+            Dmapper.deleteByPrimaryKey(id);
+            Dmapper.deleteDirectoryByPId(id);
+                for(int n=0;n<list.size();n++){
+                    //System.out.println(list.get(n));
+                    i=Dmapper.deleteDirectoryByPId(list.get(n));
+                }
+        }else if(type==2){
+            i=DFmapper.deleteByPrimaryKey(id);
+        }
+        System.out.println(i);
+            if(i>0){
+                return true;
+            }else {
+                return false;
+            }
+        }
 
     @Override
     public Boolean insertShare(Toshare toshare) {
