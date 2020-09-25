@@ -1,7 +1,9 @@
 package com.dgut.cloud_disk.service;
 
+import com.dgut.cloud_disk.pojo.DepartmentUser;
+
 import java.util.List;
 
 public interface ManagerService {
-    int delDepartUser(String departId,String [] userIds);
+    List<DepartmentUser> delDepartUser(String departId, List<String> userIds);
 }

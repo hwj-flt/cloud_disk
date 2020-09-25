@@ -15,12 +15,6 @@ public class Myfile implements Serializable {
     private String fileId;
 
     /**
-     * 文件名
-     */
-    @Column(name = "`FILE_NAME`")
-    private String fileName;
-
-    /**
      * 文件链接
      */
     @Column(name = "`FILE_LINK`")
@@ -54,7 +48,7 @@ public class Myfile implements Serializable {
      * 引用文件夹个数
      */
     @Column(name = "`FILE_REFERE`")
-    private Integer fileRefere;
+    private Byte fileRefere;
 
     private static final long serialVersionUID = 1L;
 
@@ -74,24 +68,6 @@ public class Myfile implements Serializable {
      */
     public void setFileId(String fileId) {
         this.fileId = fileId;
-    }
-
-    /**
-     * 获取文件名
-     *
-     * @return FILE_NAME - 文件名
-     */
-    public String getFileName() {
-        return fileName;
-    }
-
-    /**
-     * 设置文件名
-     *
-     * @param fileName 文件名
-     */
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
     }
 
     /**
@@ -189,7 +165,7 @@ public class Myfile implements Serializable {
      *
      * @return FILE_REFERE - 引用文件夹个数
      */
-    public Integer getFileRefere() {
+    public Byte getFileRefere() {
         return fileRefere;
     }
 
@@ -198,7 +174,7 @@ public class Myfile implements Serializable {
      *
      * @param fileRefere 引用文件夹个数
      */
-    public void setFileRefere(Integer fileRefere) {
+    public void setFileRefere(Byte fileRefere) {
         this.fileRefere = fileRefere;
     }
 }

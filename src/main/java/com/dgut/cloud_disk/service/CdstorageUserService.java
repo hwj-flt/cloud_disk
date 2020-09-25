@@ -11,7 +11,7 @@ public interface CdstorageUserService {
      * 查询所有用户
      * @return 用户列表
      */
-    public List<CdstorageUser> allUser(Integer pageNum,Integer pageSize,Integer showDisableUser);
+    public List<CdstorageUser> allUser();
 
     /**
      * 用户注销（禁用）
@@ -61,5 +61,8 @@ public interface CdstorageUserService {
     CdstorageUser queryByUserMobie(String userName);
     boolean updateUserPassword(String userPhone,String userPassword);
     boolean updateUser(CdstorageUser user);
+    public List<CdstorageUser> allManages();
+    public boolean addManage(String userId);
+    public boolean delManage(String userId);
 
 }

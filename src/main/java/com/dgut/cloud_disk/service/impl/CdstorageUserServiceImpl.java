@@ -20,22 +20,9 @@ public class CdstorageUserServiceImpl implements CdstorageUserService {
     private CdstorageUserMapper cdstorageUserMapper;
 
     @Override
-    public List<CdstorageUser> allUser(Integer pageNum,Integer pageSize,Integer showDisableUser) {
-        PageHelper.startPage(pageNum,pageSize);
-        List<CdstorageUser>  users = null;
-        if(showDisableUser==1){
-            users= cdstorageUserMapper.selectAll();
-        }else {
-            Example example = new Example(CdstorageUser.class);
-            Example.Criteria criteria = example.createCriteria();
-            criteria.andEqualTo("userStatus",1);
-            users= cdstorageUserMapper.selectByExample(example);
-        }
-        PageInfo<CdstorageUser> page = new PageInfo<CdstorageUser>(users);
-        System.out.println(page.getTotal());
-        System.out.println(page.getPages());
-        List<CdstorageUser>  resUsers = page.getList();
-        return resUsers;
+    public List<CdstorageUser> allUser() {
+        List<CdstorageUser> users= cdstorageUserMapper.selectAll();
+        return users;
     }
 
     @Override
@@ -81,6 +68,9 @@ public class CdstorageUserServiceImpl implements CdstorageUserService {
         if(cdstorageUserVo.getUserSize()!=null){
             cdstorageUser.setUserSize(cdstorageUserVo.getUserSize());
         }
+        System.out.println(cdstorageUser);
+        cdstorageUser.setUserSex(cdstorageUser.getUserSex());
+        System.out.println(cdstorageUser);
         int num = cdstorageUserMapper.updateByPrimaryKey(cdstorageUser);
         return num;
     }
@@ -153,5 +143,48 @@ public class CdstorageUserServiceImpl implements CdstorageUserService {
             return true;
         }
         return false;
+    }
+    @Override
+    public List<CdstorageUser> allManages() {
+        Example example = new Example(CdstorageUser.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("userPermission", 2);
+        return cdstorageUserMapper.selectByExample(example);
+    }
+
+    @Override
+    public boolean addManage(String userId) {
+        Example example = new Example(CdstorageUser.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("userId", userId);
+        CdstorageUser cdstorageUser = cdstorageUserMapper.selectOneByExample(example);
+        if (cdstorageUser == null) {
+            return false;
+        } else {
+            cdstorageUser.setUserPermission(2);
+            if (cdstorageUserMapper.updateByPrimaryKey(cdstorageUser) == 1) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+
+    @Override
+    public boolean delManage(String userId) {
+        Example example = new Example(CdstorageUser.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("userId", userId);
+        CdstorageUser cdstorageUser = cdstorageUserMapper.selectOneByExample(example);
+        if (cdstorageUser == null) {
+            return false;
+        } else {
+            cdstorageUser.setUserPermission(1);
+            if (cdstorageUserMapper.updateByPrimaryKey(cdstorageUser) == 1) {
+                return true;
+            } else {
+                return false;
+            }
+        }
     }
 }

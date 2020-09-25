@@ -1,9 +1,9 @@
 目标package: generator.one
 
 当前时间：
-2020-9-24
-23:58:19
-2020-09-24 23:58:19
+2020-9-25
+15:16:54
+2020-09-25 15:16:54
 
 所有配置的属性信息:
 targetPackage - generator.one
@@ -47,7 +47,7 @@ fileName - ${tableClass.shortClassName}Test.txt
     列名：DU_DEPART_ID
     列类型：VARCHAR
     字段名：duDepartId
-    注释：部门ID
+    注释：群组ID
     类型包名：java.lang
     类型短名：String
     类型全名：java.lang.String
@@ -83,7 +83,9 @@ fileName - ${tableClass.shortClassName}Test.txt
     列名：DU_PERMISSION
     列类型：DECIMAL
     字段名：duPermission
-    注释：1-部门管理员（上传、下载、重命名、移动、删除）2-部门成员（上传、下载、保存到自己的文件夹）
+    注释：11111111-文档管理员（上传、下载、删除、创建文件夹、分享、复制、移动、重命名）
+            10000000-群组成员权限1（上传）
+            每一权限位对应相应的功能
     类型包名：java.lang
     类型短名：Integer
     类型全名：java.lang.Integer
@@ -95,7 +97,7 @@ fileName - ${tableClass.shortClassName}Test.txt
     是否为日期列：false
     是否为时间列：false
     是否为序列列：false
-    列长度：6
+    列长度：8
     列精度：0
 
 Blob列：
