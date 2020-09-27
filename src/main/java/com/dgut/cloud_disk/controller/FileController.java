@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -37,6 +38,24 @@ public class FileController {
     private ToshareService toshareService;
     @Autowired
     private DepartmentUserService departmentUserService;
+
+    @RequestMapping("/upload")
+    public JSONResult fileUpload(@RequestBody JSONObject jsonObject) throws JsonProcessingException {
+        String directID = jsonObject.getString("directID");
+        String fileName = jsonObject.getString("fileName");
+        String fileSize = jsonObject.getString("fileSize");
+        String fileType = jsonObject.getString("fileType");
+        String token = jsonObject.getString("token");
+        Jedis jedis = jedisPool.getResource();
+        String tokenValue = jedis.get(token);
+        ObjectMapper mapper = new ObjectMapper();
+        CdstorageUser user = mapper.readValue(tokenValue, CdstorageUser.class);
+        if(user.getUserUsed().add(new BigDecimal(fileSize)).compareTo(user.getUserSize()) == 1){
+            return JSONResult.errorMsg("存储空间不足，无法上传");
+        }
+        return JSONResult.build(200,"上传成功",null);
+    }
+
 
 
     @RequestMapping("/download")

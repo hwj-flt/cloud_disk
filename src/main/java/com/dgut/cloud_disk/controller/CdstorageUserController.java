@@ -11,6 +11,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.math.BigDecimal;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -275,11 +277,13 @@ public class CdstorageUserController {
         Jedis jedis = jedisPool.getResource();
         String tokenValue = jedis.get(token);
         jedis.close();
-        ObjectMapper mapper = new ObjectMapper();
-        CdstorageUser user = mapper.readValue(tokenValue, CdstorageUser.class);
         if (tokenValue == null){
             return new JSONResult(500,"参数错误", null);
         }
+        ObjectMapper mapper = new ObjectMapper();
+        CdstorageUser user = mapper.readValue(tokenValue, CdstorageUser.class);
+        user.setUserSize(user.getUserSize().divide(new BigDecimal(1000)));
+        user.setUserUsed(user.getUserUsed().divide(new BigDecimal(1000)));
         return new JSONResult(JSONObject.toJSON(user));
     }
 
