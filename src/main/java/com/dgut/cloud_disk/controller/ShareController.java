@@ -29,6 +29,7 @@ public class ShareController {
      */
     public  JSONResult downloadFileByShare(@RequestBody DownloadFileByShareVo downloadFileByShareVo){
 
+        return null;
     }
 
     /**
