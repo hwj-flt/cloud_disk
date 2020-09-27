@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class ExceptionController {
 
-    @ExceptionHandler(value = Exception.class)
-    JSONResult handlerException(Exception e) {
-        return JSONResult.errorMsg("程序错误");
-    }
+//    @ExceptionHandler(value = Exception.class)
+//    JSONResult handlerException(Exception e) {
+//        return JSONResult.errorMsg("程序错误");
+//    }
 
     @ExceptionHandler(value = ParameterException.class)
     JSONResult handlerParameterException(Exception e) {
