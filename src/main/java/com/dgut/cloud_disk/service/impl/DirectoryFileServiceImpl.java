@@ -21,11 +21,11 @@ import java.util.List;
 @Service
 public class DirectoryFileServiceImpl implements DirectoryFileService {
 
-    @Resource
+    @Autowired(required = false)
     private DirectoryFileMapper DFmapper;
-    @Resource
+    @Autowired(required = false)
     private DirectoryMapper Dmapper;
-    @Resource
+    @Autowired(required = false)
     private ToshareMapper toshareMapper;
     @Autowired
     private ObsConfig obsConfig;
