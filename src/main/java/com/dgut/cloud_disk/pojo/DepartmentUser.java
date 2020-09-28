@@ -30,7 +30,7 @@ public class DepartmentUser implements Serializable {
             每一权限位对应相应的功能
      */
     @Column(name = "`DU_PERMISSION`")
-    private Integer duPermission;
+    private String duPermission;
 
     private static final long serialVersionUID = 1L;
 
@@ -97,7 +97,7 @@ public class DepartmentUser implements Serializable {
             10000000-群组成员权限1（上传）
             每一权限位对应相应的功能
      */
-    public Integer getDuPermission() {
+    public String getDuPermission() {
         return duPermission;
     }
 
@@ -110,7 +110,7 @@ public class DepartmentUser implements Serializable {
             10000000-群组成员权限1（上传）
             每一权限位对应相应的功能
      */
-    public void setDuPermission(Integer duPermission) {
+    public void setDuPermission(String duPermission) {
         this.duPermission = duPermission;
     }
 }

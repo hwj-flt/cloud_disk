@@ -2,8 +2,8 @@
 
 当前时间：
 2020-9-28
-9:01:27
-2020-09-28 09:01:27
+15:20:49
+2020-09-28 15:20:49
 
 所有配置的属性信息:
 targetPackage - generator.one
@@ -466,7 +466,7 @@ fileName - ${tableClass.shortClassName}Test.txt
     类型短名：String
     类型全名：java.lang.String
     是否主键：false
-    是否可空：false
+    是否可空：true
     是否为BLOB列：false
     是否为String列：true
     是否为字符串列：true
