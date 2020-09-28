@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dgut.cloud_disk.mapper.DirectoryFileMyFileMapper">
+    <resultMap id="dd" type="com.dgut.cloud_disk.pojo.DirectoryFileMyFile">
+        <id column="DIRECT_FILE_ID" property="directFileId"></id>
+        <result column="DF_DIRECT_ID" property="dfDirectId"></result>
+        <result column="DF_FILE_ID " property="dfFileId"></result>
+        <result column="DF_FILE_NAME" property="dfFileName"></result>
+        <result column="DF_GARBAGE" property="dfGarbage"></result>
+        <result column="DF_DELETE_TIME" property="dfDeleteTime"></result>
+        <result column="DF_DELETE_ID" property="dfDeleteId"></result>
+        <result column="FILE_ID" property="fileId"></result>
+        <result column="FILE_LINK" property="fileLink"></result>
+        <result column="FILE_SIZE" property="fileSize"></result>
+        <result column="FILE_TYPE" property="fileType"></result>
+        <result column="FILE_UPLOAD_TIME" property="fileUploadTime"></result>
+        <result column="FILE_UPLOAD_ID" property="fileUploadId"></result>
+        <result column="FILE_REFERE" property="fileRefere"></result>
+    </resultMap>
+    <select id="queryFileVoByDirectoryID" resultMap="dd" parameterType="String">
+        SELECT *
+        FROM `directory_file` a
+        INNER JOIN `myfile` b
+        ON a.DF_FILE_ID=b.FILE_ID
+        WHERE a.DF_DIRECT_ID=#{id}
+    </select>
+</mapper>

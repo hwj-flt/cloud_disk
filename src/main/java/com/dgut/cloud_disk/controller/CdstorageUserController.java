@@ -38,38 +38,6 @@ public class CdstorageUserController {
     private Integer codeValidTime;
 
     /**
-     * 查询所有用户
-     * @return
-     */
-    @PostMapping("/all")
-    @ResponseBody
-    public JSONResult allUser(@RequestBody JSONObject object){
-        Integer pageNum = new Integer(object.getString("pageNum"));
-        Integer pageSize = new Integer(object.getString("pageSize"));
-        Integer showDisableUser = new Integer(object.getString("showDisableUser"));
-        return new JSONResult(200,"用户列表",userService.allUser(pageNum,pageSize,showDisableUser));
-    }
-
-    /**
-     * 用户禁用
-     * @param object
-     * @return
-     */
-    @PostMapping("/upStatus")
-    @CrossOrigin
-    @ResponseBody
-    public JSONResult updateUserStatus(@RequestBody JSONObject object){
-        String token =object.getString("token");
-        String userID = object.getString("userID");
-        int num = userService.updateUserStatus(token,userID);
-        if (num > 0){
-            return new JSONResult(200,"成功禁用用户",null);
-        }else {
-            return new JSONResult(400,"禁用用户失败",null);
-        }
-	}
-
-    /**
      *用户登录
      * @return 成功返回 code状态码 ,firstLogin首次登录, token 在redis存储的键 , permission用户权限
      * @return 失败返回 code状态码 ,
@@ -137,39 +105,6 @@ public class CdstorageUserController {
         return new JSONResult(200,"",jsonObject);
     }
 
-    /**
-     * 批量用户禁用
-     * @param cdstorageUsers
-     * @return
-     */
-    @PostMapping("/upUsStatus")
-    @CrossOrigin
-    @ResponseBody
-    public JSONResult updateUsersStatus(@RequestBody List<CdstorageUser> cdstorageUsers){
-        for (CdstorageUser user:cdstorageUsers) {
-            userService.updateUserStatus(null,user.getUserId());
-        }
-        return new JSONResult(200,"成功批量禁用用户",null);
-    }
-
-    /**
-     * 用户解禁
-     * @param object
-     * @return
-     */
-    @PostMapping("/upStatus1")
-    @CrossOrigin
-    @ResponseBody
-    public JSONResult updateUserStatus1(@RequestBody JSONObject object){
-        String token =object.getString("token");
-        String userID = object.getString("userID");
-        int num = userService.updateUserStatus1(token,userID);
-        if (num > 0){
-            return new JSONResult(200,"成功解禁用户",null);
-        }else {
-            return new JSONResult(400,"解禁用户失败",null);
-		}
-	}
 	/**
      * 用前端token换取手机验证码
      * @return 包含验证码有效时间的json字符串
@@ -212,7 +147,7 @@ public class CdstorageUserController {
      * userPassword 新密码
      * @return 返回操作结果
      */
-    @RequestMapping("/firstLogin/checkPhoneCode")
+    @RequestMapping("/user/firstLogin/checkPhoneCode")
     public JSONResult checkPhoneCode(@RequestBody JSONObject json) throws JsonProcessingException {
         String userPhone = json.getString("userPhone");
         String checkNum = json.getString("checkNum");
@@ -240,38 +175,6 @@ public class CdstorageUserController {
         jedis.close();
         return new JSONResult(200,"登录成功",null);
     }
-    /**
-     * 批量用户解禁
-     * @param cdstorageUsers
-     * @return
-     */
-    @PostMapping("/upUsStatus1")
-    @CrossOrigin
-    @ResponseBody
-    public JSONResult updateUsersStatus1(@RequestBody List<CdstorageUser> cdstorageUsers){
-        for (CdstorageUser user:cdstorageUsers) {
-            userService.updateUserStatus1(null,user.getUserId());
-        }
-        return new JSONResult(200,"成功批量解禁用户",null);
-    }
-
-    /**
-     * 更新用户信息
-     * @param cdstorageUserVo
-     * @return
-     */
-    @PostMapping("/upUser")
-    @CrossOrigin
-    @ResponseBody
-    public JSONResult updateUser(@RequestBody CdstorageUserVo cdstorageUserVo){
-        int num = userService.updateUser1(cdstorageUserVo);
-        if(num>0){
-            return new JSONResult(200,"更新用户成功",null);
-		}else{
-            return new JSONResult(500,"更新用户失败",null);
-        }
-	}
-
 
    /**
      * 验证手机号正确性，根据手机号发送验证码
@@ -287,8 +190,13 @@ public class CdstorageUserController {
             //不正确返回json
             return JSONResult.errorMsg("手机号错误");
         }
-        JSONObject jsonObject = new JSONObject();
         Jedis jedis = jedisPool.getResource();
+        //查询redis是否已经有存入验证码，有则刷新验证码时间并返回重复发送的错误提示
+        if (jedis.get(userPhone)!=null){
+            jedis.expire(user.getUserMobie(),codeValidTime);
+            return new JSONResult(500,"重复发送",null);
+        }
+        JSONObject jsonObject = new JSONObject();
         //生成6位数字随机数作为验证码
         String code = RandomChar.getRandomChar(6,3);
         //用手机号作为redis的key，值为验证码
@@ -312,7 +220,6 @@ public class CdstorageUserController {
     public JSONResult checkPhoneCode1(@RequestBody JSONObject json) {
         String userPhone = json.getString("userPhone");
         String checkNum = json.getString("checkNum");
-        String userPassword = json.getString("userPassword");
         Jedis jedis = jedisPool.getResource();
         //从redis查出验证码
         String phoneCode = jedis.get(userPhone);
@@ -324,34 +231,27 @@ public class CdstorageUserController {
         //验证码校验
         if (!checkNum.equals(phoneCode)){
             return new JSONResult(500,"验证码错误",null);
+        }else {
+            return new JSONResult(200,"验证码正确",null);
         }
+
+    }
+    @RequestMapping("/forgetPassword/updatePass")
+    public JSONResult updatePass(@RequestBody JSONObject json){
+        String userPassword = json.getString("userPassword");
+        String userPhone = json.getString("userPhone");
         //修改密码
         if (!userService.updateUserPassword(userPhone,userPassword)){
             return new JSONResult(500,"修改密码失败",null);
         }else {
-            return new JSONResult(400,"更新用户失败",null);
+            return new JSONResult(200,"修改成功",null);
         }
     }
-
-    /**
-     * 用户名进行查询
-     * @param object
-     * @return
-     */
-    @PostMapping("/selByName")
-    @CrossOrigin
-    @ResponseBody
-    public JSONResult selByUserName(@RequestBody JSONObject object){
-        String token =object.getString("token");
-        String userName = object.getString("userName");
-        List<CdstorageUser> users = userService.selByUserName(token,userName);
-        return new JSONResult(200,"success",users);
-	}
 	/**
      * 退出登录
      * @return 操作结果
      */
-    @RequestMapping("/logout")
+    @RequestMapping("/user/logout")
     public JSONResult logout(@RequestBody JSONObject json){
         String token = json.getString("token");
         Jedis jedis = jedisPool.getResource();
@@ -365,37 +265,6 @@ public class CdstorageUserController {
         return new JSONResult(200,"退出成功",null);
     }
 
-    /**
-     * 用工号进行查询
-     * @param object
-     * @return
-     */
-    @PostMapping("/selByWorkId")
-    @CrossOrigin
-    @ResponseBody
-    public JSONResult selByWorkId(@RequestBody JSONObject object){
-        System.out.println(object);
-        String token =object.getString("token");
-        String userWorkId = object.getString("userWorkID");
-        System.out.println(userWorkId);
-        List<CdstorageUser> users = userService.selByWorkId(token,userWorkId);
-        return new JSONResult(200,"success",users);
-    }
-
-    /**
-     * 用手机号进行查询
-     * @param object
-     * @return
-     */
-    @PostMapping("/selByTel")
-    @CrossOrigin
-    @ResponseBody
-    public JSONResult selByUserPhone(@RequestBody JSONObject object){
-        String token =object.getString("token");
-        String userPhone = object.getString("userPhone");
-        List<CdstorageUser> users = userService.selByUserPhone(token,userPhone);
-        return new JSONResult(200,"success",users);
-	}
 	/**
      * 根据token返回用户信息
      * @return 返回用户信息

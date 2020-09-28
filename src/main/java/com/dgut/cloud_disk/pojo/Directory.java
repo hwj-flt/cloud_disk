@@ -69,7 +69,7 @@ public class Directory implements Serializable {
     private BigDecimal directSize;
 
     /**
-     * 删除文件的时间
+     * 删除文件夹的时间
      */
     @Column(name = "`DIRECT_DELETE_TIME`")
     private Date directDeleteTime;
@@ -257,18 +257,18 @@ public class Directory implements Serializable {
     }
 
     /**
-     * 获取删除文件的时间
+     * 获取删除文件夹的时间
      *
-     * @return DIRECT_DELETE_TIME - 删除文件的时间
+     * @return DIRECT_DELETE_TIME - 删除文件夹的时间
      */
     public Date getDirectDeleteTime() {
         return directDeleteTime;
     }
 
     /**
-     * 设置删除文件的时间
+     * 设置删除文件夹的时间
      *
-     * @param directDeleteTime 删除文件的时间
+     * @param directDeleteTime 删除文件夹的时间
      */
     public void setDirectDeleteTime(Date directDeleteTime) {
         this.directDeleteTime = directDeleteTime;
