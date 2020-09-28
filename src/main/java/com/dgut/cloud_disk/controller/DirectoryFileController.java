@@ -32,7 +32,8 @@ public class DirectoryFileController {
         System.out.println("+++"+DFService.allFile());
         return (DFService.allFile());
     }
-    @RequestMapping("/delete")
+
+    @RequestMapping("/user/delete")
         public JSONResult deleteDirectoryFile(@RequestBody JSONObject jsonObject){
         String directID=jsonObject.getString("directID");
         String fileID=jsonObject.getString("fileID");
@@ -42,10 +43,11 @@ public class DirectoryFileController {
             return new JSONResult(500,"删除失败！","");
         }
     }
-        @RequestMapping("/deleteDorDF")
+        @RequestMapping("/user/deleteDorDF")
     public JSONResult deleteDirectoryFileOrDirectory(@RequestBody JSONObject jsonObject){
         int type =jsonObject.getInteger("type");
         String id =jsonObject.getString("id");
+
         //1-文件夹，2-文件
         if(DFService.deleteDorDF(type,id)){
             return new JSONResult(200,"删除成功！","");
@@ -53,7 +55,7 @@ public class DirectoryFileController {
             return new JSONResult(500,"删除失败！","");
         }
     }
-    @RequestMapping("/privateShare")//私密分享
+    @RequestMapping("/user/privateShare")//私密分享
     public JSONResult privateShare(@RequestBody JSONObject jsonObject) throws JsonProcessingException{
         //shareTime表示为秒
         //从jsonObject中获取数据
@@ -93,7 +95,7 @@ public class DirectoryFileController {
         }
         return new JSONResult(200,"分享成功！","");
     }
-    @RequestMapping("/publicShare")//外链分享
+    @RequestMapping("/user/publicShare")//外链分享
     public JSONResult publicShare(@RequestBody JSONObject jsonObject) throws JsonProcessingException {
         String token = jsonObject.getString("token");
         String Did = jsonObject.getString("newDirectID");
@@ -126,7 +128,7 @@ public class DirectoryFileController {
         DFService.insertShare(toshare);
         return new JSONResult(200,"分享成功！","");
     }
-    @RequestMapping("/publicVerifyCode")//验证密码
+    @RequestMapping("/user/publicVerifyCode")//验证密码
     public JSONResult publicVerifyCode(@RequestBody JSONObject jsonObject) {
         String shareID=jsonObject.getString("shareID");
         String code=jsonObject.getString("code");

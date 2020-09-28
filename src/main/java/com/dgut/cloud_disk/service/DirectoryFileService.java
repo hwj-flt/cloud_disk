@@ -17,7 +17,8 @@ public interface DirectoryFileService {
 
     public Integer VerifyCode(String sid,String code);
 
-    String fileDownload(String objectname);
+    public String fileDownload(String objectname,long expire);
+
     DirectoryFile selectFileById(String directID,String fileID);
     int ReFilename(DirectoryFile directoryFile,String directID, String fileID);
     int copyToDirect(DirectoryFile directoryFile);

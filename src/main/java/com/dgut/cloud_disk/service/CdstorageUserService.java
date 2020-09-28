@@ -11,7 +11,7 @@ public interface CdstorageUserService {
      * 查询所有用户
      * @return 用户列表
      */
-    public List<CdstorageUser> allUser(Integer pageNum,Integer pageSize,Integer showDisableUser);
+    public List<CdstorageUser> allUser();
 
     /**
      * 用户注销（禁用）

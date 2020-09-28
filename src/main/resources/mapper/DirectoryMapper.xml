@@ -6,7 +6,8 @@
     <delete id="deleteDirectoryByPId">
         delete from directory where PARENT_DIRECT_ID=#{pid}
     </delete>
-    <select id="selectIdByPid" resultType="String">
+
+    <select id="selectIdByPid" resultType="java.lang.String">
         select DIRECT_ID from directory where PARENT_DIRECT_ID=#{pid}
     </select>
 </mapper>

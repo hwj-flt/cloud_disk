@@ -20,22 +20,9 @@ public class CdstorageUserServiceImpl implements CdstorageUserService {
     private CdstorageUserMapper cdstorageUserMapper;
 
     @Override
-    public List<CdstorageUser> allUser(Integer pageNum,Integer pageSize,Integer showDisableUser) {
-        PageHelper.startPage(pageNum,pageSize);
-        List<CdstorageUser>  users = null;
-        if(showDisableUser==1){
-            users= cdstorageUserMapper.selectAll();
-        }else {
-            Example example = new Example(CdstorageUser.class);
-            Example.Criteria criteria = example.createCriteria();
-            criteria.andEqualTo("userStatus",1);
-            users= cdstorageUserMapper.selectByExample(example);
-        }
-        PageInfo<CdstorageUser> page = new PageInfo<CdstorageUser>(users);
-        System.out.println(page.getTotal());
-        System.out.println(page.getPages());
-        List<CdstorageUser>  resUsers = page.getList();
-        return resUsers;
+    public List<CdstorageUser> allUser() {
+        List<CdstorageUser> users= cdstorageUserMapper.selectAll();
+        return users;
     }
 
     @Override
