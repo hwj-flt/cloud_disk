@@ -21,4 +21,6 @@ public interface DirectoryFileService {
     int copyToDirect(DirectoryFile directoryFile);
     DirectoryFile selectFileById(String fileID);
     List<DirectoryFile> selectFileByDirectId(String directID);
+    String getUploadUrl(String objectName);
+
 }

@@ -107,7 +107,8 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
         }
     }
 
-    public String fileUpload(String objectName) throws Exception{
+    @Override
+    public String getUploadUrl(String objectName){
         String ak = obsConfig.getAccessKeyId();
         String sk = obsConfig.getSecretAccessKey();
         String endPoint = obsConfig.getEndpoint();
@@ -123,8 +124,9 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
         request.setBucketName(obsConfig.getBucketName());
         request.setObjectKey(objectName);
         request.setHeaders(headers);
-
+        System.out.println(request);
         TemporarySignatureResponse response = obsClient.createTemporarySignature(request);
+        System.out.println(response.getSignedUrl());
         return response.getSignedUrl();
     }
 

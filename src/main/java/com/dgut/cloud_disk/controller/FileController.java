@@ -39,30 +39,33 @@ public class FileController {
     @Autowired
     private DepartmentUserService departmentUserService;
 
-    @RequestMapping("/fileUploadGetUrl")
-    public JSONResult fileUploadGetUrl(@RequestBody JSONObject jsonObject) throws JsonProcessingException {
-        String directID = jsonObject.getString("directID");
+    @RequestMapping("/getUploadUrl")
+    public JSONResult getUploadUrl(@RequestBody JSONObject jsonObject) throws JsonProcessingException {
         String fileName = jsonObject.getString("fileName");
         String fileSize = jsonObject.getString("fileSize");
-        String fileType = jsonObject.getString("fileType");
         String token = jsonObject.getString("token");
         Jedis jedis = jedisPool.getResource();
         String tokenValue = jedis.get(token);
         ObjectMapper mapper = new ObjectMapper();
         CdstorageUser user = mapper.readValue(tokenValue, CdstorageUser.class);
-        if(user.getUserUsed().add(new BigDecimal(fileSize)).compareTo(user.getUserSize()) == 1){
+        if(user.getUserUsed().add(new BigDecimal(fileSize)).compareTo(user.getUserSize()) > 0){
             return JSONResult.errorMsg("存储空间不足，无法上传");
         }
-
-        return JSONResult.build(200,"",null);
+        String objectName = user.getUserWorkId() + "/" + fileName;
+        String url = directoryFileService.getUploadUrl(objectName);
+        JSONObject res = new JSONObject();
+        res.put("uploadUrl",url);
+        return JSONResult.build(200,"",res);
     }
-    @RequestMapping("/fileUpload")
-    public JSONResult fileUpload(@RequestBody JSONObject jsonObject) throws JsonProcessingException {
+    @RequestMapping("/upload")
+    public JSONResult upload(@RequestBody JSONObject jsonObject) throws JsonProcessingException {
         String directID = jsonObject.getString("directID");
         String fileName = jsonObject.getString("fileName");
         String fileSize = jsonObject.getString("fileSize");
         String fileType = jsonObject.getString("fileType");
         String token = jsonObject.getString("token");
+        DirectoryFile newFile = new DirectoryFile();
+        newFile.setDfDirectId(UUID.randomUUID().toString().replace("-",""));
         return JSONResult.build(200,"上传成功",null);
     }
 
