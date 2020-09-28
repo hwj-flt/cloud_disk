@@ -1,5 +1,6 @@
 package com.dgut.cloud_disk.service.impl;
 
+import com.dgut.cloud_disk.config.ObsConfig;
 import com.dgut.cloud_disk.mapper.DirectoryFileMapper;
 import com.dgut.cloud_disk.mapper.DirectoryMapper;
 import com.dgut.cloud_disk.mapper.MyfileMapper;
@@ -29,6 +30,8 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
     private ToshareMapper toshareMapper;
     @Resource
     private MyfileMapper myfileMapper;
+    @Resource
+    private ObsConfig obsConfig;
     @Override
     public List<DirectoryFile> allFile() {
         List<DirectoryFile> file=DFmapper.selectAll();
@@ -132,16 +135,16 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
 
     @Override
     public String fileDownload(String objectname) {
-        String ak = "VSTWKTJ92NZAI2VJ14PJ";
-        String sk = "5tpC64qnXaOFpw5zwKV0vnZoEQAVCjpE0s6BomQg";
-        String endPoint = "obs.cn-north-4.myhuaweicloud.com";
+        String ak = obsConfig.getAccessKeyId();
+        String sk = obsConfig.getSecretAccessKey();
+        String endPoint = obsConfig.getEndpoint();
 
         // 创建ObsClient实例
         ObsClient obsClient = new ObsClient(ak, sk, endPoint);
         // URL有效期，3600秒
         long expireSeconds = 3600L;
         TemporarySignatureRequest request = new TemporarySignatureRequest(HttpMethodEnum.GET, expireSeconds);
-        request.setBucketName("obs-dgut-lh");
+        request.setBucketName(obsConfig.getBucketName());
         request.setObjectKey(objectname);
         TemporarySignatureResponse response = obsClient.createTemporarySignature(request);
         return response.getSignedUrl();
@@ -220,6 +223,16 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
         criteria.andEqualTo("dfDirectId",directID);
         List<DirectoryFile> list = DFmapper.selectByExample(example);
         return list;
+    }
+
+    @Override
+    public int updateDirectFileById(DirectoryFile directoryFile, String dfFileId) {
+        //修改文件映射表
+        Example example = new Example(DirectoryFile.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("dfFileId",dfFileId);
+        int i = DFmapper.updateByExampleSelective(directoryFile, example);
+        return i;
     }
 }
 

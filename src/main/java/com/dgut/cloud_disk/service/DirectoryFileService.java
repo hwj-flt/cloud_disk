@@ -23,7 +23,7 @@ public interface DirectoryFileService {
     int copyToDirect(DirectoryFile directoryFile);
     DirectoryFile selectFileById(String fileID);
     List<DirectoryFile> selectFileByDirectId(String directID);
-
+    int updateDirectFileById(DirectoryFile directoryFile,String dfFileId);
     public Date getShareTimeByID(String id);
 
     public String getFileNameByID(String id);
