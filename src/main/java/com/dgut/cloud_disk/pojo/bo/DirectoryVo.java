@@ -7,7 +7,7 @@ public class DirectoryVo {
     private String name;
     private String size;
     private String modificationDate;
-    private List<DirectoryVo> includeDrects;
+    private List<DirectoryVo> includeDirects;
     private List<FileVo> includeFiles;
 
     public String getDirectID() {
@@ -43,11 +43,11 @@ public class DirectoryVo {
     }
 
     public List<DirectoryVo> getIncludeDrects() {
-        return includeDrects;
+        return includeDirects;
     }
 
     public void setIncludeDrects(List<DirectoryVo> includeDrects) {
-        this.includeDrects = includeDrects;
+        this.includeDirects = includeDrects;
     }
 
     public List<FileVo> getIncludeFiles() {
