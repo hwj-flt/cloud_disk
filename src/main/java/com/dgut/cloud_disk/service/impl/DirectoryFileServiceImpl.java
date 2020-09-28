@@ -130,6 +130,12 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
         return response.getSignedUrl();
     }
 
+    @Override
+    public Boolean insertDirectoryFile(DirectoryFile directoryFile) {
+        return directoryFileMapper.insertSelective(directoryFile)>0;
+    }
+
+
     /**
      * 下载文件
      * @param objectname 文件名

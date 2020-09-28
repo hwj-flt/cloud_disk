@@ -22,5 +22,5 @@ public interface DirectoryFileService {
     DirectoryFile selectFileById(String fileID);
     List<DirectoryFile> selectFileByDirectId(String directID);
     String getUploadUrl(String objectName);
-
+    Boolean insertDirectoryFile(DirectoryFile directoryFile);
 }

@@ -38,6 +38,8 @@ public class FileController {
     private ToshareService toshareService;
     @Autowired
     private DepartmentUserService departmentUserService;
+    @Autowired
+    private CdstorageUserService cdstorageUserService;
 
     @RequestMapping("/getUploadUrl")
     public JSONResult getUploadUrl(@RequestBody JSONObject jsonObject) throws JsonProcessingException {
@@ -64,8 +66,32 @@ public class FileController {
         String fileSize = jsonObject.getString("fileSize");
         String fileType = jsonObject.getString("fileType");
         String token = jsonObject.getString("token");
-        DirectoryFile newFile = new DirectoryFile();
-        newFile.setDfDirectId(UUID.randomUUID().toString().replace("-",""));
+        Jedis jedis = jedisPool.getResource();
+        String tokenValue = jedis.get(token);
+        ObjectMapper mapper = new ObjectMapper();
+        CdstorageUser user = mapper.readValue(tokenValue, CdstorageUser.class);
+
+        Myfile newFile = new Myfile();
+        newFile.setFileId(UUID.randomUUID().toString().replace("-",""));
+        newFile.setFileLink(user.getUserWorkId() + "/" + fileName);
+        newFile.setFileUploadTime(new Date());
+        newFile.setFileRefere((byte)1);
+        newFile.setFileSize(new BigDecimal(fileSize));
+        newFile.setFileType(fileType);
+        newFile.setFileUploadId(user.getUserId());
+        myFileService.insertFile(newFile);
+
+        DirectoryFile directoryFile = new DirectoryFile();
+        directoryFile.setDirectFileId(UUID.randomUUID().toString().replace("-",""));
+        directoryFile.setDfFileId(newFile.getFileId());
+        directoryFile.setDfFileName(fileName);
+        directoryFile.setDfGarbage((byte)1);
+        directoryFile.setDfDirectId(directID);
+        directoryFileService.insertDirectoryFile(directoryFile);
+
+        user.setUserUsed(user.getUserUsed().add(new BigDecimal(fileSize)));
+        cdstorageUserService.updateUser(user);
+        jedis.set(token,mapper.writeValueAsString(user));
         return JSONResult.build(200,"上传成功",null);
     }
 
