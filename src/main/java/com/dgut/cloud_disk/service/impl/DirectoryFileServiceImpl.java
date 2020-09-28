@@ -48,7 +48,7 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
        if(i>0){
            return true;
        }else {
-           System.out.println(i);
+           //System.out.println(i);
            return false;
        }
 
