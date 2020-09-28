@@ -83,7 +83,7 @@ public class PersonalCatalogueServiceImpl implements PersonalCatalogueService {
             DirectoryVo q = getAllCatalogueb(directory1.getDirectId(),new DirectoryVo());
             dl.add(q);
         }
-        dv.setIncludeDirects(dl);
+        dv.setIncludeDrects(dl);
         return dv;
     }
 

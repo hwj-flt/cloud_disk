@@ -54,12 +54,12 @@ public class DepartmentDirectoryVo {
         this.permission = permission;
     }
 
-    public List<DirectoryVo> getIncludeDirects() {
+    public List<DirectoryVo> getIncludeDrects() {
         return includeDirects;
     }
 
-    public void setIncludeDirects(List<DirectoryVo> includeDirects) {
-        this.includeDirects = includeDirects;
+    public void setIncludeDrects(List<DirectoryVo> includeDrects) {
+        this.includeDirects = includeDrects;
     }
 
     public List<FileVo> getIncludeFiles() {
