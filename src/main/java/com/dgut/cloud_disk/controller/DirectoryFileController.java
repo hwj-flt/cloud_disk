@@ -34,7 +34,7 @@ public class DirectoryFileController {
     }
 
     @RequestMapping("/user/delete")
-        public JSONResult deleteDirectoryFile(@RequestBody JSONObject jsonObject){
+	public JSONResult deleteDirectoryFile(@RequestBody JSONObject jsonObject){
         String directID=jsonObject.getString("directID");
         String fileID=jsonObject.getString("fileID");
         if(DFService.deleteFile(directID,fileID)){
@@ -43,11 +43,11 @@ public class DirectoryFileController {
             return new JSONResult(500,"删除失败！","");
         }
     }
+
         @RequestMapping("/user/deleteDorDF")
     public JSONResult deleteDirectoryFileOrDirectory(@RequestBody JSONObject jsonObject){
         int type =jsonObject.getInteger("type");
         String id =jsonObject.getString("id");
-
         //1-文件夹，2-文件
         if(DFService.deleteDorDF(type,id)){
             return new JSONResult(200,"删除成功！","");

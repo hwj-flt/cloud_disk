@@ -1,6 +1,5 @@
 package com.dgut.cloud_disk.service.impl;
 
-import com.dgut.cloud_disk.config.ObsConfig;
 import com.dgut.cloud_disk.mapper.DirectoryFileMapper;
 import com.dgut.cloud_disk.mapper.DirectoryMapper;
 import com.dgut.cloud_disk.mapper.MyfileMapper;
@@ -22,11 +21,11 @@ import java.util.List;
 @Service
 public class DirectoryFileServiceImpl implements DirectoryFileService {
 
-    @Autowired(required = false)
+    @Resource
     private DirectoryFileMapper DFmapper;
-    @Autowired(required = false)
+    @Resource
     private DirectoryMapper Dmapper;
-    @Autowired(required = false)
+    @Resource
     private ToshareMapper toshareMapper;
 
     @Resource
@@ -34,6 +33,9 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
 
     @Autowired
     private ObsConfig obsConfig;
+
+    @Resource
+    private MyfileMapper myfileMapper;
 
     @Override
     public List<DirectoryFile> allFile() {
@@ -59,7 +61,7 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
        }
 
     }
-
+    
     @Override
     public Boolean deleteDorDF(int type, String id) {
         int i=0;
@@ -137,15 +139,15 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
     }
 
     @Override
-    public String fileDownload(String objectname,long expire) {
-        String ak = obsConfig.getAccessKeyId();
-        String sk = obsConfig.getSecretAccessKey();
-        String endPoint = obsConfig.getEndpoint();
+    public String fileDownload(String objectname) {
+        String ak = "VSTWKTJ92NZAI2VJ14PJ";
+        String sk = "5tpC64qnXaOFpw5zwKV0vnZoEQAVCjpE0s6BomQg";
+        String endPoint = "obs.cn-north-4.myhuaweicloud.com";
 
         // 创建ObsClient实例
         ObsClient obsClient = new ObsClient(ak, sk, endPoint);
         // URL有效期，3600秒
-        long expireSeconds = expire;
+        long expireSeconds = 3600L;
         TemporarySignatureRequest request = new TemporarySignatureRequest(HttpMethodEnum.GET, expireSeconds);
         request.setBucketName("obs-dgut-lh");
         request.setObjectKey(objectname);

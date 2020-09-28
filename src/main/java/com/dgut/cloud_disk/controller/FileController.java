@@ -57,7 +57,7 @@ public class FileController {
         }
         //根据文件链接下载文件
         Myfile myfile = myFileService.selectFileById(fileID);
-        String url = directoryFileService.fileDownload(myfile.getFileLink(),300L);
+        String url = directoryFileService.fileDownload(myfile.getFileLink());
         jsonObject.put("data",url);
         return new JSONResult(200,"",jsonObject);
     }
@@ -141,6 +141,7 @@ public class FileController {
         CdstorageUser cdstorageUser = mapper.readValue(user, CdstorageUser.class);
         //查用户权限
         DepartmentUser departmentUser = departmentUserService.selectduPermissionByid(cdstorageUser.getUserId(), directory.getDirectBelongDepart());
+
 
 //        //判断权限
 //        if(departmentUser.getDuPermission()!=1){
