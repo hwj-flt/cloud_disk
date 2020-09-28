@@ -11,13 +11,17 @@ import com.obs.services.ObsClient;
 import com.obs.services.model.HttpMethodEnum;
 import com.obs.services.model.TemporarySignatureRequest;
 import com.obs.services.model.TemporarySignatureResponse;
+import okhttp3.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 @Service
 public class DirectoryFileServiceImpl implements DirectoryFileService {
 
@@ -29,6 +33,8 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
     private ToshareMapper toshareMapper;
     @Autowired
     private ObsConfig obsConfig;
+    @Autowired(required = false)
+    DirectoryFileMapper directoryFileMapper;
     @Override
     public List<DirectoryFile> allFile() {
         List<DirectoryFile> file=DFmapper.selectAll();
@@ -100,8 +106,28 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
             return -2;//表示外链有密码，但用户输入了错误密码
         }
     }
-    @Autowired(required = false)
-    DirectoryFileMapper directoryFileMapper;
+
+    public String fileUpload(String objectName) throws Exception{
+        String ak = obsConfig.getAccessKeyId();
+        String sk = obsConfig.getSecretAccessKey();
+        String endPoint = obsConfig.getEndpoint();
+        // 创建ObsClient实例
+        ObsClient obsClient = new ObsClient(ak, sk, endPoint);
+        // URL有效期，3600秒
+        long expireSeconds = 3600L;
+        Map<String, String> headers = new HashMap<String, String>();
+        String contentType = "multipart/form-data";
+        headers.put("Content-Type", contentType);
+
+        TemporarySignatureRequest request = new TemporarySignatureRequest(HttpMethodEnum.PUT, expireSeconds);
+        request.setBucketName(obsConfig.getBucketName());
+        request.setObjectKey(objectName);
+        request.setHeaders(headers);
+
+        TemporarySignatureResponse response = obsClient.createTemporarySignature(request);
+        return response.getSignedUrl();
+    }
+
     /**
      * 下载文件
      * @param objectname 文件名

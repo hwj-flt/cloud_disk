@@ -39,8 +39,8 @@ public class FileController {
     @Autowired
     private DepartmentUserService departmentUserService;
 
-    @RequestMapping("/upload")
-    public JSONResult fileUpload(@RequestBody JSONObject jsonObject) throws JsonProcessingException {
+    @RequestMapping("/fileUploadGetUrl")
+    public JSONResult fileUploadGetUrl(@RequestBody JSONObject jsonObject) throws JsonProcessingException {
         String directID = jsonObject.getString("directID");
         String fileName = jsonObject.getString("fileName");
         String fileSize = jsonObject.getString("fileSize");
@@ -53,10 +53,18 @@ public class FileController {
         if(user.getUserUsed().add(new BigDecimal(fileSize)).compareTo(user.getUserSize()) == 1){
             return JSONResult.errorMsg("存储空间不足，无法上传");
         }
+
+        return JSONResult.build(200,"",null);
+    }
+    @RequestMapping("/fileUpload")
+    public JSONResult fileUpload(@RequestBody JSONObject jsonObject) throws JsonProcessingException {
+        String directID = jsonObject.getString("directID");
+        String fileName = jsonObject.getString("fileName");
+        String fileSize = jsonObject.getString("fileSize");
+        String fileType = jsonObject.getString("fileType");
+        String token = jsonObject.getString("token");
         return JSONResult.build(200,"上传成功",null);
     }
-
-
 
     @RequestMapping("/download")
     public JSONResult fileDownload(@RequestBody JSONObject jsonObject) throws JsonProcessingException {
