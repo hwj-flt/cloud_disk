@@ -113,7 +113,7 @@ public class FileController {
         }
         //根据文件链接下载文件
         Myfile myfile = myFileService.selectFileById(fileID);
-        String url = directoryFileService.fileDownload(myfile.getFileLink());
+        String url = directoryFileService.fileDownload(myfile.getFileLink(),300L);
         jsonObject.put("data",url);
         return new JSONResult(200,"",jsonObject);
     }
@@ -168,10 +168,10 @@ public class FileController {
         CdstorageUser cdstorageUser = mapper.readValue(user, CdstorageUser.class);
         //查用户权限
         DepartmentUser departmentUser = departmentUserService.selectduPermissionByid(cdstorageUser.getUserId(), directory.getDirectBelongDepart());
-        //判断权限
-        if(departmentUser.getDuPermission()!=1){
-            return JSONResult.errorMsg("");
-        }
+//        //判断权限
+//        if(departmentUser.getDuPermission()!=1){
+//            return JSONResult.errorMsg("");
+//        }
         //文件复制
         DirectoryFile directoryFile = directoryFileService.selectFileById(fileID);
         String uuid = UUID.randomUUID().toString().replace("-", "");
@@ -195,10 +195,10 @@ public class FileController {
         CdstorageUser cdstorageUser = mapper.readValue(user, CdstorageUser.class);
         //查用户权限
         DepartmentUser departmentUser = departmentUserService.selectduPermissionByid(cdstorageUser.getUserId(), directory.getDirectBelongDepart());
-        //判断权限
-        if(departmentUser.getDuPermission()!=1){
-            return JSONResult.errorMsg("");
-        }
+//        //判断权限
+//        if(departmentUser.getDuPermission()!=1){
+//            return JSONResult.errorMsg("");
+//        }
         //文件夹复制
         directory = directoryService.selectDirectoryByID(directID);
         directory.setParentDirectId(newDirectID);
