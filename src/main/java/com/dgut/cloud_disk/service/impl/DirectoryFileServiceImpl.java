@@ -139,7 +139,7 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
      * @return 下载文件的地址链接
      */
     @Override
-    public String fileDownload(String objectname) {
+    public String fileDownload(String objectname,Long time) {
         String ak = obsConfig.getAccessKeyId();
         String sk = obsConfig.getSecretAccessKey();
         String endPoint = obsConfig.getEndpoint();
@@ -147,7 +147,7 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
         // 创建ObsClient实例
         ObsClient obsClient = new ObsClient(ak, sk, endPoint);
         // URL有效期，3600秒
-        long expireSeconds = 3600L;
+        long expireSeconds = time;
         TemporarySignatureRequest request = new TemporarySignatureRequest(HttpMethodEnum.GET, expireSeconds);
         request.setBucketName(obsConfig.getBucketName());
         request.setObjectKey(objectname);

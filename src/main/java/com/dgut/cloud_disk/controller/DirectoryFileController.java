@@ -136,7 +136,7 @@ public class DirectoryFileController {
             //需返回fileName，shareTime，downloadURL
             String fileName=DFService.getFileNameByID(shareID);
             Date shareTime=DFService.getShareTimeByID(shareID);
-            String downloadUrl=DFService.fileDownload(DFService.getFileLinkByID(shareID));
+            String downloadUrl=DFService.fileDownload(DFService.getFileLinkByID(shareID),300L);
             JSONObject obj=new JSONObject();
             obj.put("fileName",fileName);
             obj.put("shareTime",shareTime);

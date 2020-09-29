@@ -82,7 +82,7 @@ public class FileController {
         }
         //根据文件链接下载文件
         Myfile myfile = myFileService.selectFileById(fileID);
-        String url = directoryFileService.fileDownload(myfile.getFileLink());
+        String url = directoryFileService.fileDownload(myfile.getFileLink(),3600L);
         jsonObject.put("data",url);
         return new JSONResult(200,"",jsonObject);
     }
@@ -243,7 +243,7 @@ public class FileController {
         }
         //根据文件链接下载文件
         Myfile myfile = myFileService.selectFileById(fileID);
-        String url = directoryFileService.fileDownload(myfile.getFileLink());
+        String url = directoryFileService.fileDownload(myfile.getFileLink(),3600L);
         jsonObject.put("data",url);
         return new JSONResult(200,"",jsonObject);
     }
