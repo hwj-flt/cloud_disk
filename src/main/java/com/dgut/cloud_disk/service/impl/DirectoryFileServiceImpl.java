@@ -133,6 +133,11 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
         return FileLink;
     }
 
+    /**
+     * 文件下载
+     * @param objectname 文件链接
+     * @return 下载文件的地址链接
+     */
     @Override
     public String fileDownload(String objectname) {
         String ak = obsConfig.getAccessKeyId();

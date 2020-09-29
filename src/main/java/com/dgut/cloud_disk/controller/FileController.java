@@ -155,7 +155,7 @@ public class FileController {
         directoryFileService.copyToDirect(directoryFile);
         return new JSONResult(200,"",null);
     }
-    @RequestMapping("/copydilect")
+    @RequestMapping("/copydilectfile")
     public JSONResult copyDilectFile(@RequestBody JSONObject jsonObject) throws JsonProcessingException {
         String newDirectID = jsonObject.getString("newDirectID");
         String token = jsonObject.getString("token");
@@ -202,7 +202,9 @@ public class FileController {
         String newDirectID = jsonObject.getString("newDirectID");
         //文件ID
         String fileID = jsonObject.getString("fileID");
-        DirectoryFile directoryFile = directoryFileService.selectFileById(fileID);
+        //原文件夹id
+        String directID = jsonObject.getString("directID");
+        DirectoryFile directoryFile = directoryFileService.selectFileById(directID,fileID);
         directoryFile.setDfDirectId(newDirectID);
         directoryFileService.updateDirectFileById(directoryFile,fileID);
         return new JSONResult(200,"",null);
@@ -247,7 +249,7 @@ public class FileController {
     }
 
     /**
-     * 文件重命名
+     * 群组文件重命名
      * @param jsonObject
      * @return
      */
@@ -270,7 +272,7 @@ public class FileController {
         return new JSONResult(200,"",null);
     }
     /**
-     * 文件夹重命名
+     * 群组文件夹重命名
      * @param jsonObject
      * @return
      */
@@ -294,5 +296,82 @@ public class FileController {
         toshareService.deleteDirectRecord(directID);
         return new JSONResult(200,"",null);
     }
+    /**
+     * 移动群组文件到指定目录
+     * @param jsonObject
+     * @return 需要的json值
+     */
+    @RequestMapping("/movedepartfile")
+    public JSONResult moveDepartFile(@RequestBody JSONObject jsonObject) throws JsonProcessingException {
+        String token = jsonObject.getString("token");
+        //新文件夹ID
+        String newDirectID = jsonObject.getString("newDirectID");
+        //文件ID
+        String fileID = jsonObject.getString("fileID");
+        //原文件夹id
+        String directID = jsonObject.getString("directID");
+        //判断权限
+        if("00000001".equals(checkPermission(directID,token))){
+            return JSONResult.errorMsg("无权限操作此文件");
+        }
+        //根据文件id查询映射表
+        DirectoryFile directoryFile = directoryFileService.selectFileById(directID,fileID);
+        //修改文件夹id
+        directoryFile.setDfDirectId(newDirectID);
+        directoryFileService.updateDirectFileById(directoryFile,fileID);
+        return new JSONResult(200,"",null);
+    }
+    /**
+     * 移动群组文件夹到指定目录
+     * @param jsonObject
+     * @return 需要的json值
+     */
+    @RequestMapping("/movedepartdirectfile")
+    public JSONResult moveDepartDirectFile(@RequestBody JSONObject jsonObject) throws JsonProcessingException {
+        String token = jsonObject.getString("token");
+        //新文件夹ID
+        String newDirectID = jsonObject.getString("newDirectID");
+        //文件夹ID
+        String directID = jsonObject.getString("directID");
+        //判断权限
+        if("00000001".equals(checkPermission(directID,token))){
+            return JSONResult.errorMsg("无权限操作此文件");
+        }
+        //根据文件夹id查询文件夹表
+        Directory directory = directoryService.selectDirectoryByID(directID);
+        //修改父文件夹id
+        directory.setParentDirectId(newDirectID);
+        directoryService.updateDirectoryByID(directory,directID);
+        return new JSONResult(200,"",null);
+    }
 
+    /**
+     * 复制群组文件
+     * @param jsonObject
+     * @return
+     * @throws JsonProcessingException
+     */
+    @RequestMapping("/copydepartfile")
+    public JSONResult copyDepartFile(@RequestBody JSONObject jsonObject) throws JsonProcessingException {
+        String newDirectID = jsonObject.getString("newDirectID");
+        String token = jsonObject.getString("token");
+        String fileID = jsonObject.getString("fileID");
+        //创建redis对象
+        Jedis jedis = jedisPool.getResource();
+        //接收token查找用户对象
+        String user = jedis.get(token);
+        ObjectMapper mapper = new ObjectMapper();
+        CdstorageUser cdstorageUser = mapper.readValue(user, CdstorageUser.class);
+        //判断权限
+        if("00000100".equals(checkPermission(newDirectID,token))){
+            return JSONResult.errorMsg("");
+        }
+        //文件复制
+        DirectoryFile directoryFile = directoryFileService.selectFileById(fileID);
+        String uuid = UUID.randomUUID().toString().replace("-", "");
+        directoryFile.setDirectFileId(uuid);
+        directoryFile.setDfDirectId(newDirectID);
+        directoryFileService.copyToDirect(directoryFile);
+        return new JSONResult(200,"",null);
+    }
 }
