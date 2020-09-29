@@ -32,16 +32,16 @@ public class DirectoryServiceImpl implements DirectoryService {
     }
 
     /**
-     * 根据文件夹id修改文件夹名
+     * 根据文件夹id修改文件夹
      * @param directory 文件夹对象
      * @param directID 文件夹id
      * @return 1：成功  0：失败
      */
     @Override
     public int updateDirectoryByID(Directory directory,String directID) {
-        Example example = new Example(DirectoryFile.class);
+        Example example = new Example(Directory.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("dfDirectId", directID);
+        criteria.andEqualTo("directId", directID);
         int i = directoryMapper.updateByExampleSelective(directory, example);
         return i;
     }
