@@ -118,7 +118,7 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
         // URL有效期，3600秒
         long expireSeconds = expire;
         TemporarySignatureRequest request = new TemporarySignatureRequest(HttpMethodEnum.GET, expireSeconds);
-        request.setBucketName("obs-dgut-lh");
+        request.setBucketName(obsConfig.getBucketName());
         request.setObjectKey(objectname);
         TemporarySignatureResponse response = obsClient.createTemporarySignature(request);
         return response.getSignedUrl();

@@ -31,6 +31,12 @@ public class Department implements Serializable {
     @Column(name = "`DEPART_TIME`")
     private Date departTime;
 
+    /**
+     * 11111111-文档管理员（上传、下载、删除、创建文件夹、分享、复制、移动、重命名）
+     */
+    @Column(name = "`DEPART_PERMISSION`")
+    private String departPermission;
+
     private static final long serialVersionUID = 1L;
 
     /**
@@ -103,5 +109,23 @@ public class Department implements Serializable {
      */
     public void setDepartTime(Date departTime) {
         this.departTime = departTime;
+    }
+
+    /**
+     * 获取11111111-文档管理员（上传、下载、删除、创建文件夹、分享、复制、移动、重命名）
+     *
+     * @return DEPART_PERMISSION - 11111111-文档管理员（上传、下载、删除、创建文件夹、分享、复制、移动、重命名）
+     */
+    public String getDepartPermission() {
+        return departPermission;
+    }
+
+    /**
+     * 设置11111111-文档管理员（上传、下载、删除、创建文件夹、分享、复制、移动、重命名）
+     *
+     * @param departPermission 11111111-文档管理员（上传、下载、删除、创建文件夹、分享、复制、移动、重命名）
+     */
+    public void setDepartPermission(String departPermission) {
+        this.departPermission = departPermission;
     }
 }
