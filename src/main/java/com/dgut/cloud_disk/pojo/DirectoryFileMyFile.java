@@ -1,56 +1,82 @@
 package com.dgut.cloud_disk.pojo;
 
+import javax.persistence.Column;
+import javax.persistence.Id;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
-import javax.persistence.*;
 
-@Table(name = "`directory_file`")
-public class DirectoryFile implements Serializable {
+public class DirectoryFileMyFile implements Serializable {
     /**
      * 映射ID
      */
-    @Id
-    @Column(name = "`DIRECT_FILE_ID`")
     private String directFileId;
 
     /**
      * 文件夹ID
      */
-    @Column(name = "`DF_DIRECT_ID`")
     private String dfDirectId;
-
 
     /**
      * 文件ID
      */
-    @Column(name = "`DF_FILE_ID`")
     private String dfFileId;
 
-    @Column(name = "`DF_FILE_NAME`")
-    private String dfFileName;
     /**
      * 文件名
      */
-
-
+    private String dfFileName;
 
     /**
      * 1-未被删除 2被删除
      */
-    @Column(name = "`DF_GARBAGE`")
     private Byte dfGarbage;
 
     /**
      * 删除时间
      */
-    @Column(name = "`DF_DELETE_TIME`")
     private Date dfDeleteTime;
 
     /**
      * 删除用户ID
      */
-    @Column(name = "`DF_DELETE_ID`")
     private String dfDeleteId;
+
+    /**
+     * 文件ID
+     */
+    private String fileId;
+
+    /**
+     * 文件链接
+     */
+    private String fileLink;
+
+    /**
+     * 文件大小
+     */
+    private BigDecimal fileSize;
+
+    /**
+     * 文件类型
+     */
+    private String fileType;
+
+    /**
+     * 上传时间
+     */
+    private Date fileUploadTime;
+
+    /**
+     * 上传用户ID
+     */
+    private String fileUploadId;
+
+    /**
+     * 引用文件夹个数
+     */
+    private Byte fileRefere;
+
 
     private static final long serialVersionUID = 1L;
 
@@ -178,5 +204,65 @@ public class DirectoryFile implements Serializable {
      */
     public void setDfDeleteId(String dfDeleteId) {
         this.dfDeleteId = dfDeleteId;
+    }
+
+    public String getFileId() {
+        return fileId;
+    }
+
+    public void setFileId(String fileId) {
+        this.fileId = fileId;
+    }
+
+    public String getFileLink() {
+        return fileLink;
+    }
+
+    public void setFileLink(String fileLink) {
+        this.fileLink = fileLink;
+    }
+
+    public BigDecimal getFileSize() {
+        return fileSize;
+    }
+
+    public void setFileSize(BigDecimal fileSize) {
+        this.fileSize = fileSize;
+    }
+
+    public String getFileType() {
+        return fileType;
+    }
+
+    public void setFileType(String fileType) {
+        this.fileType = fileType;
+    }
+
+    public Date getFileUploadTime() {
+        return fileUploadTime;
+    }
+
+    public void setFileUploadTime(Date fileUploadTime) {
+        this.fileUploadTime = fileUploadTime;
+    }
+
+    public String getFileUploadId() {
+        return fileUploadId;
+    }
+
+    public void setFileUploadId(String fileUploadId) {
+        this.fileUploadId = fileUploadId;
+    }
+
+    public Byte getFileRefere() {
+        return fileRefere;
+    }
+
+    public void setFileRefere(Byte fileRefere) {
+        this.fileRefere = fileRefere;
+    }
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
     }
 }

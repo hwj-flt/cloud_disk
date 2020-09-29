@@ -22,9 +22,11 @@ public interface DirectoryFileService {
     int copyToDirect(DirectoryFile directoryFile);
     DirectoryFile selectFileById(String fileID);
     List<DirectoryFile> selectFileByDirectId(String directID);
+
     public Date getShareTimeByID(String id);
 
     public String getFileNameByID(String id);
 
     public String getFileLinkByID(String id);
+
 }

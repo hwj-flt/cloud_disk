@@ -41,6 +41,8 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
         return file;
     }
 
+
+
     @Override
     public Boolean deleteFile(String directID, String fileID) {
         //修改DF_GARBAGE为1，并截取时间戳
@@ -104,6 +106,36 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
             return -2;//表示外链有密码，但用户输入了错误密码
         }
     }
+
+    @Override
+    public Date getShareTimeByID(String id) {
+        Toshare toshare=toshareMapper.selectByPrimaryKey(id);
+        return toshare.getShareTime();
+    }
+
+    @Override
+    public String getFileNameByID(String id) {
+        Toshare toshare=toshareMapper.selectByPrimaryKey(id);
+        /*String Did=toshare.getShareDirectId();
+        String Fid=toshare.getShareFileId();*/
+
+        Example example = new Example(DirectoryFile.class);
+        Example.Criteria criteria=example.createCriteria();
+        criteria.andEqualTo("dfDirectId",toshare.getShareDirectId()).andEqualTo("dfFileId",toshare.getShareFileId());
+        DirectoryFile directoryFile=DFmapper.selectOneByExample(example);
+        //System.out.println(directoryFile.getDfFileName()+"");
+        return directoryFile.getDfFileName();
+    }
+
+    @Override
+    public String getFileLinkByID(String id) {
+        Toshare toshare=toshareMapper.selectByPrimaryKey(id);
+
+        Myfile myfile=myfileMapper.selectByPrimaryKey(toshare.getShareFileId());
+        String FileLink=myfile.getFileLink();
+        return FileLink;
+    }
+
     /**
      * 下载文件
      * @param objectname 文件名
@@ -199,33 +231,5 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
         criteria.andEqualTo("dfDirectId",directID);
         List<DirectoryFile> list = directoryFileMapper.selectByExample(example);
         return list;
-    }
-    @Override
-    public Date getShareTimeByID(String id) {
-        Toshare toshare=toshareMapper.selectByPrimaryKey(id);
-        return toshare.getShareTime();
-    }
-
-    @Override
-    public String getFileNameByID(String id) {
-        Toshare toshare=toshareMapper.selectByPrimaryKey(id);
-    /*String Did=toshare.getShareDirectId();
-    String Fid=toshare.getShareFileId();*/
-
-        Example example = new Example(DirectoryFile.class);
-        Example.Criteria criteria=example.createCriteria();
-        criteria.andEqualTo("dfDirectId",toshare.getShareDirectId()).andEqualTo("dfFileId",toshare.getShareFileId());
-        DirectoryFile directoryFile=DFmapper.selectOneByExample(example);
-        //System.out.println(directoryFile.getDfFileName()+"");
-        return directoryFile.getDfFileName();
-    }
-
-    @Override
-    public String getFileLinkByID(String id) {
-        Toshare toshare=toshareMapper.selectByPrimaryKey(id);
-
-        Myfile myfile=myfileMapper.selectByPrimaryKey(toshare.getShareFileId());
-        String FileLink=myfile.getFileLink();
-        return FileLink;
     }
 }

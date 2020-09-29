@@ -129,21 +129,7 @@ public class DirectoryFileController {
         DFService.insertShare(toshare);
         return new JSONResult(200,"分享成功！","");
     }
-//    @RequestMapping("/user/publicVerifyCode")//验证密码
-//    public JSONResult publicVerifyCode(@RequestBody JSONObject jsonObject) {
-//        String shareID=jsonObject.getString("shareID");
-//        String code=jsonObject.getString("code");
-//        int i =DFService.VerifyCode(shareID,code);
-//        //无密码或密码正确时i=1，有密码但没有输入密码时i=-1，有密码但输入密码错误时i=-2
-//        if(i==1){
-//            return new JSONResult(200,"可以访问！","");
-//        }else if(i==-1){
-//            return new JSONResult(606,"需要密码！","");
-//        }else {
-//            return new JSONResult(500,"密码错误！","");
-//        }
-//    }
-    @RequestMapping("/user/publicVerifyCode")//验证密码
+    @RequestMapping("/publicVerifyCode")//验证密码
     public JSONResult publicVerifyCode(@RequestBody JSONObject jsonObject) {
         String shareID=jsonObject.getString("shareID");
         String code=jsonObject.getString("code");
