@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface DepartmentUserService {
     public DepartmentUser selectduPermissionByid(String duUserId, String duDepartId);
+
+    public String getDepartIDByid(String Uid);
 }

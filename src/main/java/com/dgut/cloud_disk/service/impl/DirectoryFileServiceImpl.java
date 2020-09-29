@@ -3,15 +3,16 @@ package com.dgut.cloud_disk.service.impl;
 import com.dgut.cloud_disk.config.ObsConfig;
 import com.dgut.cloud_disk.mapper.DirectoryFileMapper;
 import com.dgut.cloud_disk.mapper.DirectoryMapper;
+import com.dgut.cloud_disk.mapper.MyfileMapper;
 import com.dgut.cloud_disk.mapper.ToshareMapper;
 import com.dgut.cloud_disk.pojo.DirectoryFile;
+import com.dgut.cloud_disk.pojo.Myfile;
 import com.dgut.cloud_disk.pojo.Toshare;
 import com.dgut.cloud_disk.service.DirectoryFileService;
 import com.obs.services.ObsClient;
 import com.obs.services.model.HttpMethodEnum;
 import com.obs.services.model.TemporarySignatureRequest;
 import com.obs.services.model.TemporarySignatureResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
@@ -21,13 +22,17 @@ import java.util.List;
 @Service
 public class DirectoryFileServiceImpl implements DirectoryFileService {
 
-    @Autowired(required = false)
+    @Resource
     private DirectoryFileMapper DFmapper;
-    @Autowired(required = false)
+    @Resource
     private DirectoryMapper Dmapper;
-    @Autowired(required = false)
+    @Resource
     private ToshareMapper toshareMapper;
-    @Autowired
+    @Resource
+    DirectoryFileMapper directoryFileMapper;
+    @Resource
+    private MyfileMapper myfileMapper;
+    @Resource
     private ObsConfig obsConfig;
     @Override
     public List<DirectoryFile> allFile() {
@@ -38,7 +43,7 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
 
 
     @Override
-    public Boolean deleteFile(String directID, String fileID) {
+        public Boolean deleteFile(String directID, String fileID) {
         //修改DF_GARBAGE为1，并截取时间戳
        DirectoryFile df= DFmapper.selectByPrimaryKey(directID);
        df.setDfGarbage((byte) 2);
@@ -48,12 +53,11 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
        if(i>0){
            return true;
        }else {
-           System.out.println(i);
            return false;
        }
 
     }
-
+    
     @Override
     public Boolean deleteDorDF(int type, String id) {
         int i=0;
@@ -100,15 +104,43 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
             return -2;//表示外链有密码，但用户输入了错误密码
         }
     }
-    @Autowired(required = false)
-    DirectoryFileMapper directoryFileMapper;
+
+    @Override
+    public Date getShareTimeByID(String id) {
+        Toshare toshare=toshareMapper.selectByPrimaryKey(id);
+        return toshare.getShareTime();
+    }
+
+    @Override
+    public String getFileNameByID(String id) {
+        Toshare toshare=toshareMapper.selectByPrimaryKey(id);
+        /*String Did=toshare.getShareDirectId();
+        String Fid=toshare.getShareFileId();*/
+
+        Example example = new Example(DirectoryFile.class);
+        Example.Criteria criteria=example.createCriteria();
+        criteria.andEqualTo("dfDirectId",toshare.getShareDirectId()).andEqualTo("dfFileId",toshare.getShareFileId());
+        DirectoryFile directoryFile=DFmapper.selectOneByExample(example);
+        //System.out.println(directoryFile.getDfFileName()+"");
+        return directoryFile.getDfFileName();
+    }
+
+    @Override
+    public String getFileLinkByID(String id) {
+        Toshare toshare=toshareMapper.selectByPrimaryKey(id);
+
+        Myfile myfile=myfileMapper.selectByPrimaryKey(toshare.getShareFileId());
+        String FileLink=myfile.getFileLink();
+        return FileLink;
+    }
+
     /**
-     * 下载文件
-     * @param objectname 文件名
-     * @return
+     * 文件下载
+     * @param objectname 文件链接
+     * @return 下载文件的地址链接
      */
     @Override
-    public String fileDownload(String objectname,long expire) {
+    public String fileDownload(String objectname,Long time) {
         String ak = obsConfig.getAccessKeyId();
         String sk = obsConfig.getSecretAccessKey();
         String endPoint = obsConfig.getEndpoint();
@@ -116,7 +148,7 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
         // 创建ObsClient实例
         ObsClient obsClient = new ObsClient(ak, sk, endPoint);
         // URL有效期，3600秒
-        long expireSeconds = expire;
+        long expireSeconds = time;
         TemporarySignatureRequest request = new TemporarySignatureRequest(HttpMethodEnum.GET, expireSeconds);
         request.setBucketName(obsConfig.getBucketName());
         request.setObjectKey(objectname);
@@ -137,7 +169,7 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("dfDirectId", directID);
         criteria.andEqualTo("dfFileId",fileID);
-        DirectoryFile directoryFile = directoryFileMapper.selectOneByExample(example);
+        DirectoryFile directoryFile = DFmapper.selectOneByExample(example);
         return directoryFile;
 
     }
@@ -156,7 +188,7 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("dfDirectId", directID);
         criteria.andEqualTo("dfFileId",fileID);
-        int i = directoryFileMapper.updateByExampleSelective(directoryFile, example);
+        int i = DFmapper.updateByExampleSelective(directoryFile, example);
         return i;
     }
 
@@ -167,7 +199,7 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
      */
     @Override
     public int copyToDirect(DirectoryFile directoryFile) {
-        int i = directoryFileMapper.insertSelective(directoryFile);
+        int i = DFmapper.insertSelective(directoryFile);
         return i;
     }
 
@@ -181,7 +213,7 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
         Example example = new Example(DirectoryFile.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("dfFileId",fileID);
-        DirectoryFile directoryFile = directoryFileMapper.selectOneByExample(example);
+        DirectoryFile directoryFile = DFmapper.selectOneByExample(example);
         return directoryFile;
     }
 
@@ -195,7 +227,18 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
         Example example = new Example(DirectoryFile.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("dfDirectId",directID);
-        List<DirectoryFile> list = directoryFileMapper.selectByExample(example);
+        List<DirectoryFile> list = DFmapper.selectByExample(example);
         return list;
     }
+
+    @Override
+    public int updateDirectFileById(DirectoryFile directoryFile, String dfFileId) {
+        //修改文件映射表
+        Example example = new Example(DirectoryFile.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("dfFileId",dfFileId);
+        int i = DFmapper.updateByExampleSelective(directoryFile, example);
+        return i;
+    }
 }
+

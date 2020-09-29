@@ -34,7 +34,9 @@ public class DirectoryFileController {
         return (DFService.allFile());
     }
     @RequestMapping("/user/delete")
-        public JSONResult deleteDirectoryFile(String directID, String fileID){
+    public JSONResult deleteDirectoryFile(@RequestBody JSONObject jsonObject){
+        String directID=jsonObject.getString("directID");
+        String fileID=jsonObject.getString("fileID");
         if(DFService.deleteFile(directID,fileID)){
             return new JSONResult(200,"删除成功！","");
         }else {
@@ -42,7 +44,9 @@ public class DirectoryFileController {
         }
     }
     @RequestMapping("/user/deleteDorDF")
-    public JSONResult deleteDirectoryFileOrDirectory(int type,String id){
+    public JSONResult deleteDirectoryFileOrDirectory(@RequestBody JSONObject jsonObject){
+        int type =jsonObject.getInteger("type");
+        String id =jsonObject.getString("id");
         //1-文件夹，2-文件
         if(DFService.deleteDorDF(type,id)){
             return new JSONResult(200,"删除成功！","");
@@ -125,14 +129,23 @@ public class DirectoryFileController {
         DFService.insertShare(toshare);
         return new JSONResult(200,"分享成功！","");
     }
-    @RequestMapping("/user/publicVerifyCode")//验证密码
+    @RequestMapping("/publicVerifyCode")//验证密码
     public JSONResult publicVerifyCode(@RequestBody JSONObject jsonObject) {
         String shareID=jsonObject.getString("shareID");
         String code=jsonObject.getString("code");
         int i =DFService.VerifyCode(shareID,code);
         //无密码或密码正确时i=1，有密码但没有输入密码时i=-1，有密码但输入密码错误时i=-2
         if(i==1){
-            return new JSONResult(200,"可以访问！","");
+            //需返回fileName，shareTime，downloadURL
+            String fileName=DFService.getFileNameByID(shareID);
+            Date shareTime=DFService.getShareTimeByID(shareID);
+            String downloadUrl=DFService.fileDownload(DFService.getFileLinkByID(shareID),300L);
+            JSONObject obj=new JSONObject();
+            obj.put("fileName",fileName);
+            obj.put("shareTime",shareTime);
+            obj.put("downloadURL",downloadUrl);
+
+            return new JSONResult(200,"可以访问！",obj);
         }else if(i==-1){
             return new JSONResult(606,"需要密码！","");
         }else {
