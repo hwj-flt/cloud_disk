@@ -3,8 +3,10 @@ package com.dgut.cloud_disk.service.impl;
 import com.dgut.cloud_disk.config.ObsConfig;
 import com.dgut.cloud_disk.mapper.DirectoryFileMapper;
 import com.dgut.cloud_disk.mapper.DirectoryMapper;
+import com.dgut.cloud_disk.mapper.MyfileMapper;
 import com.dgut.cloud_disk.mapper.ToshareMapper;
 import com.dgut.cloud_disk.pojo.DirectoryFile;
+import com.dgut.cloud_disk.pojo.Myfile;
 import com.dgut.cloud_disk.pojo.Toshare;
 import com.dgut.cloud_disk.service.DirectoryFileService;
 import com.obs.services.ObsClient;
@@ -27,6 +29,10 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
     private DirectoryMapper Dmapper;
     @Resource
     private ToshareMapper toshareMapper;
+    @Autowired(required = false)
+    DirectoryFileMapper directoryFileMapper;
+    @Autowired(required = false)
+    private MyfileMapper myfileMapper;
     @Autowired
     private ObsConfig obsConfig;
     @Override
@@ -34,8 +40,6 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
         List<DirectoryFile> file=DFmapper.selectAll();
         return file;
     }
-
-
 
     @Override
     public Boolean deleteFile(String directID, String fileID) {
@@ -100,8 +104,6 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
             return -2;//表示外链有密码，但用户输入了错误密码
         }
     }
-    @Autowired(required = false)
-    DirectoryFileMapper directoryFileMapper;
     /**
      * 下载文件
      * @param objectname 文件名
@@ -197,5 +199,33 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
         criteria.andEqualTo("dfDirectId",directID);
         List<DirectoryFile> list = directoryFileMapper.selectByExample(example);
         return list;
+    }
+    @Override
+    public Date getShareTimeByID(String id) {
+        Toshare toshare=toshareMapper.selectByPrimaryKey(id);
+        return toshare.getShareTime();
+    }
+
+    @Override
+    public String getFileNameByID(String id) {
+        Toshare toshare=toshareMapper.selectByPrimaryKey(id);
+    /*String Did=toshare.getShareDirectId();
+    String Fid=toshare.getShareFileId();*/
+
+        Example example = new Example(DirectoryFile.class);
+        Example.Criteria criteria=example.createCriteria();
+        criteria.andEqualTo("dfDirectId",toshare.getShareDirectId()).andEqualTo("dfFileId",toshare.getShareFileId());
+        DirectoryFile directoryFile=DFmapper.selectOneByExample(example);
+        //System.out.println(directoryFile.getDfFileName()+"");
+        return directoryFile.getDfFileName();
+    }
+
+    @Override
+    public String getFileLinkByID(String id) {
+        Toshare toshare=toshareMapper.selectByPrimaryKey(id);
+
+        Myfile myfile=myfileMapper.selectByPrimaryKey(toshare.getShareFileId());
+        String FileLink=myfile.getFileLink();
+        return FileLink;
     }
 }

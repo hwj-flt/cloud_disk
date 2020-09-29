@@ -47,8 +47,12 @@ public class DirectoryServiceImpl implements DirectoryService {
     }
 
     @Override
-    public int insertDirectory(Directory directory) {
+    public Boolean insertDirectory(Directory directory) {
         int i = directoryMapper.insertSelective(directory);
-        return i;
+        if(i > 0){
+            return true;
+        }else {
+            return false;
+        }
     }
 }

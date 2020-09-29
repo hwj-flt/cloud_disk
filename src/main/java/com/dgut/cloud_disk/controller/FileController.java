@@ -113,9 +113,9 @@ public class FileController {
         //查用户权限
         DepartmentUser departmentUser = departmentUserService.selectduPermissionByid(cdstorageUser.getUserId(), directory.getDirectBelongDepart());
         //判断权限
-        if(departmentUser.getDuPermission()!=1){
+        /*if(departmentUser.getDuPermission()!=1){
             return JSONResult.errorMsg("");
-        }
+        }*/
         //文件复制
         DirectoryFile directoryFile = directoryFileService.selectFileById(fileID);
         String uuid = UUID.randomUUID().toString().replace("-", "");
@@ -140,9 +140,9 @@ public class FileController {
         //查用户权限
         DepartmentUser departmentUser = departmentUserService.selectduPermissionByid(cdstorageUser.getUserId(), directory.getDirectBelongDepart());
         //判断权限
-        if(departmentUser.getDuPermission()!=1){
+        /*if(departmentUser.getDuPermission()!=1){
             return JSONResult.errorMsg("");
-        }
+        }*/
         //文件夹复制
         directory = directoryService.selectDirectoryByID(directID);
         directory.setParentDirectId(newDirectID);

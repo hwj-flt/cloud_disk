@@ -3,6 +3,7 @@ package com.dgut.cloud_disk.service;
 import com.dgut.cloud_disk.pojo.DirectoryFile;
 import com.dgut.cloud_disk.pojo.Toshare;
 
+import java.util.Date;
 import java.util.List;
 
 public interface DirectoryFileService {
@@ -21,4 +22,9 @@ public interface DirectoryFileService {
     int copyToDirect(DirectoryFile directoryFile);
     DirectoryFile selectFileById(String fileID);
     List<DirectoryFile> selectFileByDirectId(String directID);
+    public Date getShareTimeByID(String id);
+
+    public String getFileNameByID(String id);
+
+    public String getFileLinkByID(String id);
 }
