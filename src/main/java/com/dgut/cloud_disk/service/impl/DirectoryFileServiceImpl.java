@@ -124,9 +124,9 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
         request.setBucketName(obsConfig.getBucketName());
         request.setObjectKey(objectName);
         request.setHeaders(headers);
-        System.out.println(request);
+//        System.out.println(request);
         TemporarySignatureResponse response = obsClient.createTemporarySignature(request);
-        System.out.println(response.getSignedUrl());
+//        System.out.println(response.getSignedUrl());
         return response.getSignedUrl();
     }
 

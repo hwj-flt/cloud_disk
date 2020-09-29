@@ -41,6 +41,12 @@ public class FileController {
     @Autowired
     private CdstorageUserService cdstorageUserService;
 
+    /**
+     * 获取上传的链接
+     * @param jsonObject 接收前端数据
+     * @return uploadUrl
+     * @throws JsonProcessingException json字符转对象异常
+     */
     @RequestMapping("/getUploadUrl")
     public JSONResult getUploadUrl(@RequestBody JSONObject jsonObject) throws JsonProcessingException {
         String fileName = jsonObject.getString("fileName");
@@ -53,24 +59,33 @@ public class FileController {
         if(user.getUserUsed().add(new BigDecimal(fileSize)).compareTo(user.getUserSize()) > 0){
             return JSONResult.errorMsg("存储空间不足，无法上传");
         }
+        //objectName为工号加文件名
         String objectName = user.getUserWorkId() + "/" + fileName;
         String url = directoryFileService.getUploadUrl(objectName);
         JSONObject res = new JSONObject();
         res.put("uploadUrl",url);
-        return JSONResult.build(200,"",res);
+        return JSONResult.build(200,"上传链接",res);
     }
+
+    /**
+     * 前端返回上传成功后操作数据库
+     * @param jsonObject 接收前端数据
+     * @return 操作结果
+     * @throws JsonProcessingException json字符转对象异常
+     */
     @RequestMapping("/upload")
     public JSONResult upload(@RequestBody JSONObject jsonObject) throws JsonProcessingException {
-        String directID = jsonObject.getString("directID");
         String fileName = jsonObject.getString("fileName");
+        String directID = jsonObject.getString("directID");
         String fileSize = jsonObject.getString("fileSize");
         String fileType = jsonObject.getString("fileType");
         String token = jsonObject.getString("token");
+        //将用户对象从redis中读出
         Jedis jedis = jedisPool.getResource();
         String tokenValue = jedis.get(token);
         ObjectMapper mapper = new ObjectMapper();
         CdstorageUser user = mapper.readValue(tokenValue, CdstorageUser.class);
-
+        //在文件表中插入一条数据:文件ID为UUID 文件链接就是objectName 上传时间为当前时间 引用文件夹个数为1
         Myfile newFile = new Myfile();
         newFile.setFileId(UUID.randomUUID().toString().replace("-",""));
         newFile.setFileLink(user.getUserWorkId() + "/" + fileName);
@@ -79,18 +94,24 @@ public class FileController {
         newFile.setFileSize(new BigDecimal(fileSize));
         newFile.setFileType(fileType);
         newFile.setFileUploadId(user.getUserId());
-        myFileService.insertFile(newFile);
-
+        if(!myFileService.insertFile(newFile)) {
+            return JSONResult.errorMsg("插入文件表失败");
+        }
+        //在映射表中插入一条数据:映射ID由UUID生成 文件夹ID是前端传入的 文件ID为前面的文件ID 文件名为前端传入 Garbage未被删除 其它为空
         DirectoryFile directoryFile = new DirectoryFile();
         directoryFile.setDirectFileId(UUID.randomUUID().toString().replace("-",""));
         directoryFile.setDfFileId(newFile.getFileId());
         directoryFile.setDfFileName(fileName);
         directoryFile.setDfGarbage((byte)1);
         directoryFile.setDfDirectId(directID);
-        directoryFileService.insertDirectoryFile(directoryFile);
-
+        if(!directoryFileService.insertDirectoryFile(directoryFile)) {
+            return JSONResult.errorMsg("插入映射表失败");
+        }
+        //修改用户表的用户使用空间，更新redis中用户信息
         user.setUserUsed(user.getUserUsed().add(new BigDecimal(fileSize)));
-        cdstorageUserService.updateUser(user);
+        if(!cdstorageUserService.updateUser(user)) {
+            return JSONResult.errorMsg("更新用户表失败");
+        }
         jedis.set(token,mapper.writeValueAsString(user));
         return JSONResult.build(200,"上传成功",null);
     }
