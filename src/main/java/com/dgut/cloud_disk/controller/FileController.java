@@ -42,11 +42,10 @@ public class FileController {
     /**
      * 判断群组文件权限;有文件夹ID找文件夹表中文件夹有个所属群组ID。用用户ID和群组ID获得群组和用户映射表中权限，查看下载位置是否为1
      * @param directID 文件夹id
-     * @param token 登录的用户
      * @return 权限值
      * @throws JsonProcessingException
      */
-    public String checkPermission(String directID,String token) throws JsonProcessingException {
+    public String checkPermission(String directID){
 
         Directory directory = directoryService.selectDirectoryByID(directID);
         Department department = departmentService.selDepart(directory.getDirectBelongDepart());
@@ -140,7 +139,7 @@ public class FileController {
         ObjectMapper mapper = new ObjectMapper();
         CdstorageUser cdstorageUser = mapper.readValue(user, CdstorageUser.class);
         //判断权限
-        if("00000100".equals(checkPermission(newDirectID,token))){
+        if("00000100".equals(checkPermission(newDirectID))){
             return JSONResult.errorMsg("");
         }
         //文件复制
@@ -164,7 +163,7 @@ public class FileController {
         ObjectMapper mapper = new ObjectMapper();
         CdstorageUser cdstorageUser = mapper.readValue(user, CdstorageUser.class);
         //判断权限
-        if("00000100".equals(checkPermission(newDirectID,token))){
+        if("00000100".equals(checkPermission(newDirectID))){
             return JSONResult.errorMsg("");
         }
         //文件夹复制
@@ -234,7 +233,7 @@ public class FileController {
         String directID = jsonObject.getString("directID");//文件夹id
         String fileID = jsonObject.getString("fileID");//文件id
         String token = jsonObject.getString("token");//登录token
-        if ("01000000".equals(checkPermission(directID,token))){
+        if ("01000000".equals(checkPermission(directID))){
             return JSONResult.errorMsg("无权限操作此文件");
         }
         //根据文件链接下载文件
@@ -256,7 +255,7 @@ public class FileController {
         String fileID = jsonObject.getString("fileID");//文件id
         String token = jsonObject.getString("token");//用户
         //判断权限
-        if ("00000001".equals(checkPermission(directID,token))){
+        if ("00000001".equals(checkPermission(directID))){
             return JSONResult.errorMsg("无权限操作此文件");
         }
         //根据文件夹id和文件id对所选的文件进行重命名
@@ -281,7 +280,7 @@ public class FileController {
         //用户
         String token = jsonObject.getString("token");
         //判断权限
-        if("00000001".equals(checkPermission(directID,token))){
+        if("00000001".equals(checkPermission(directID))){
             return JSONResult.errorMsg("无权限操作此文件");
         }
         //根据文件夹id对文件夹表的文件夹名字段进行修改
@@ -307,7 +306,7 @@ public class FileController {
         //原文件夹id
         String directID = jsonObject.getString("directID");
         //判断权限
-        if("00000001".equals(checkPermission(directID,token))){
+        if("00000001".equals(checkPermission(directID))){
             return JSONResult.errorMsg("无权限操作此文件");
         }
         //根据文件id查询映射表
@@ -330,7 +329,7 @@ public class FileController {
         //文件夹ID
         String directID = jsonObject.getString("directID");
         //判断权限
-        if("00000001".equals(checkPermission(directID,token))){
+        if("00000001".equals(checkPermission(directID))){
             return JSONResult.errorMsg("无权限操作此文件");
         }
         //根据文件夹id查询文件夹表
@@ -359,7 +358,7 @@ public class FileController {
         ObjectMapper mapper = new ObjectMapper();
         CdstorageUser cdstorageUser = mapper.readValue(user, CdstorageUser.class);
         //判断权限
-        if("00000100".equals(checkPermission(newDirectID,token))){
+        if("00000100".equals(checkPermission(newDirectID))){
             return JSONResult.errorMsg("");
         }
         //文件复制
