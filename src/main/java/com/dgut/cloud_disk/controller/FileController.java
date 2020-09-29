@@ -37,7 +37,8 @@ public class FileController {
     private ToshareService toshareService;
     @Autowired
     private DepartmentUserService departmentUserService;
-
+    @Autowired
+    private DepartmentService departmentService;
     /**
      * 判断群组文件权限;有文件夹ID找文件夹表中文件夹有个所属群组ID。用用户ID和群组ID获得群组和用户映射表中权限，查看下载位置是否为1
      * @param directID 文件夹id
@@ -47,16 +48,9 @@ public class FileController {
      */
     public String checkPermission(String directID,String token) throws JsonProcessingException {
 
-
         Directory directory = directoryService.selectDirectoryByID(directID);
-        //创建jedis对象获取用户id
-        Jedis jedis = jedisPool.getResource();
-        String user = jedis.get(token);
-        ObjectMapper mapper = new ObjectMapper();
-        CdstorageUser cdstorageUser = mapper.readValue(user, CdstorageUser.class);
-        //查映射表
-        DepartmentUser departmentUser = departmentUserService.selectduPermissionByid(cdstorageUser.getUserId(), directory.getDirectBelongDepart());
-        return departmentUser.getDuPermission();
+        Department department = departmentService.selDepart(directory.getDirectBelongDepart());
+        return department.getDepartPermission();
     }
     /**
      * 文件下载

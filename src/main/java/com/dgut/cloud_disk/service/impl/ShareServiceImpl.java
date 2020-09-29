@@ -97,7 +97,7 @@ public class ShareServiceImpl implements ShareService {
             }
             link = myfile1.getFileLink();
         }
-        return  directoryFileService.fileDownload(link);
+        return  directoryFileService.fileDownload(link,300L);
     }
 
     /**
