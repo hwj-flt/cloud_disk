@@ -29,6 +29,8 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
     @Resource
     private ToshareMapper toshareMapper;
     @Resource
+    DirectoryFileMapper directoryFileMapper;
+    @Resource
     private MyfileMapper myfileMapper;
     @Resource
     private ObsConfig obsConfig;
@@ -51,7 +53,6 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
        if(i>0){
            return true;
        }else {
-           //System.out.println(i);
            return false;
        }
 

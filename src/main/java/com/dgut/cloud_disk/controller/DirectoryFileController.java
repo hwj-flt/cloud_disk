@@ -16,6 +16,7 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
 import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -32,8 +33,8 @@ public class DirectoryFileController {
         System.out.println("+++"+DFService.allFile());
         return (DFService.allFile());
     }
-    @RequestMapping("/delete")
-        public JSONResult deleteDirectoryFile(@RequestBody JSONObject jsonObject){
+    @RequestMapping("/user/delete")
+    public JSONResult deleteDirectoryFile(@RequestBody JSONObject jsonObject){
         String directID=jsonObject.getString("directID");
         String fileID=jsonObject.getString("fileID");
         if(DFService.deleteFile(directID,fileID)){
@@ -42,7 +43,7 @@ public class DirectoryFileController {
             return new JSONResult(500,"删除失败！","");
         }
     }
-        @RequestMapping("/deleteDorDF")
+    @RequestMapping("/user/deleteDorDF")
     public JSONResult deleteDirectoryFileOrDirectory(@RequestBody JSONObject jsonObject){
         int type =jsonObject.getInteger("type");
         String id =jsonObject.getString("id");
@@ -53,7 +54,7 @@ public class DirectoryFileController {
             return new JSONResult(500,"删除失败！","");
         }
     }
-    @RequestMapping("/privateShare")//私密分享
+    @RequestMapping("/user/privateShare")//私密分享
     public JSONResult privateShare(@RequestBody JSONObject jsonObject) throws JsonProcessingException{
         //shareTime表示为秒
         //从jsonObject中获取数据
@@ -93,7 +94,7 @@ public class DirectoryFileController {
         }
         return new JSONResult(200,"分享成功！","");
     }
-    @RequestMapping("/publicShare")//外链分享
+    @RequestMapping("/user/publicShare")//外链分享
     public JSONResult publicShare(@RequestBody JSONObject jsonObject) throws JsonProcessingException {
         String token = jsonObject.getString("token");
         String Did = jsonObject.getString("newDirectID");
@@ -115,10 +116,12 @@ public class DirectoryFileController {
         toshare.setShareTime(date);
         toshare.setShareExpire(new Date(date.getTime() + shareTime * 1000L));
         toshare.setShareCode(Code);
-        if(Fid!=null&&Did!=null){
-            //1-私密分享文件 2-私密分享文件夹 3-外链分享文件 ！！外链分享只分享文件
+        if(Fid!=null){
+            //1-私密分享文件 2-私密分享文件夹 3-外链分享文件 4-外链分享文件夹
             toshare.setShareType((byte) 3);
             toshare.setShareFileId(Fid);
+        }else if(Did!=null){
+            toshare.setShareType((byte) 4);
             toshare.setShareDirectId(Did);
         }else{
             return new JSONResult(500,"分享失败！","");

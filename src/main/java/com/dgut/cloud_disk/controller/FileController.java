@@ -137,6 +137,8 @@ public class FileController {
         String newDirectID = jsonObject.getString("newDirectID");
         String token = jsonObject.getString("token");
         String fileID = jsonObject.getString("fileID");
+        //查群组id
+        Directory directory = directoryService.selectDirectoryByID(newDirectID);
         //创建redis对象
         Jedis jedis = jedisPool.getResource();
         //接收token查找用户对象

@@ -24,14 +24,6 @@ public class DepartmentUser implements Serializable {
     @Column(name = "`DU_USER_ID_`")
     private String duUserId;
 
-    /**
-     * 11111111-文档管理员（上传、下载、删除、创建文件夹、分享、复制、移动、重命名）
-            10000000-群组成员权限1（上传）
-            每一权限位对应相应的功能
-     */
-    @Column(name = "`DU_PERMISSION`")
-    private String duPermission;
-
     private static final long serialVersionUID = 1L;
 
     /**
@@ -70,6 +62,11 @@ public class DepartmentUser implements Serializable {
         this.duDepartId = duDepartId;
     }
 
+    /**
+     * 获取用户ID
+     *
+     * @return DU_USER_ID_ - 用户ID
+     */
     public String getDuUserId() {
         return duUserId;
     }
@@ -83,29 +80,4 @@ public class DepartmentUser implements Serializable {
         this.duUserId = duUserId;
     }
 
-    /**
-     * 获取11111111-文档管理员（上传、下载、删除、创建文件夹、分享、复制、移动、重命名）
-            10000000-群组成员权限1（上传）
-            每一权限位对应相应的功能
-     *
-     * @return DU_PERMISSION - 11111111-文档管理员（上传、下载、删除、创建文件夹、分享、复制、移动、重命名）
-            10000000-群组成员权限1（上传）
-            每一权限位对应相应的功能
-     */
-    public String getDuPermission() {
-        return duPermission;
-    }
-
-    /**
-     * 设置11111111-文档管理员（上传、下载、删除、创建文件夹、分享、复制、移动、重命名）
-            10000000-群组成员权限1（上传）
-            每一权限位对应相应的功能
-     *
-     * @param duPermission 11111111-文档管理员（上传、下载、删除、创建文件夹、分享、复制、移动、重命名）
-            10000000-群组成员权限1（上传）
-            每一权限位对应相应的功能
-     */
-    public void setDuPermission(String duPermission) {
-        this.duPermission = duPermission;
-    }
 }
