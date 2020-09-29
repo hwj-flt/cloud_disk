@@ -2,13 +2,14 @@ package com.dgut.cloud_disk.pojo.bo;
 
 import java.util.List;
 
-public class DirectoryVo {
+public class DepartmentDirectoryBo {
     private String directID;
     private String name;
     private String size;
     private String modificationDate;
-    private List<DirectoryVo> includeDirects;
-    private List<FileVo> includeFiles;
+    private Integer permission;
+    private List<DepartmentDirectoryBo> includeDirects;
+    private List<FileBo> includeFiles;
 
     public String getDirectID() {
         return directID;
@@ -42,19 +43,27 @@ public class DirectoryVo {
         this.modificationDate = modificationDate;
     }
 
-    public List<DirectoryVo> getIncludeDrects() {
+    public Integer getPermission() {
+        return permission;
+    }
+
+    public void setPermission(Integer permission) {
+        this.permission = permission;
+    }
+
+    public List<DepartmentDirectoryBo> getIncludeDirects() {
         return includeDirects;
     }
 
-    public void setIncludeDrects(List<DirectoryVo> includeDrects) {
-        this.includeDirects = includeDrects;
+    public void setIncludeDirects(List<DepartmentDirectoryBo> includeDirects) {
+        this.includeDirects = includeDirects;
     }
 
-    public List<FileVo> getIncludeFiles() {
+    public List<FileBo> getIncludeFiles() {
         return includeFiles;
     }
 
-    public void setIncludeFiles(List<FileVo> includeFiles) {
+    public void setIncludeFiles(List<FileBo> includeFiles) {
         this.includeFiles = includeFiles;
     }
 }

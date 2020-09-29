@@ -69,9 +69,14 @@ public class ShareController {
      * @param reStorageVo  前端的分享表ID和被转存的文件夹ID
      * return
      */
-    public JSONResult reStorageFile(@RequestBody ReStorageFileVo reStorageVo){
-
-        return null;
+    public JSONResult reStorageFile(@RequestBody ReStorageFileVo reStorageVo) throws Exception {
+        Jedis jedis = jedisPool.getResource();
+        String tokenValue = jedis.get(reStorageVo.getToken());
+        ObjectMapper objectMapper = new ObjectMapper();
+        CdstorageUser cdstorageUser = objectMapper.readValue(tokenValue, CdstorageUser.class);
+        jedis.close();
+        shareService.storeFileByShare(reStorageVo.getShareID(),reStorageVo.getNewDirectID(),cdstorageUser.getUserId());
+        return JSONResult.ok();
     }
 
     /**
@@ -80,9 +85,14 @@ public class ShareController {
      * @param reStorageVo  前端的分享表ID和被转存的文件夹ID
      * @return
      */
-    public  JSONResult reStorageDirectory(@RequestBody ReStorageFileVo reStorageVo){
-
-        return null;
+    public  JSONResult reStorageDirectory(@RequestBody ReStorageFileVo reStorageVo) throws Exception {
+        Jedis jedis = jedisPool.getResource();
+        String tokenValue = jedis.get(reStorageVo.getToken());
+        ObjectMapper objectMapper = new ObjectMapper();
+        CdstorageUser cdstorageUser = objectMapper.readValue(tokenValue, CdstorageUser.class);
+        jedis.close();
+        shareService.storeDirectByShare(reStorageVo.getShareID(),reStorageVo.getNewDirectID(),cdstorageUser.getUserId());
+        return JSONResult.ok();
     }
 
 
