@@ -93,7 +93,7 @@ public class CdstorageUserController {
      * 用前端token换取手机号
      * @return 包含手机号的json字符串
      */
-    @RequestMapping("/firstLogin/getPhone")
+    @RequestMapping("/user/firstLogin/getPhone")
     public JSONResult getPhone(@RequestBody JSONObject json) throws JsonProcessingException {
         String token = json.getString("token");
         Jedis jedis = jedisPool.getResource();
@@ -114,7 +114,7 @@ public class CdstorageUserController {
      * @return 包含验证码有效时间的json字符串
      * @throws JsonProcessingException 字符串转化错误
      */
-    @RequestMapping("/firstLogin/getPhoneCode")
+    @RequestMapping("/user/firstLogin/getPhoneCode")
     public JSONResult getPhoneCode(@RequestBody JSONObject json) throws JsonProcessingException {
         String token = json.getString("token");
         Jedis jedis = jedisPool.getResource();
@@ -255,7 +255,7 @@ public class CdstorageUserController {
      * 退出登录
      * @return 操作结果
      */
-    @RequestMapping({"/user/logout","/user/manager/logout","/user/manager/sup/logout"})
+    @RequestMapping({"/user/logout"})
     public JSONResult logout(@RequestBody JSONObject json){
         String token = json.getString("token");
         Jedis jedis = jedisPool.getResource();
@@ -273,7 +273,7 @@ public class CdstorageUserController {
      * 根据token返回用户信息
      * @return 返回用户信息
      */
-    @RequestMapping({"/user/userInfo","/user/manager/userInfo","/user/manager/sup/userInfo"})
+    @RequestMapping({"/user/userInfo"})
     public JSONResult userInfo(@RequestBody JSONObject json) throws JsonProcessingException {
         String token = json.getString("token");
         Jedis jedis = jedisPool.getResource();
@@ -294,7 +294,7 @@ public class CdstorageUserController {
      * @return 操作结果
      * @throws JsonProcessingException 字符串转化错误
      */
-    @RequestMapping({"/user/updateUserInfo","/user/manager/updateUserInfo","/user/manager/sup/updateUserInfo"})
+    @RequestMapping({"/user/updateUserInfo"})
     public JSONResult updateUserInfo(@RequestBody JSONObject json) throws JsonProcessingException {
         String token = json.getString("token");
         Jedis jedis = jedisPool.getResource();
@@ -321,8 +321,8 @@ public class CdstorageUserController {
      * @return 返回操作结果
      * @throws JsonProcessingException JsonProcessingException
      */
-    @RequestMapping({"/user/updatePass","/user/manager/updatePass","/user/manager/sup/updatePass"})
-    public JSONResult updateUserPass(JSONObject json) throws JsonProcessingException {
+    @RequestMapping({"/user/updatePass"})
+    public JSONResult updateUserPass(@RequestBody JSONObject json) throws JsonProcessingException {
         String userPassword = json.getString("userPassword");
         String token = json.getString("token");
         Jedis jedis = jedisPool.getResource();

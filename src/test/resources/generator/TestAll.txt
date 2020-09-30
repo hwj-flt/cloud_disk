@@ -2,9 +2,9 @@
 
 <!-- http://freemarker.apache.org/docs/ref_builtins_date.html -->
 当前时间：
-2020-9-29
-17:00:29
-2020-09-29 17:00:29
+2020-9-30
+11:25:19
+2020-09-30 11:25:19
 
 所有配置的属性信息:
 targetPackage - generator
@@ -1457,6 +1457,443 @@ fileName - TestAll.txt
         SHARE_FILE_ID - shareFileId
         SHARE_DIRECT_ID - shareDirectId
         SHARE_CODE - shareCode
+****************************************************************************************
+实体和表的信息：
+表名：CDSTORAGEUSERDEPARTMENTUSER
+变量名：cdstorageuserdepartmentuser
+小写名：cdstorageuserdepartmentuser
+类名：Cdstorageuserdepartmentuser
+全名：com.dgut.cloud_disk.pojo.Cdstorageuserdepartmentuser
+包名：com.dgut.cloud_disk.pojo
+
+列的信息：
+=====================================
+    主键：
+
+    基础列：
+        -------------------------------------
+        列名：DEPART_USER_ID
+        列类型：VARCHAR
+        字段名：departUserId
+        注释：映射ID
+        类型包名：java.lang
+        类型短名：String
+        类型全名：java.lang.String
+        是否主键：false
+        是否可空：false
+        是否为BLOB列：false
+        是否为String列：true
+        是否为字符串列：true
+        是否为日期列：false
+        是否为时间列：false
+        是否为序列列：false
+        列长度：32
+        列精度：0
+        -------------------------------------
+        列名：DU_DEPART_ID
+        列类型：VARCHAR
+        字段名：duDepartId
+        注释：群组ID
+        类型包名：java.lang
+        类型短名：String
+        类型全名：java.lang.String
+        是否主键：false
+        是否可空：false
+        是否为BLOB列：false
+        是否为String列：true
+        是否为字符串列：true
+        是否为日期列：false
+        是否为时间列：false
+        是否为序列列：false
+        列长度：32
+        列精度：0
+        -------------------------------------
+        列名：DU_USER_ID_
+        列类型：VARCHAR
+        字段名：duUserId
+        注释：用户ID
+        类型包名：java.lang
+        类型短名：String
+        类型全名：java.lang.String
+        是否主键：false
+        是否可空：false
+        是否为BLOB列：false
+        是否为String列：true
+        是否为字符串列：true
+        是否为日期列：false
+        是否为时间列：false
+        是否为序列列：false
+        列长度：32
+        列精度：0
+        -------------------------------------
+        列名：USER_ID
+        列类型：VARCHAR
+        字段名：userId
+        注释：用户ID
+        类型包名：java.lang
+        类型短名：String
+        类型全名：java.lang.String
+        是否主键：false
+        是否可空：false
+        是否为BLOB列：false
+        是否为String列：true
+        是否为字符串列：true
+        是否为日期列：false
+        是否为时间列：false
+        是否为序列列：false
+        列长度：32
+        列精度：0
+        -------------------------------------
+        列名：USER_WORK_ID
+        列类型：BIGINT
+        字段名：userWorkId
+        注释：工号
+        类型包名：java.lang
+        类型短名：Long
+        类型全名：java.lang.Long
+        是否主键：false
+        是否可空：false
+        是否为BLOB列：false
+        是否为String列：false
+        是否为字符串列：false
+        是否为日期列：false
+        是否为时间列：false
+        是否为序列列：false
+        列长度：19
+        列精度：0
+        -------------------------------------
+        列名：USER_NAME
+        列类型：VARCHAR
+        字段名：userName
+        注释：用户名
+        类型包名：java.lang
+        类型短名：String
+        类型全名：java.lang.String
+        是否主键：false
+        是否可空：false
+        是否为BLOB列：false
+        是否为String列：true
+        是否为字符串列：true
+        是否为日期列：false
+        是否为时间列：false
+        是否为序列列：false
+        列长度：20
+        列精度：0
+        -------------------------------------
+        列名：USER_SEX
+        列类型：VARCHAR
+        字段名：userSex
+        注释：用户性别
+        类型包名：java.lang
+        类型短名：String
+        类型全名：java.lang.String
+        是否主键：false
+        是否可空：false
+        是否为BLOB列：false
+        是否为String列：true
+        是否为字符串列：true
+        是否为日期列：false
+        是否为时间列：false
+        是否为序列列：false
+        列长度：1
+        列精度：0
+        -------------------------------------
+        列名：USER_TIME
+        列类型：TIMESTAMP
+        字段名：userTime
+        注释：用户创建时间
+        类型包名：java.util
+        类型短名：Date
+        类型全名：java.util.Date
+        是否主键：false
+        是否可空：false
+        是否为BLOB列：false
+        是否为String列：false
+        是否为字符串列：false
+        是否为日期列：false
+        是否为时间列：false
+        是否为序列列：false
+        列长度：19
+        列精度：0
+        -------------------------------------
+        列名：USER_PASSWORD
+        列类型：VARCHAR
+        字段名：userPassword
+        注释：密码
+        类型包名：java.lang
+        类型短名：String
+        类型全名：java.lang.String
+        是否主键：false
+        是否可空：false
+        是否为BLOB列：false
+        是否为String列：true
+        是否为字符串列：true
+        是否为日期列：false
+        是否为时间列：false
+        是否为序列列：false
+        列长度：32
+        列精度：0
+        -------------------------------------
+        列名：USER_MOBIE
+        列类型：VARCHAR
+        字段名：userMobie
+        注释：手机号码
+        类型包名：java.lang
+        类型短名：String
+        类型全名：java.lang.String
+        是否主键：false
+        是否可空：false
+        是否为BLOB列：false
+        是否为String列：true
+        是否为字符串列：true
+        是否为日期列：false
+        是否为时间列：false
+        是否为序列列：false
+        列长度：11
+        列精度：0
+        -------------------------------------
+        列名：USER_EMAIL
+        列类型：VARCHAR
+        字段名：userEmail
+        注释：邮箱地址
+        类型包名：java.lang
+        类型短名：String
+        类型全名：java.lang.String
+        是否主键：false
+        是否可空：false
+        是否为BLOB列：false
+        是否为String列：true
+        是否为字符串列：true
+        是否为日期列：false
+        是否为时间列：false
+        是否为序列列：false
+        列长度：60
+        列精度：0
+        -------------------------------------
+        列名：USER_ROOT_ID
+        列类型：VARCHAR
+        字段名：userRootId
+        注释：用户根目录ID
+        类型包名：java.lang
+        类型短名：String
+        类型全名：java.lang.String
+        是否主键：false
+        是否可空：false
+        是否为BLOB列：false
+        是否为String列：true
+        是否为字符串列：true
+        是否为日期列：false
+        是否为时间列：false
+        是否为序列列：false
+        列长度：32
+        列精度：0
+        -------------------------------------
+        列名：USER_GARBAGE
+        列类型：VARCHAR
+        字段名：userGarbage
+        注释：回收站ID
+        类型包名：java.lang
+        类型短名：String
+        类型全名：java.lang.String
+        是否主键：false
+        是否可空：false
+        是否为BLOB列：false
+        是否为String列：true
+        是否为字符串列：true
+        是否为日期列：false
+        是否为时间列：false
+        是否为序列列：false
+        列长度：32
+        列精度：0
+        -------------------------------------
+        列名：USER_SIZE
+        列类型：DECIMAL
+        字段名：userSize
+        注释：存储空间大小使用MB作为单位。最大可以表示1TB，最小可以表示1位
+        类型包名：java.math
+        类型短名：BigDecimal
+        类型全名：java.math.BigDecimal
+        是否主键：false
+        是否可空：false
+        是否为BLOB列：false
+        是否为String列：false
+        是否为字符串列：false
+        是否为日期列：false
+        是否为时间列：false
+        是否为序列列：false
+        列长度：13
+        列精度：6
+        -------------------------------------
+        列名：USER_USED
+        列类型：DECIMAL
+        字段名：userUsed
+        注释：存储空间大小使用MB作为单位。最大可以表示1TB，最小可以表示1位
+        类型包名：java.math
+        类型短名：BigDecimal
+        类型全名：java.math.BigDecimal
+        是否主键：false
+        是否可空：false
+        是否为BLOB列：false
+        是否为String列：false
+        是否为字符串列：false
+        是否为日期列：false
+        是否为时间列：false
+        是否为序列列：false
+        列长度：13
+        列精度：6
+        -------------------------------------
+        列名：USER_STATUS
+        列类型：TINYINT
+        字段名：userStatus
+        注释：1-表示用户正常 0-表示用户注销 其它状态可以继续添加
+        类型包名：java.lang
+        类型短名：Byte
+        类型全名：java.lang.Byte
+        是否主键：false
+        是否可空：false
+        是否为BLOB列：false
+        是否为String列：false
+        是否为字符串列：false
+        是否为日期列：false
+        是否为时间列：false
+        是否为序列列：false
+        列长度：3
+        列精度：0
+        -------------------------------------
+        列名：USER_PERMISSION
+        列类型：DECIMAL
+        字段名：userPermission
+        注释：0-表示普通用户权限 2-表示文档管理员权限 3-表示超级管理员  其它权限可以继续添加
+        类型包名：java.lang
+        类型短名：Integer
+        类型全名：java.lang.Integer
+        是否主键：false
+        是否可空：false
+        是否为BLOB列：false
+        是否为String列：false
+        是否为字符串列：false
+        是否为日期列：false
+        是否为时间列：false
+        是否为序列列：false
+        列长度：6
+        列精度：0
+        -------------------------------------
+        列名：DEPART_ID
+        列类型：VARCHAR
+        字段名：departId
+        注释：群组ID
+        类型包名：java.lang
+        类型短名：String
+        类型全名：java.lang.String
+        是否主键：false
+        是否可空：false
+        是否为BLOB列：false
+        是否为String列：true
+        是否为字符串列：true
+        是否为日期列：false
+        是否为时间列：false
+        是否为序列列：false
+        列长度：32
+        列精度：0
+        -------------------------------------
+        列名：DEPART_NAME
+        列类型：VARCHAR
+        字段名：departName
+        注释：群组名称
+        类型包名：java.lang
+        类型短名：String
+        类型全名：java.lang.String
+        是否主键：false
+        是否可空：false
+        是否为BLOB列：false
+        是否为String列：true
+        是否为字符串列：true
+        是否为日期列：false
+        是否为时间列：false
+        是否为序列列：false
+        列长度：20
+        列精度：0
+        -------------------------------------
+        列名：DEPART_ROOT
+        列类型：VARCHAR
+        字段名：departRoot
+        注释：群组文件夹根目录ID
+        类型包名：java.lang
+        类型短名：String
+        类型全名：java.lang.String
+        是否主键：false
+        是否可空：false
+        是否为BLOB列：false
+        是否为String列：true
+        是否为字符串列：true
+        是否为日期列：false
+        是否为时间列：false
+        是否为序列列：false
+        列长度：32
+        列精度：0
+        -------------------------------------
+        列名：DEPART_TIME
+        列类型：TIMESTAMP
+        字段名：departTime
+        注释：群组创建时间
+        类型包名：java.util
+        类型短名：Date
+        类型全名：java.util.Date
+        是否主键：false
+        是否可空：false
+        是否为BLOB列：false
+        是否为String列：false
+        是否为字符串列：false
+        是否为日期列：false
+        是否为时间列：false
+        是否为序列列：false
+        列长度：19
+        列精度：0
+        -------------------------------------
+        列名：DEPART_PERMISSION
+        列类型：VARCHAR
+        字段名：departPermission
+        注释：11111111-文档管理员（上传、下载、删除、创建文件夹、分享、复制、移动、重命名）
+        类型包名：java.lang
+        类型短名：String
+        类型全名：java.lang.String
+        是否主键：false
+        是否可空：false
+        是否为BLOB列：false
+        是否为String列：true
+        是否为字符串列：true
+        是否为日期列：false
+        是否为时间列：false
+        是否为序列列：false
+        列长度：10
+        列精度：0
+
+    Blob列：
+=====================================
+全部列：
+    列名 - 字段名
+        DEPART_USER_ID - departUserId
+        DU_DEPART_ID - duDepartId
+        DU_USER_ID_ - duUserId
+        USER_ID - userId
+        USER_WORK_ID - userWorkId
+        USER_NAME - userName
+        USER_SEX - userSex
+        USER_TIME - userTime
+        USER_PASSWORD - userPassword
+        USER_MOBIE - userMobie
+        USER_EMAIL - userEmail
+        USER_ROOT_ID - userRootId
+        USER_GARBAGE - userGarbage
+        USER_SIZE - userSize
+        USER_USED - userUsed
+        USER_STATUS - userStatus
+        USER_PERMISSION - userPermission
+        DEPART_ID - departId
+        DEPART_NAME - departName
+        DEPART_ROOT - departRoot
+        DEPART_TIME - departTime
+        DEPART_PERMISSION - departPermission
 ****************************************************************************************
 实体和表的信息：
 表名：directory_file

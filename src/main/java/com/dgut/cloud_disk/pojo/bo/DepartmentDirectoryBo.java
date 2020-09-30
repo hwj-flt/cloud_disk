@@ -7,7 +7,7 @@ public class DepartmentDirectoryBo {
     private String name;
     private String size;
     private String modificationDate;
-    private Integer permission;
+    private String permission;
     private List<DepartmentDirectoryBo> includeDirects;
     private List<FileBo> includeFiles;
 
@@ -43,11 +43,11 @@ public class DepartmentDirectoryBo {
         this.modificationDate = modificationDate;
     }
 
-    public Integer getPermission() {
+    public String getPermission() {
         return permission;
     }
 
-    public void setPermission(Integer permission) {
+    public void setPermission(String permission) {
         this.permission = permission;
     }
 

@@ -19,20 +19,17 @@ public class DirectoryFile implements Serializable {
     @Column(name = "`DF_DIRECT_ID`")
     private String dfDirectId;
 
-
     /**
      * 文件ID
      */
     @Column(name = "`DF_FILE_ID`")
     private String dfFileId;
 
-    @Column(name = "`DF_FILE_NAME`")
-    private String dfFileName;
     /**
      * 文件名
      */
-
-
+    @Column(name = "`DF_FILE_NAME`")
+    private String dfFileName;
 
     /**
      * 1-未被删除 2被删除
