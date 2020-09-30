@@ -309,15 +309,15 @@ public class ManagerController {
 
     /**
      * 所有部门
-     * @param token
+     * @param jsonObject
      * @return
      * @throws JsonProcessingException
      */
-    @GetMapping("/allDepart")
+    @PostMapping("/allDepart")
     @CrossOrigin
     @ResponseBody
-    public JSONResult allDepart(@Param("token") String token) throws JsonProcessingException {
-        System.out.println(token);
+    public JSONResult allDepart(@RequestBody JSONObject jsonObject) throws JsonProcessingException {
+        String token =jsonObject.getString("token");
         //从token中获取用户
         Jedis jedis = jedisPool.getResource();
         String tokenValue = jedis.get(token);
