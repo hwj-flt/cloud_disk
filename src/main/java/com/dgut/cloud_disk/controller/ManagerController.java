@@ -215,7 +215,7 @@ public class ManagerController {
             return new JSONResult(200,"部门创建成功",null);
         }else {
             return new JSONResult(500,"无访问权限",null);
-        }
+       }
     }
 
     /**
