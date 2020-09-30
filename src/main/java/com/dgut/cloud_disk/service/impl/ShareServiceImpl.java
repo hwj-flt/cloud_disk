@@ -3,10 +3,9 @@ package com.dgut.cloud_disk.service.impl;
 import com.dgut.cloud_disk.mapper.*;
 import com.dgut.cloud_disk.pojo.*;
 import com.dgut.cloud_disk.pojo.bo.BeShareBo;
-<<<<<<< Updated upstream
-=======
+
 import com.dgut.cloud_disk.pojo.bo.ToShareBo;
->>>>>>> Stashed changes
+
 import com.dgut.cloud_disk.service.DirectoryFileService;
 import com.dgut.cloud_disk.service.ShareService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +35,6 @@ public class ShareServiceImpl implements ShareService {
 
     private DirectoryMapper directoryMapper;
 
-<<<<<<< Updated upstream
-=======
     @Autowired(required = false)
     private DirectoryFileMapper directoryFileMapper;
 
@@ -52,7 +49,7 @@ public class ShareServiceImpl implements ShareService {
 
     @Resource
     private SelectbesharefordirectorynottypeMapper selectbesharefordirectorynottypeMapper;
->>>>>>> Stashed changes
+
 
     @Override
     public List<BeShareBo> showBeShare(String beshareID) {
