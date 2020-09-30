@@ -9,6 +9,7 @@ import com.dgut.cloud_disk.util.JSONResult;
 import com.dgut.cloud_disk.util.SendCodeUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.issCollege.util.MD5;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -64,7 +65,8 @@ public class CdstorageUserController {
             return JSONResult.errorMsg("用户被禁用，请找管理员解禁");
         }
         //检查密码是否正确
-        if(!user.getUserPassword().equals(userPassword)) {
+        if(!user.getUserPassword().equals(MD5.stringMD5(userPassword))) {
+            System.out.println(user.getUserPassword()+"/t"+MD5.stringMD5(userPassword));
             return JSONResult.errorMsg("密码错误");
         }
         //创建所需对象
@@ -167,7 +169,7 @@ public class CdstorageUserController {
             return new JSONResult(500,"验证码错误",null);
         }
         //修改密码
-        if (!userService.updateUserPassword(userPhone,userPassword)){
+        if (!userService.updateUserPassword(userPhone,MD5.stringMD5(userPassword))){
             return new JSONResult(500,"修改密码失败",null);
         }
         //更新redis里的token的值
@@ -243,7 +245,7 @@ public class CdstorageUserController {
         String userPassword = json.getString("userPassword");
         String userPhone = json.getString("userPhone");
         //修改密码
-        if (!userService.updateUserPassword(userPhone,userPassword)){
+        if (!userService.updateUserPassword(userPhone,MD5.stringMD5(userPassword))){
             return new JSONResult(500,"修改密码失败",null);
         }else {
             return new JSONResult(200,"修改成功",null);
@@ -271,7 +273,7 @@ public class CdstorageUserController {
      * 根据token返回用户信息
      * @return 返回用户信息
      */
-    @RequestMapping("/user/userInfo")
+    @RequestMapping({"/user/userInfo","/user/manager/userInfo","/user/manager/sup/userInfo"})
     public JSONResult userInfo(@RequestBody JSONObject json) throws JsonProcessingException {
         String token = json.getString("token");
         Jedis jedis = jedisPool.getResource();
@@ -300,6 +302,12 @@ public class CdstorageUserController {
         String token = json.getString("token");
         Jedis jedis = jedisPool.getResource();
         ObjectMapper objectMapper = new ObjectMapper();
+        String tokenValue = jedis.get(token);
+        CdstorageUser cdstorageUser = objectMapper.readValue(tokenValue, CdstorageUser.class);
+        //判断密码正确性
+        if(!cdstorageUser.getUserPassword().equals(MD5.stringMD5(user.getUserPassword()))){
+            return JSONResult.errorMsg("密码错误");
+        }
         //修改用户信息
         if(!userService.updateUser(user)){
             return JSONResult.errorMsg("修改失败");
