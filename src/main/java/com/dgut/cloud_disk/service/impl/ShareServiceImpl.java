@@ -8,6 +8,7 @@ import com.dgut.cloud_disk.service.ShareService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +32,23 @@ public class ShareServiceImpl implements ShareService {
 
     private DirectoryMapper directoryMapper;
 
+<<<<<<< Updated upstream
+=======
+    @Autowired(required = false)
+    private DirectoryFileMapper directoryFileMapper;
+
+    @Autowired(required = false)
+    private DirectoryFileMyFileMapper directoryFileMyFileMapper;
+
+    @Autowired(required = false)
+    private PersonalCatalogueService personalCatalogueService;
+
+    @Autowired(required = false)
+    private SelectbeshareforfilenottypeMapper selectbeshareforfilenottypeMapper;
+
+    @Resource
+    private SelectbesharefordirectorynottypeMapper selectbesharefordirectorynottypeMapper;
+>>>>>>> Stashed changes
 
     @Override
     public List<BeShareBo> showBeShare(String beshareID) {
