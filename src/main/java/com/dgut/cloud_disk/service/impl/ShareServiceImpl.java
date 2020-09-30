@@ -3,6 +3,10 @@ package com.dgut.cloud_disk.service.impl;
 import com.dgut.cloud_disk.mapper.*;
 import com.dgut.cloud_disk.pojo.*;
 import com.dgut.cloud_disk.pojo.bo.BeShareBo;
+<<<<<<< Updated upstream
+=======
+import com.dgut.cloud_disk.pojo.bo.ToShareBo;
+>>>>>>> Stashed changes
 import com.dgut.cloud_disk.service.DirectoryFileService;
 import com.dgut.cloud_disk.service.ShareService;
 import org.springframework.beans.factory.annotation.Autowired;

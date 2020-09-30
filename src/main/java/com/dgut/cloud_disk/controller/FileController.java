@@ -3,6 +3,7 @@ package com.dgut.cloud_disk.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.dgut.cloud_disk.pojo.*;
 import com.dgut.cloud_disk.service.*;
+import com.dgut.cloud_disk.service.impl.ShareServiceImpl;
 import com.dgut.cloud_disk.util.JSONResult;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -133,6 +134,7 @@ public class FileController {
         String newDirectID = jsonObject.getString("newDirectID");
         String token = jsonObject.getString("token");
         String fileID = jsonObject.getString("fileID");
+<<<<<<< Updated upstream
         //查群组id
         Directory directory = directoryService.selectDirectoryByID(newDirectID);
         //创建redis对象
