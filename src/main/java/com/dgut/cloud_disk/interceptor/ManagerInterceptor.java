@@ -49,7 +49,7 @@ public class ManagerInterceptor implements HandlerInterceptor {
         ObjectMapper mapper = new ObjectMapper();
         //反序列化读取封装的token对象
         CdstorageUser user = mapper.readValue(tokenValue, CdstorageUser.class);
-        if(user.getUserPermission()!=2){
+        if(user.getUserPermission()>0){
             Utils.renderJson(response, JSONResult.errorMsg("权限不足"));
             jedis.close();
             return false;
