@@ -51,12 +51,26 @@ public interface CdstorageUserService {
     public List<CdstorageUser> selByWorkId(String token,String userWorkId);
 
     /**
-     * 用手机号进行查询
+     * 用用户id进行查询
+     * @param userId
+     * @return
+     */
+    public CdstorageUser selByUserId(String userId);
+
+    /**
+     * 用手机号进行查询（模糊）
      * @param token
      * @param userMobie
      * @return 手机号查询结果
      */
     public List<CdstorageUser> selByUserPhone(String token,String userMobie);
+
+    /**
+     * 用手机号进行查询
+     * @param userMobie
+     * @return
+     */
+    public CdstorageUser selByUserMobie(String userMobie);
 
     CdstorageUser queryByUserMobie(String userName);
     boolean updateUserPassword(String userPhone,String userPassword);

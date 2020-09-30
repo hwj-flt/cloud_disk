@@ -59,14 +59,14 @@ public class CdstorageUserServiceImpl implements CdstorageUserService {
         if(StringUtils.isNotBlank(cdstorageUserVo.getUserEmail())){
             cdstorageUser.setUserEmail(cdstorageUserVo.getUserEmail());
         }
-        if(StringUtils.isNotBlank(cdstorageUserVo.getUserPassword())){
-            cdstorageUser.setUserPassword(cdstorageUserVo.getUserPassword());
+        if(StringUtils.isNotBlank(cdstorageUserVo.getUserWorkId().toString())){
+            cdstorageUser.setUserWorkId(cdstorageUserVo.getUserWorkId());
         }
         if(StringUtils.isNotBlank(cdstorageUserVo.getUserMobie())){
             cdstorageUser.setUserMobie(cdstorageUserVo.getUserMobie());
         }
-        if(cdstorageUserVo.getUserSize()!=null){
-            cdstorageUser.setUserSize(cdstorageUserVo.getUserSize());
+        if(StringUtils.isNotBlank(cdstorageUserVo.getUserSex())){
+            cdstorageUser.setUserSex(cdstorageUserVo.getUserSex());
         }
         int num = cdstorageUserMapper.updateByPrimaryKey(cdstorageUser);
         return num;
@@ -91,6 +91,11 @@ public class CdstorageUserServiceImpl implements CdstorageUserService {
     }
 
     @Override
+    public CdstorageUser selByUserId(String userId) {
+        return cdstorageUserMapper.selectByPrimaryKey(userId);
+    }
+
+    @Override
     public List<CdstorageUser> selByUserPhone(String token, String userMobie) {
         Example example = new Example(CdstorageUser.class);
         Example.Criteria criteria = example.createCriteria();
@@ -98,6 +103,16 @@ public class CdstorageUserServiceImpl implements CdstorageUserService {
         List<CdstorageUser> users = cdstorageUserMapper.selectByExample(example);
         return users;
     }
+
+    @Override
+    public CdstorageUser selByUserMobie(String userMobie) {
+        Example example = new Example(CdstorageUser.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("userMobie",userMobie);
+        CdstorageUser user = cdstorageUserMapper.selectOneByExample(example);
+        return user;
+    }
+
     /**
      *根据手机号查询用户
      * @param userMobie

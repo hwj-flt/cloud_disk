@@ -1,5 +1,8 @@
 package com.dgut.cloud_disk.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -189,6 +192,7 @@ public class CdstorageUser implements Serializable {
      *
      * @return USER_PASSWORD - 密码
      */
+    @JsonIgnore
     public String getUserPassword() {
         return userPassword;
     }
@@ -198,6 +202,7 @@ public class CdstorageUser implements Serializable {
      *
      * @param userPassword 密码
      */
+    @JsonProperty
     public void setUserPassword(String userPassword) {
         this.userPassword = userPassword;
     }
