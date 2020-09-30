@@ -22,19 +22,22 @@ public interface DirectoryFileService {
 
     public Integer VerifyCode(String sid,String code);
 
+
     public String fileDownload(String objectname,long expire);
+
 
     DirectoryFile selectFileById(String directID,String fileID);
     int ReFilename(DirectoryFile directoryFile,String directID, String fileID);
     int copyToDirect(DirectoryFile directoryFile);
     DirectoryFile selectFileById(String fileID);
     List<DirectoryFile> selectFileByDirectId(String directID);
-
+    int updateDirectFileById(DirectoryFile directoryFile,String dfFileId);
     public Date getShareTimeByID(String id);
 
     public String getFileNameByID(String id);
 
     public String getFileLinkByID(String id);
+
 
     public String getDFidByFidAndDid(String Fid,String Did);
 
@@ -50,5 +53,9 @@ public interface DirectoryFileService {
     public Boolean restoreDirectorytoNew(String id,String Did);
     //还原文件到新文件夹中
     public Boolean restoreFiletoNew(String id,String Did);
+
+
+    String getUploadUrl(String objectName);
+    Boolean insertDirectoryFile(DirectoryFile directoryFile);
 
 }

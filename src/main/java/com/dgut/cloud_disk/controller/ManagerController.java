@@ -2,16 +2,29 @@ package com.dgut.cloud_disk.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.dgut.cloud_disk.pojo.CdstorageUser;
+import com.dgut.cloud_disk.pojo.Department;
 import com.dgut.cloud_disk.pojo.DepartmentUser;
+import com.dgut.cloud_disk.pojo.Directory;
 import com.dgut.cloud_disk.pojo.vo.CdstorageUserVo;
+import com.dgut.cloud_disk.pojo.vo.DepUserVo;
 import com.dgut.cloud_disk.service.CdstorageUserService;
+import com.dgut.cloud_disk.service.DirectoryService;
 import com.dgut.cloud_disk.service.ManagerService;
 import com.dgut.cloud_disk.util.JSONResult;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/cloud/user/manage")
@@ -20,11 +33,16 @@ public class ManagerController {
     public ManagerService managerService;
     @Autowired
     private CdstorageUserService userService;
+    @Autowired
+    private DirectoryService directoryService;
+    @Autowired
+    private JedisPool jedisPool;
     /**
      * 查询所有用户
      * @return
      */
     @PostMapping("/all")
+    @CrossOrigin
     @ResponseBody
     public JSONResult allUser(){
         return new JSONResult(200,"用户列表",userService.allUser());
@@ -37,10 +55,12 @@ public class ManagerController {
     @PostMapping("/upStatus")
     @CrossOrigin
     @ResponseBody
+    @Transactional/*(noRollbackFor = ArithmeticException.class)*/
     public JSONResult updateUserStatus(@RequestBody JSONObject object){
         String token =object.getString("token");
         String userID = object.getString("userID");
         int num = userService.updateUserStatus(token,userID);
+//        int a = 1/0;
         if (num > 0){
             return new JSONResult(200,"成功禁用用户",null);
         }else {
@@ -55,6 +75,7 @@ public class ManagerController {
     @PostMapping("/upUsStatus")
     @CrossOrigin
     @ResponseBody
+    @Transactional
     public JSONResult updateUsersStatus(@RequestBody List<CdstorageUser> cdstorageUsers){
         for (CdstorageUser user:cdstorageUsers) {
             userService.updateUserStatus(null,user.getUserId());
@@ -69,6 +90,7 @@ public class ManagerController {
     @PostMapping("/upStatus1")
     @CrossOrigin
     @ResponseBody
+    @Transactional
     public JSONResult updateUserStatus1(@RequestBody JSONObject object){
         String token =object.getString("token");
         String userID = object.getString("userID");
@@ -87,6 +109,7 @@ public class ManagerController {
     @PostMapping("/upUsStatus1")
     @CrossOrigin
     @ResponseBody
+    @Transactional
     public JSONResult updateUsersStatus1(@RequestBody List<CdstorageUser> cdstorageUsers){
         for (CdstorageUser user:cdstorageUsers) {
             userService.updateUserStatus1(null,user.getUserId());
@@ -101,6 +124,7 @@ public class ManagerController {
     @PostMapping("/upUser")
     @CrossOrigin
     @ResponseBody
+    @Transactional
     public JSONResult updateUser(@RequestBody CdstorageUserVo cdstorageUserVo){
         int num = userService.updateUser1(cdstorageUserVo);
         if(num>0){
@@ -132,10 +156,8 @@ public class ManagerController {
     @CrossOrigin
     @ResponseBody
     public JSONResult selByWorkId(@RequestBody JSONObject object){
-        System.out.println(object);
         String token =object.getString("token");
         String userWorkId = object.getString("userWorkID");
-        System.out.println(userWorkId);
         List<CdstorageUser> users = userService.selByWorkId(token,userWorkId);
         return new JSONResult(200,"success",users);
     }
@@ -155,35 +177,176 @@ public class ManagerController {
     }
 
     /**
-     * 未完成（把组员移出群组）
-     * @param jsonObject
+     * 创建部门及部门根目录文件夹
+     * @param object
      * @return
+     * @throws JsonProcessingException
      */
-    @RequestMapping("/delDepartUserByIds")
-    public JSONResult delDepartUserByIds(@RequestBody JSONObject jsonObject){
-        int sum = 0;
-        String token = jsonObject.getString("token");
-        String departID = jsonObject.getString("departId");
-        String [] userIDs = jsonObject.getString("userIDs").replace("[","").replace("]","").split(",");
-
-        /*for (int i = 0;i<userIDs.length;i++){
-            if (managerService.delDepartUser(departID,userIDs[i])){
-                sum++;
-            }
-        }*/
-       List<String> userId = new ArrayList<String>();
-        for (String user: userIDs) {
-            userId.add(user);
-        }
-         /*System.out.println(userId.size());
-        if(managerService.delDepartUser(departID,userId)){
-            return new JSONResult(200,"删除成功",null);
-        }*/
-        List<DepartmentUser> list = managerService.delDepartUser(departID,userId);
-        if (list!=null){
-            return new JSONResult(200,"删除成功",list);
+    @PostMapping("/addDepart")
+    @CrossOrigin
+    @ResponseBody
+    @Transactional
+    public JSONResult addDepartment(@RequestBody JSONObject object) throws JsonProcessingException {
+        String departId = UUID.randomUUID().toString().replaceAll("-","");
+        String departRoot = UUID.randomUUID().toString().replaceAll("-","");
+        String token =object.getString("token");
+        String departName = object.getString("departName");
+        //从token中获取用户
+        Jedis jedis = jedisPool.getResource();
+        String tokenValue = jedis.get(token);
+        ObjectMapper objectMapper=new ObjectMapper();
+        CdstorageUser cdstorageUser = objectMapper.readValue(tokenValue, CdstorageUser.class);
+        //部门实体
+        Department department = new Department(departId,departName,departRoot,new Date(),"00000000");
+        //文件夹实体
+        Directory directory = new Directory(departRoot,null,departName,new Date(),
+                cdstorageUser.getUserId(), (byte)2,null,departId,(byte)1,
+                new BigDecimal(0),null);
+        //判断权限
+        if (cdstorageUser.getUserPermission() != 1){
+            //创建部门
+            managerService.addDepartment(department);
+            //创建部门根目录文件夹
+            directoryService.insertDirectory(directory);
+            //文档管理员加入部门
+            List<String> a= new ArrayList<String>();
+            a.add(cdstorageUser.getUserId());
+            managerService.addUserToDepart(departId, a);
+            return new JSONResult(200,"部门创建成功",null);
         }else {
-            return JSONResult.errorMsg("参数错误");
+            return new JSONResult(500,"无访问权限",null);
+        }
+    }
+
+    /**
+     * 添加用户到群组
+     * @param depUserVo
+     * @return
+     * @throws JsonProcessingException
+     */
+    @PostMapping("/addUserToDep")
+    @CrossOrigin
+    @ResponseBody
+    @Transactional
+    public JSONResult addDepartment(@RequestBody DepUserVo depUserVo) throws JsonProcessingException {
+        //从token中获取用户
+        Jedis jedis = jedisPool.getResource();
+        String tokenValue = jedis.get(depUserVo.getToken());
+        ObjectMapper objectMapper=new ObjectMapper();
+        CdstorageUser cdstorageUser = objectMapper.readValue(tokenValue, CdstorageUser.class);
+        //判断权限
+        if (cdstorageUser.getUserPermission() != 1){
+            Boolean boo = managerService.addUserToDepart(depUserVo.getDepartId(),depUserVo.getUserIds());
+            if (boo){
+                return new JSONResult(200,"添加成功",null);
+            }else {
+                return new JSONResult(204,"添加失败",null);
+            }
+        }else {
+            return new JSONResult(500,"无访问权限",null);
+        }
+    }
+
+    /**
+     * 设置群组权限
+     * @param jsonObject 前端传回的token，departID，departPermission
+     * @return
+     * @throws JsonProcessingException
+     */
+    @PostMapping("/setDepPerm")
+    @CrossOrigin
+    @ResponseBody
+    @Transactional
+    public JSONResult setDepPerm(@RequestBody JSONObject jsonObject) throws JsonProcessingException {
+        String token =jsonObject.getString("token");
+        String departId =jsonObject.getString("departID");
+        String departPermission =jsonObject.getString("departPermission");
+        //从token中获取用户
+        Jedis jedis = jedisPool.getResource();
+        String tokenValue = jedis.get(token);
+        ObjectMapper objectMapper=new ObjectMapper();
+        CdstorageUser cdstorageUser = objectMapper.readValue(tokenValue, CdstorageUser.class);
+        if (cdstorageUser.getUserPermission() != 1){
+            Boolean boo = managerService.setDepPerm(departId,departPermission);
+            if (boo){
+                return new JSONResult(200,"成功设置权限",null);
+            }else {
+                return new JSONResult(204,"设置权限失败",null);
+            }
+        }else {
+            return new JSONResult(500,"无访问权限",null);
+        }
+    }
+
+    /**
+     * 所有部门
+     * @param token
+     * @return
+     * @throws JsonProcessingException
+     */
+    @GetMapping("/allDepart")
+    @CrossOrigin
+    @ResponseBody
+    public JSONResult allDepart(@Param("token") String token) throws JsonProcessingException {
+        System.out.println(token);
+        //从token中获取用户
+        Jedis jedis = jedisPool.getResource();
+        String tokenValue = jedis.get(token);
+        ObjectMapper objectMapper=new ObjectMapper();
+        CdstorageUser cdstorageUser = objectMapper.readValue(tokenValue, CdstorageUser.class);
+        if (cdstorageUser.getUserPermission() != 1){
+            List<Department> departments = managerService.allDepart();
+            return new JSONResult(200,"部门列表",departments);
+        }else {
+            return new JSONResult(500,"无访问权限",null);
+        }
+    }
+
+    @PostMapping("/selUserAtDep")
+    @CrossOrigin
+    @ResponseBody
+    public JSONResult selUserAtDep(@RequestBody JSONObject jsonObject) throws JsonProcessingException {
+        String token =jsonObject.getString("token");
+        String departId =jsonObject.getString("departID");
+        //从token中获取用户
+        Jedis jedis = jedisPool.getResource();
+        String tokenValue = jedis.get(token);
+        ObjectMapper objectMapper=new ObjectMapper();
+        CdstorageUser cdstorageUser = objectMapper.readValue(tokenValue, CdstorageUser.class);
+        if (cdstorageUser.getUserPermission() != 1){
+            List<CdstorageUser> users = managerService.selUserAtDep(departId);
+            return new JSONResult(200,"部门内用户列表",users);
+        }else {
+            return new JSONResult(500,"无访问权限",null);
+        }
+    }
+
+    /**
+     * 把组员移出群组
+     * @param depUserVo
+     * @return
+     * @throws JsonProcessingException
+     */
+    @PostMapping("/delDepartUserByIds")
+    @CrossOrigin
+    @ResponseBody
+    @Transactional
+    public JSONResult delDepartUserByIds(@RequestBody DepUserVo depUserVo) throws JsonProcessingException {
+        //从token中获取用户
+        Jedis jedis = jedisPool.getResource();
+        String tokenValue = jedis.get(depUserVo.getToken());
+        ObjectMapper objectMapper=new ObjectMapper();
+        CdstorageUser cdstorageUser = objectMapper.readValue(tokenValue, CdstorageUser.class);
+        //判断权限
+        if (cdstorageUser.getUserPermission() != 1){
+            Boolean boo = managerService.delDepartUser(depUserVo.getDepartId(),depUserVo.getUserIds());
+            if (boo){
+                return new JSONResult(200,"移除成功",null);
+            }else {
+                return new JSONResult(204,"移除失败",null);
+            }
+        }else {
+            return new JSONResult(500,"无访问权限",null);
         }
     }
 

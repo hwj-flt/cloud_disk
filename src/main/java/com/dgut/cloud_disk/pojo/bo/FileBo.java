@@ -1,6 +1,6 @@
 package com.dgut.cloud_disk.pojo.bo;
 
-public class FileVo {
+public class FileBo {
     private String fileID;
     private String type;
     private String name;

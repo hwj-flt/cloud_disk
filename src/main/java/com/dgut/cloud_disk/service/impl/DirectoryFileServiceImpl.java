@@ -14,13 +14,17 @@ import com.obs.services.ObsClient;
 import com.obs.services.model.HttpMethodEnum;
 import com.obs.services.model.TemporarySignatureRequest;
 import com.obs.services.model.TemporarySignatureResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 @Service
 public class DirectoryFileServiceImpl implements DirectoryFileService {
 
@@ -32,11 +36,17 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
     private ToshareMapper toshareMapper;
 
     @Resource
+    DirectoryFileMapper directoryFileMapper;
+    @Resource
     private MyfileMapper myfileMapper;
 
     @Autowired
     private ObsConfig obsConfig;
 
+
+
+    @Resource
+    private ObsConfig obsConfig;
 
     @Override
     public List<DirectoryFile> allFile() {
@@ -63,10 +73,10 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
        if(i>0){
            return true;
        }else {
-           //System.out.println(i);
            return false;
        }
     }
+
     @Override
     public Boolean deleteDirectory(String directID) {
         Example example = new Example(Directory.class);
@@ -83,6 +93,7 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
             return false;
         }
     }
+
 
     @Override
     public Boolean deleteDorDF(int type, String id) {
@@ -134,6 +145,7 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
 
 
     @Override
+
     public Date getShareTimeByID(String id) {
         Toshare toshare=toshareMapper.selectByPrimaryKey(id);
         return toshare.getShareTime();
@@ -162,9 +174,43 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
         Myfile myfile=myfileMapper.selectByPrimaryKey(df.getDfFileId());
         String FileLink=myfile.getFileLink();
         return FileLink;
+
+    public String getUploadUrl(String objectName){
+        String ak = obsConfig.getAccessKeyId();
+        String sk = obsConfig.getSecretAccessKey();
+        String endPoint = obsConfig.getEndpoint();
+        // 创建ObsClient实例
+        ObsClient obsClient = new ObsClient(ak, sk, endPoint);
+        // URL有效期，3600秒
+        long expireSeconds = 3600L;
+        Map<String, String> headers = new HashMap<String, String>();
+        String contentType = "multipart/form-data";
+        headers.put("Content-Type", contentType);
+
+        TemporarySignatureRequest request = new TemporarySignatureRequest(HttpMethodEnum.PUT, expireSeconds);
+        request.setBucketName(obsConfig.getBucketName());
+        request.setObjectKey(objectName);
+        request.setHeaders(headers);
+//        System.out.println(request);
+        TemporarySignatureResponse response = obsClient.createTemporarySignature(request);
+//        System.out.println(response.getSignedUrl());
+        return response.getSignedUrl();
     }
 
     @Override
+    public Boolean insertDirectoryFile(DirectoryFile directoryFile) {
+        return directoryFileMapper.insertSelective(directoryFile)>0;
+
+    }
+
+
+    /**
+     * 文件下载
+     * @param objectname 文件链接
+     * @return 下载文件的地址链接
+     */
+    @Override
+
     public String getDFidByFidAndDid(String Fid, String Did) {
         Example example = new Example(DirectoryFile.class);
         Example.Criteria criteria = example.createCriteria();
@@ -181,13 +227,21 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
         String ak = "VSTWKTJ92NZAI2VJ14PJ";
         String sk = "5tpC64qnXaOFpw5zwKV0vnZoEQAVCjpE0s6BomQg";
         String endPoint = "obs.cn-north-4.myhuaweicloud.com";
+/*
+
+    public String fileDownload(String objectname,Long time) {
+        String ak = obsConfig.getAccessKeyId();
+        String sk = obsConfig.getSecretAccessKey();
+        String endPoint = obsConfig.getEndpoint();
+*/
+
 
         // 创建ObsClient实例
         ObsClient obsClient = new ObsClient(ak, sk, endPoint);
         // URL有效期，3600秒
-        long expireSeconds = 3600L;
+        long expireSeconds = time;
         TemporarySignatureRequest request = new TemporarySignatureRequest(HttpMethodEnum.GET, expireSeconds);
-        request.setBucketName("obs-dgut-lh");
+        request.setBucketName(obsConfig.getBucketName());
         request.setObjectKey(objectname);
         TemporarySignatureResponse response = obsClient.createTemporarySignature(request);
         return response.getSignedUrl();
@@ -390,3 +444,14 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
     }
 }
 
+
+    @Override
+    public int updateDirectFileById(DirectoryFile directoryFile, String dfFileId) {
+        //修改文件映射表
+        Example example = new Example(DirectoryFile.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("dfFileId",dfFileId);
+        int i = DFmapper.updateByExampleSelective(directoryFile, example);
+        return i;
+    }
+}

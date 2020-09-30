@@ -1,7 +1,7 @@
 package com.dgut.cloud_disk.controller;
 
 import com.dgut.cloud_disk.pojo.CdstorageUser;
-import com.dgut.cloud_disk.pojo.bo.DirectoryVo;
+import com.dgut.cloud_disk.pojo.bo.DirectoryBo;
 import com.dgut.cloud_disk.pojo.vo.TokenVo;
 import com.dgut.cloud_disk.service.PersonalCatalogueService;
 import com.dgut.cloud_disk.util.JSONResult;
@@ -23,15 +23,13 @@ public class PersonalCatalogue {
     @Autowired
     private JedisPool jedisPool;
 
-    @RequestMapping("/userCatalogue")
+@RequestMapping("/userCatalogue")
     public JSONResult userCatalogue(@RequestBody TokenVo tokenVo) throws Exception {
 
         //获取用户的根目录ID
         jedisPool.getResource();
         Jedis jedis = jedisPool.getResource();
         String tokenValue = jedis.get(tokenVo.getToken());
-        System.out.println(tokenVo.getToken());
-        System.out.println(tokenValue);
         if (tokenValue==null){
             throw  new Exception("请登录");
         }
@@ -40,7 +38,8 @@ public class PersonalCatalogue {
         CdstorageUser user = mapper.readValue(tokenValue, CdstorageUser.class);
         String directoryRootId = user.getUserRootId();
         //使用根目录ID获取文件结构目录
-        DirectoryVo directoryVo = personalCatalogueService.getAllCatalogue(directoryRootId);
-        return  JSONResult.ok(directoryVo);
+        DirectoryBo directoryBo = personalCatalogueService.getAllCatalogue(directoryRootId);
+        //String json = mapper.writeValueAsString(JSONResult.ok(directoryBo));
+        return  JSONResult.ok(directoryBo);
     }
 }

@@ -1,9 +1,9 @@
 目标package: generator.one
 
 当前时间：
-2020-9-28
-15:20:49
-2020-09-28 15:20:49
+2020-9-29
+17:00:29
+2020-09-29 17:00:29
 
 所有配置的属性信息:
 targetPackage - generator.one
@@ -610,7 +610,7 @@ fileName - ${tableClass.shortClassName}Test.txt
     类型短名：BigDecimal
     类型全名：java.math.BigDecimal
     是否主键：false
-    是否可空：false
+    是否可空：true
     是否为BLOB列：false
     是否为String列：false
     是否为字符串列：false

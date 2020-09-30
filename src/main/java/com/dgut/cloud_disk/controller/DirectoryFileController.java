@@ -16,6 +16,7 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
 import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -34,6 +35,7 @@ public class DirectoryFileController {
         return (DFService.allFile());
     }
 
+
     @RequestMapping("/user/deleteFile")
 	public JSONResult deleteDirectoryFile(@RequestBody JSONObject jsonObject) throws JsonProcessingException {
         String token = jsonObject.getString("token");
@@ -43,6 +45,10 @@ public class DirectoryFileController {
         ObjectMapper objectMapper=new ObjectMapper();
         CdstorageUser cdstorageUser = objectMapper.readValue(tokenValue, CdstorageUser.class);
 
+
+    @RequestMapping("/user/delete")
+    public JSONResult deleteDirectoryFile(@RequestBody JSONObject jsonObject){
+
         String directID=jsonObject.getString("directID");
         String fileID=jsonObject.getString("fileID");
         if(DFService.deleteFile(directID,fileID,cdstorageUser.getUserId())){
@@ -51,6 +57,7 @@ public class DirectoryFileController {
             return new JSONResult(500,"删除失败！","");
         }
     }
+
     @RequestMapping("/user/deleteDirectory")
     public JSONResult deleteDirectory(@RequestBody JSONObject jsonObject) throws JsonProcessingException {
         String token = jsonObject.getString("token");
@@ -122,7 +129,6 @@ public class DirectoryFileController {
         return new JSONResult(200,"分享成功！","");
     }
 
-
     @RequestMapping("/user/publicShare")//外链分享
     public JSONResult publicShare(@RequestBody JSONObject jsonObject) throws JsonProcessingException {
         String token = jsonObject.getString("token");
@@ -149,6 +155,15 @@ public class DirectoryFileController {
             //3-外链分享文件 ！！外链分享只分享文件
             toshare.setShareType((byte) 3);
             toshare.setShareFileId(DFService.getDFidByFidAndDid(Fid,Did));//只设置ShareFileId
+
+        if(Fid!=null){
+            //1-私密分享文件 2-私密分享文件夹 3-外链分享文件 4-外链分享文件夹
+            toshare.setShareType((byte) 3);
+            toshare.setShareFileId(Fid);
+        }else if(Did!=null){
+            toshare.setShareType((byte) 4);
+            toshare.setShareDirectId(Did);
+
         }else{
             return new JSONResult(500,"分享失败！","");
         }
@@ -172,8 +187,11 @@ public class DirectoryFileController {
             String fileName=DFService.getFileNameByID(shareID);
             Date shareTime=DFService.getShareTimeByID(shareID);
 
+
             //System.out.println(fileName+shareTime);
-            String downloadUrl=DFService.fileDownload(DFService.getFileLinkByID(shareID),100);
+
+            String downloadUrl=DFService.fileDownload(DFService.getFileLinkByID(shareID),300L);
+
             JSONObject obj=new JSONObject();
             obj.put("fileName",fileName);
             obj.put("shareTime",shareTime);

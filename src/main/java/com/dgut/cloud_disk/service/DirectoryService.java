@@ -8,7 +8,16 @@ public interface DirectoryService {
 
     int updateDirectoryByID(Directory directory, String directID);
 
-    int insertDirectory(Directory directory);
+
+    //int insertDirectory(Directory directory);
+
+    /**
+     * 新建文件夹
+     * @param directory
+     * @return
+     */
+    Boolean insertDirectory(Directory directory);
+
 }
 
 

@@ -13,11 +13,11 @@ targetProject - src/test/resources
 fileName - ${tableClass.shortClassName}Test.txt
 
 实体和表的信息：
-表名：SELECTBESHAREFORFILE
-变量名：selectbeshareforfile
-小写名：selectbeshareforfile
-类名：Selectbeshareforfile
-全名：com.dgut.cloud_disk.pojo.Selectbeshareforfile
+表名：SELECTBESHAREFORFILENOTTYPE
+变量名：selectbeshareforfilenottype
+小写名：selectbeshareforfilenottype
+类名：Selectbeshareforfilenottype
+全名：com.dgut.cloud_disk.pojo.Selectbeshareforfilenottype
 包名：com.dgut.cloud_disk.pojo
 
 列的信息：

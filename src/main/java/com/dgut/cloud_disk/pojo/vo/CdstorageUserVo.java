@@ -18,7 +18,7 @@ public class CdstorageUserVo {
      * 工号
      */
     @Column(name = "`USER_WORK_ID`")
-    private Integer userWorkId;
+    private Long userWorkId;
 
     /**
      * 用户名
@@ -92,6 +92,8 @@ public class CdstorageUserVo {
     @Column(name = "`USER_PERMISSION`")
     private Integer userPermission;
 
+    private static final long serialVersionUID = 1L;
+
     public String getToken() {
         return token;
     }
@@ -108,11 +110,11 @@ public class CdstorageUserVo {
         this.userId = userId;
     }
 
-    public Integer getUserWorkId() {
+    public Long getUserWorkId() {
         return userWorkId;
     }
 
-    public void setUserWorkId(Integer userWorkId) {
+    public void setUserWorkId(Long userWorkId) {
         this.userWorkId = userWorkId;
     }
 
@@ -212,6 +214,31 @@ public class CdstorageUserVo {
         this.userPermission = userPermission;
     }
 
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public CdstorageUserVo() {
+    }
+
+    public CdstorageUserVo(String token, String userId, Long userWorkId, String userName, String userSex, Date userTime, String userPassword, String userMobie, String userEmail, String userRootId, String userGarbage, BigDecimal userSize, BigDecimal userUsed, Byte userStatus, Integer userPermission) {
+        this.token = token;
+        this.userId = userId;
+        this.userWorkId = userWorkId;
+        this.userName = userName;
+        this.userSex = userSex;
+        this.userTime = userTime;
+        this.userPassword = userPassword;
+        this.userMobie = userMobie;
+        this.userEmail = userEmail;
+        this.userRootId = userRootId;
+        this.userGarbage = userGarbage;
+        this.userSize = userSize;
+        this.userUsed = userUsed;
+        this.userStatus = userStatus;
+        this.userPermission = userPermission;
+    }
+
     @Override
     public String toString() {
         return "CdstorageUserVo{" +
@@ -231,26 +258,5 @@ public class CdstorageUserVo {
                 ", userStatus=" + userStatus +
                 ", userPermission=" + userPermission +
                 '}';
-    }
-
-    public CdstorageUserVo() {
-    }
-
-    public CdstorageUserVo(String token, String userId, Integer userWorkId, String userName, String userSex, Date userTime, String userPassword, String userMobie, String userEmail, String userRootId, String userGarbage, BigDecimal userSize, BigDecimal userUsed, Byte userStatus, Integer userPermission) {
-        this.token = token;
-        this.userId = userId;
-        this.userWorkId = userWorkId;
-        this.userName = userName;
-        this.userSex = userSex;
-        this.userTime = userTime;
-        this.userPassword = userPassword;
-        this.userMobie = userMobie;
-        this.userEmail = userEmail;
-        this.userRootId = userRootId;
-        this.userGarbage = userGarbage;
-        this.userSize = userSize;
-        this.userUsed = userUsed;
-        this.userStatus = userStatus;
-        this.userPermission = userPermission;
     }
 }
