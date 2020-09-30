@@ -13,12 +13,17 @@ import com.obs.services.ObsClient;
 import com.obs.services.model.HttpMethodEnum;
 import com.obs.services.model.TemporarySignatureRequest;
 import com.obs.services.model.TemporarySignatureResponse;
+import okhttp3.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 @Service
 public class DirectoryFileServiceImpl implements DirectoryFileService {
 
@@ -57,7 +62,7 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
        }
 
     }
-    
+
     @Override
     public Boolean deleteDorDF(int type, String id) {
         int i=0;
@@ -106,33 +111,33 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
     }
 
     @Override
-    public Date getShareTimeByID(String id) {
-        Toshare toshare=toshareMapper.selectByPrimaryKey(id);
-        return toshare.getShareTime();
+    public String getUploadUrl(String objectName){
+        String ak = obsConfig.getAccessKeyId();
+        String sk = obsConfig.getSecretAccessKey();
+        String endPoint = obsConfig.getEndpoint();
+        // 创建ObsClient实例
+        ObsClient obsClient = new ObsClient(ak, sk, endPoint);
+        // URL有效期，3600秒
+        long expireSeconds = 3600L;
+        Map<String, String> headers = new HashMap<String, String>();
+        String contentType = "multipart/form-data";
+        headers.put("Content-Type", contentType);
+
+        TemporarySignatureRequest request = new TemporarySignatureRequest(HttpMethodEnum.PUT, expireSeconds);
+        request.setBucketName(obsConfig.getBucketName());
+        request.setObjectKey(objectName);
+        request.setHeaders(headers);
+//        System.out.println(request);
+        TemporarySignatureResponse response = obsClient.createTemporarySignature(request);
+//        System.out.println(response.getSignedUrl());
+        return response.getSignedUrl();
     }
 
     @Override
-    public String getFileNameByID(String id) {
-        Toshare toshare=toshareMapper.selectByPrimaryKey(id);
-        /*String Did=toshare.getShareDirectId();
-        String Fid=toshare.getShareFileId();*/
-
-        Example example = new Example(DirectoryFile.class);
-        Example.Criteria criteria=example.createCriteria();
-        criteria.andEqualTo("dfDirectId",toshare.getShareDirectId()).andEqualTo("dfFileId",toshare.getShareFileId());
-        DirectoryFile directoryFile=DFmapper.selectOneByExample(example);
-        //System.out.println(directoryFile.getDfFileName()+"");
-        return directoryFile.getDfFileName();
+    public Boolean insertDirectoryFile(DirectoryFile directoryFile) {
+        return directoryFileMapper.insertSelective(directoryFile)>0;
     }
 
-    @Override
-    public String getFileLinkByID(String id) {
-        Toshare toshare=toshareMapper.selectByPrimaryKey(id);
-
-        Myfile myfile=myfileMapper.selectByPrimaryKey(toshare.getShareFileId());
-        String FileLink=myfile.getFileLink();
-        return FileLink;
-    }
 
     /**
      * 文件下载
@@ -241,4 +246,3 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
         return i;
     }
 }
-

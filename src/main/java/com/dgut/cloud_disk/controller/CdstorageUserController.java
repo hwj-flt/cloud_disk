@@ -9,8 +9,11 @@ import com.dgut.cloud_disk.util.JSONResult;
 import com.dgut.cloud_disk.util.SendCodeUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.issCollege.util.MD5;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.math.BigDecimal;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -62,7 +65,8 @@ public class CdstorageUserController {
             return JSONResult.errorMsg("用户被禁用，请找管理员解禁");
         }
         //检查密码是否正确
-        if(!user.getUserPassword().equals(userPassword)) {
+        if(!user.getUserPassword().equals(MD5.stringMD5(userPassword))) {
+            System.out.println(user.getUserPassword()+"/t"+MD5.stringMD5(userPassword));
             return JSONResult.errorMsg("密码错误");
         }
         //创建所需对象
@@ -165,7 +169,7 @@ public class CdstorageUserController {
             return new JSONResult(500,"验证码错误",null);
         }
         //修改密码
-        if (!userService.updateUserPassword(userPhone,userPassword)){
+        if (!userService.updateUserPassword(userPhone,MD5.stringMD5(userPassword))){
             return new JSONResult(500,"修改密码失败",null);
         }
         //更新redis里的token的值
@@ -241,7 +245,7 @@ public class CdstorageUserController {
         String userPassword = json.getString("userPassword");
         String userPhone = json.getString("userPhone");
         //修改密码
-        if (!userService.updateUserPassword(userPhone,userPassword)){
+        if (!userService.updateUserPassword(userPhone,MD5.stringMD5(userPassword))){
             return new JSONResult(500,"修改密码失败",null);
         }else {
             return new JSONResult(200,"修改成功",null);
@@ -251,7 +255,7 @@ public class CdstorageUserController {
      * 退出登录
      * @return 操作结果
      */
-    @RequestMapping("/user/logout")
+    @RequestMapping({"/user/logout","/user/manager/logout","/user/manager/sup/logout"})
     public JSONResult logout(@RequestBody JSONObject json){
         String token = json.getString("token");
         Jedis jedis = jedisPool.getResource();
@@ -269,33 +273,36 @@ public class CdstorageUserController {
      * 根据token返回用户信息
      * @return 返回用户信息
      */
-    @RequestMapping("/user/userInfo")
+    @RequestMapping({"/user/userInfo","/user/manager/userInfo","/user/manager/sup/userInfo"})
     public JSONResult userInfo(@RequestBody JSONObject json) throws JsonProcessingException {
         String token = json.getString("token");
         Jedis jedis = jedisPool.getResource();
         String tokenValue = jedis.get(token);
         jedis.close();
-        ObjectMapper mapper = new ObjectMapper();
-        CdstorageUser user = mapper.readValue(tokenValue, CdstorageUser.class);
         if (tokenValue == null){
             return new JSONResult(500,"参数错误", null);
         }
+        ObjectMapper mapper = new ObjectMapper();
+        CdstorageUser user = mapper.readValue(tokenValue, CdstorageUser.class);
+        user.setUserSize(user.getUserSize().divide(new BigDecimal(1000)));
+        user.setUserUsed(user.getUserUsed().divide(new BigDecimal(1000)));
         return new JSONResult(JSONObject.toJSON(user));
     }
 
    /**
      *修改手机号或邮箱
-     * user 前端传入的用户信息封装成CdstorageUser
-     * token redis中的键
      * @return 操作结果
      * @throws JsonProcessingException 字符串转化错误
      */
-    @RequestMapping("/user/updateUserInfo")
+    @RequestMapping({"/user/updateUserInfo","/user/manager/updateUserInfo","/user/manager/sup/updateUserInfo"})
     public JSONResult updateUserInfo(@RequestBody JSONObject json) throws JsonProcessingException {
-        CdstorageUser user = (CdstorageUser) json.get("user");
         String token = json.getString("token");
         Jedis jedis = jedisPool.getResource();
         ObjectMapper objectMapper = new ObjectMapper();
+        String tokenValue = jedis.get(token);
+        CdstorageUser user = objectMapper.readValue(tokenValue, CdstorageUser.class);
+        user.setUserMobie(json.getString("userMobie"));
+        user.setUserEmail(json.getString("userEmail"));
         //修改用户信息
         if(!userService.updateUser(user)){
             return JSONResult.errorMsg("修改失败");
@@ -306,6 +313,28 @@ public class CdstorageUserController {
         jedis.expire(token,tokenValidTime);
         jedis.close();
         return JSONResult.ok("修改成功");
+    }
+
+    /**
+     * 用户修改密码
+     * @param json 前端传token和新密码
+     * @return 返回操作结果
+     * @throws JsonProcessingException JsonProcessingException
+     */
+    @RequestMapping({"/user/updatePass","/user/manager/updatePass","/user/manager/sup/updatePass"})
+    public JSONResult updateUserPass(JSONObject json) throws JsonProcessingException {
+        String userPassword = json.getString("userPassword");
+        String token = json.getString("token");
+        Jedis jedis = jedisPool.getResource();
+        ObjectMapper mapper = new ObjectMapper();
+        String tokenValue = jedis.get(token);
+        CdstorageUser user = mapper.readValue(tokenValue, CdstorageUser.class);
+        //修改密码
+        if (!userService.updateUserPassword(user.getUserMobie(),MD5.stringMD5(userPassword))){
+            return new JSONResult(500,"修改密码失败",null);
+        }else {
+            return new JSONResult(200,"修改成功",null);
+        }
     }
     @RequestMapping("/user/manage/sup/allManages")
     public JSONResult allManages(){
