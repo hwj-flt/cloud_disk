@@ -10,11 +10,10 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
-import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class UserInterceptor implements HandlerInterceptor {
+public class ManagerInterceptor implements HandlerInterceptor {
     @Autowired
     private JedisPool jedisPool;
     @Value("${redis.defaultTokenValidTime}")
@@ -45,10 +44,19 @@ public class UserInterceptor implements HandlerInterceptor {
             jedis.close();
             return false;
         }
+
+        //说明里面有东西，还没过期，需要解析有效时间，重新设置token有效期，刷新时间
+        ObjectMapper mapper = new ObjectMapper();
+        //反序列化读取封装的token对象
+        CdstorageUser user = mapper.readValue(tokenValue, CdstorageUser.class);
+        if(user.getUserPermission()>0){
+            Utils.renderJson(response, JSONResult.errorMsg("权限不足"));
+            jedis.close();
+            return false;
+        }
         //从token对象中取得有效时间（当时登录时存的，可能是站点默认值，可能是用户填写的具体时间长，也可能是永远记住-1），重新设置redis中的key的有效时间，完成刷新
         jedis.expire(token,tokenValidTime);
         jedis.close();
         return HandlerInterceptor.super.preHandle(request, response, handler);
     }
-
 }

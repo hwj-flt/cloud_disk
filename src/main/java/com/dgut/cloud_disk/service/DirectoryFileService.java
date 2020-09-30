@@ -29,4 +29,6 @@ public interface DirectoryFileService {
     public String getFileNameByID(String id);
 
     public String getFileLinkByID(String id);
+    String getUploadUrl(String objectName);
+    Boolean insertDirectoryFile(DirectoryFile directoryFile);
 }
