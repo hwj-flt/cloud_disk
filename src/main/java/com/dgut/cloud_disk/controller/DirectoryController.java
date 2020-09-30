@@ -94,9 +94,10 @@ public class DirectoryController {
         BigDecimal bigDecimal=new BigDecimal(0);
         directory.setDirectSize(bigDecimal);//暂时初始为0
 
-        DepartmentUser Duser=DUService.selectduPermissionByid(cdstorageUser.getUserId(),DUService.getDepartIDByid(cdstorageUser.getUserId()));
-        String dePermission=Duser.getDuPermission();
-        String p=dePermission.substring(3,4);//截取第四位（即新建文件夹的权限）
+        //DepartmentUser Duser=DUService.selectdepartPermissionByid();
+        //String dePermission=Duser.getDuPermission();
+        //String p=dePermission.substring(3,4);//截取第四位（即新建文件夹的权限）
+        String p="111";
         //System.out.println("++++"+p);
         int i=0;
         if(p.equals("1")){//判断为1说明有该权限

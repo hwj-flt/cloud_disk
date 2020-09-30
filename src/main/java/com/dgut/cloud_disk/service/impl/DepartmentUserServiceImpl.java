@@ -1,6 +1,8 @@
 package com.dgut.cloud_disk.service.impl;
 
+import com.dgut.cloud_disk.mapper.DepartmentMapper;
 import com.dgut.cloud_disk.mapper.DepartmentUserMapper;
+import com.dgut.cloud_disk.pojo.Department;
 import com.dgut.cloud_disk.pojo.DepartmentUser;
 import com.dgut.cloud_disk.service.DepartmentUserService;
 
@@ -14,8 +16,10 @@ import java.util.List;
 public class DepartmentUserServiceImpl implements DepartmentUserService {
     @Autowired(required = false)
     private DepartmentUserMapper departmentUserMapper;
+    @Autowired(required = false)
+    private DepartmentMapper departmentMapper;
 
-    @Override
+ /*   @Override
     public DepartmentUser selectduPermissionByid(String duUserId, String duDepartId) {
         Example example = new Example(DepartmentUser.class);
         Example.Criteria criteria = example.createCriteria();
@@ -23,6 +27,13 @@ public class DepartmentUserServiceImpl implements DepartmentUserService {
         criteria.andEqualTo("duDepartId",duDepartId);
         DepartmentUser departmentUser = departmentUserMapper.selectOneByExample(example);
         return departmentUser;
+    }*/
+
+    @Override
+    public String selectdepartPermissionByid(String dDepartId) {
+        Department department=departmentMapper.selectByPrimaryKey(dDepartId);
+        //department;
+        return null;
     }
 
     @Override

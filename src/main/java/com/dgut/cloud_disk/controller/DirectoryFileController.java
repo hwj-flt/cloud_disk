@@ -25,6 +25,7 @@ import java.util.UUID;
 public class DirectoryFileController {
     @Resource
     private DirectoryFileService DFService;
+
     @Autowired
     private JedisPool jedisPool;
     @RequestMapping("/df")
@@ -33,18 +34,42 @@ public class DirectoryFileController {
         return (DFService.allFile());
     }
 
-    @RequestMapping("/user/delete")
-	public JSONResult deleteDirectoryFile(@RequestBody JSONObject jsonObject){
+    @RequestMapping("/user/deleteFile")
+	public JSONResult deleteDirectoryFile(@RequestBody JSONObject jsonObject) throws JsonProcessingException {
+        String token = jsonObject.getString("token");
+        //从token中获取分享人id
+        Jedis jedis = jedisPool.getResource();
+        String tokenValue = jedis.get(token);
+        ObjectMapper objectMapper=new ObjectMapper();
+        CdstorageUser cdstorageUser = objectMapper.readValue(tokenValue, CdstorageUser.class);
+
         String directID=jsonObject.getString("directID");
         String fileID=jsonObject.getString("fileID");
-        if(DFService.deleteFile(directID,fileID)){
+        if(DFService.deleteFile(directID,fileID,cdstorageUser.getUserId())){
             return new JSONResult(200,"删除成功！","");
         }else {
             return new JSONResult(500,"删除失败！","");
         }
     }
+    @RequestMapping("/user/deleteDirectory")
+    public JSONResult deleteDirectory(@RequestBody JSONObject jsonObject) throws JsonProcessingException {
+        String token = jsonObject.getString("token");
+        //从token中获取分享人id
+        Jedis jedis = jedisPool.getResource();
+        String tokenValue = jedis.get(token);
+        ObjectMapper objectMapper=new ObjectMapper();
+        CdstorageUser cdstorageUser = objectMapper.readValue(tokenValue, CdstorageUser.class);
+        String directID=jsonObject.getString("directID");
+        if(DFService.deleteDirectory(directID)){
+            return new JSONResult(200,"删除成功！","");
+        }else {
+            return new JSONResult(500,"删除失败！","");
+        }
 
-        @RequestMapping("/user/deleteDorDF")
+    }
+
+
+    @RequestMapping("/user/deleteDorDF")//彻底删除
     public JSONResult deleteDirectoryFileOrDirectory(@RequestBody JSONObject jsonObject){
         int type =jsonObject.getInteger("type");
         String id =jsonObject.getString("id");
@@ -65,7 +90,7 @@ public class DirectoryFileController {
         String Fid = jsonObject.getString("fileID");
         Integer shareTime =jsonObject.getInteger("shareTime");
         String [] userIDs = jsonObject.getString("users").replace("[","").replace("]","").split(",");
-
+        System.out.println(token+Did+Fid+shareTime);
         //从token中获取分享人id
         Jedis jedis = jedisPool.getResource();
         String tokenValue = jedis.get(token);
@@ -81,13 +106,14 @@ public class DirectoryFileController {
         Date date=new Date();
         toshare.setShareTime(date);
         toshare.setShareExpire(new Date(date.getTime() + shareTime * 1000L));
-        if(Fid!=null){
-            //1-私密分享文件 2-私密分享文件夹 3-外链分享文件 4-外链分享文件夹
-            toshare.setShareType((byte) 1);
-            toshare.setShareFileId(Fid);
-        }else if(Did!=null){
+
+        if(Fid!=null&&Did!=null){//当两个id都非空时 分享文件
+            //DFService.getDFidByFidAndDid(Fid,Did);
+            toshare.setShareType((byte) 1);//1-私密分享文件 2-私密分享文件夹 3-外链分享文件 4-外链分享文件夹
+            toshare.setShareFileId(DFService.getDFidByFidAndDid(Fid,Did));//只设置ShareFileId
+        }else if(Fid==null&&Did!=null){//当Fid为空，Did非空时 分享文件夹
             toshare.setShareType((byte) 2);
-            toshare.setShareDirectId(Did);
+            toshare.setShareDirectId(Did);//只设置ShareDirectID;
         }else{
             return new JSONResult(500,"分享失败！","");
         }
@@ -95,6 +121,8 @@ public class DirectoryFileController {
         }
         return new JSONResult(200,"分享成功！","");
     }
+
+
     @RequestMapping("/user/publicShare")//外链分享
     public JSONResult publicShare(@RequestBody JSONObject jsonObject) throws JsonProcessingException {
         String token = jsonObject.getString("token");
@@ -118,27 +146,34 @@ public class DirectoryFileController {
         toshare.setShareExpire(new Date(date.getTime() + shareTime * 1000L));
         toshare.setShareCode(Code);
         if(Fid!=null&&Did!=null){
-            //1-私密分享文件 2-私密分享文件夹 3-外链分享文件 ！！外链分享只分享文件
+            //3-外链分享文件 ！！外链分享只分享文件
             toshare.setShareType((byte) 3);
-            toshare.setShareFileId(Fid);
-            toshare.setShareDirectId(Did);
+            toshare.setShareFileId(DFService.getDFidByFidAndDid(Fid,Did));//只设置ShareFileId
         }else{
             return new JSONResult(500,"分享失败！","");
         }
         DFService.insertShare(toshare);
-        return new JSONResult(200,"分享成功！","");
+
+        JSONObject obj=new JSONObject();
+        obj.put("shareID",toshare.getShareId());
+        return new JSONResult(200,"分享成功！",obj);
     }
+
+
     @RequestMapping("/user/publicVerifyCode")//验证密码
     public JSONResult publicVerifyCode(@RequestBody JSONObject jsonObject) {
         String shareID=jsonObject.getString("shareID");
         String code=jsonObject.getString("code");
         int i =DFService.VerifyCode(shareID,code);
+        //System.out.println(shareID+code);
         //无密码或密码正确时i=1，有密码但没有输入密码时i=-1，有密码但输入密码错误时i=-2
         if(i==1){
             //需返回fileName，shareTime，downloadURL
             String fileName=DFService.getFileNameByID(shareID);
             Date shareTime=DFService.getShareTimeByID(shareID);
-            String downloadUrl=DFService.fileDownload(DFService.getFileLinkByID(shareID));
+
+            //System.out.println(fileName+shareTime);
+            String downloadUrl=DFService.fileDownload(DFService.getFileLinkByID(shareID),100);
             JSONObject obj=new JSONObject();
             obj.put("fileName",fileName);
             obj.put("shareTime",shareTime);
