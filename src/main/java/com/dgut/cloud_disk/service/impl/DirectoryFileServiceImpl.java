@@ -245,4 +245,19 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
         int i = DFmapper.updateByExampleSelective(directoryFile, example);
         return i;
     }
+
+    @Override
+    public Date getShareTimeByID(String id) {
+        return null;
+    }
+
+    @Override
+    public String getFileNameByID(String id) {
+        return null;
+    }
+
+    @Override
+    public String getFileLinkByID(String id) {
+        return null;
+    }
 }
