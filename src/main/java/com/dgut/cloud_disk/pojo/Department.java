@@ -33,33 +33,11 @@ public class Department implements Serializable {
 
     /**
      * 11111111-文档管理员（上传、下载、删除、创建文件夹、分享、复制、移动、重命名）
-     10000000-群组成员权限1（上传）
-     每一权限位对应相应的功能
      */
     @Column(name = "`DEPART_PERMISSION`")
     private String departPermission;
 
     private static final long serialVersionUID = 1L;
-
-    /**
-     * 获取群组权限
-     * @return DEPART_PERMISSION - 群组权限
-     */
-    public String getDepartPermission() {
-        return departPermission;
-    }
-
-    /**
-     * 设置群组权限
-     * @param departPermission 群组权限
-     */
-    public void setDepartPermission(String departPermission) {
-        this.departPermission = departPermission;
-    }
-
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
 
     public Department(String departId, String departName, String departRoot, Date departTime, String departPermission) {
         this.departId = departId;
@@ -67,6 +45,10 @@ public class Department implements Serializable {
         this.departRoot = departRoot;
         this.departTime = departTime;
         this.departPermission = departPermission;
+    }
+
+    public Department() {
+
     }
 
     /**
@@ -139,5 +121,23 @@ public class Department implements Serializable {
      */
     public void setDepartTime(Date departTime) {
         this.departTime = departTime;
+    }
+
+    /**
+     * 获取11111111-文档管理员（上传、下载、删除、创建文件夹、分享、复制、移动、重命名）
+     *
+     * @return DEPART_PERMISSION - 11111111-文档管理员（上传、下载、删除、创建文件夹、分享、复制、移动、重命名）
+     */
+    public String getDepartPermission() {
+        return departPermission;
+    }
+
+    /**
+     * 设置11111111-文档管理员（上传、下载、删除、创建文件夹、分享、复制、移动、重命名）
+     *
+     * @param departPermission 11111111-文档管理员（上传、下载、删除、创建文件夹、分享、复制、移动、重命名）
+     */
+    public void setDepartPermission(String departPermission) {
+        this.departPermission = departPermission;
     }
 }

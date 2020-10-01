@@ -15,7 +15,7 @@ import redis.clients.jedis.JedisPool;
 
 @RestController
 @RequestMapping("/cloud/user/")
-public class PersonalCatalogue {
+public class PersonalCatalogueController {
 
     @Autowired(required = false)
     private PersonalCatalogueService personalCatalogueService;

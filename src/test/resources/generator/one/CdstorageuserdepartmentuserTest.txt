@@ -2,8 +2,8 @@
 
 当前时间：
 2020-9-30
-11:25:19
-2020-09-30 11:25:19
+11:25:18
+2020-09-30 11:25:18
 
 所有配置的属性信息:
 targetPackage - generator.one
@@ -13,11 +13,11 @@ targetProject - src/test/resources
 fileName - ${tableClass.shortClassName}Test.txt
 
 实体和表的信息：
-表名：SELECTBESHAREFORDIRECTORY
-变量名：selectbesharefordirectory
-小写名：selectbesharefordirectory
-类名：Selectbesharefordirectory
-全名：com.dgut.cloud_disk.pojo.Selectbesharefordirectory
+表名：CDSTORAGEUSERDEPARTMENTUSER
+变量名：cdstorageuserdepartmentuser
+小写名：cdstorageuserdepartmentuser
+类名：Cdstorageuserdepartmentuser
+全名：com.dgut.cloud_disk.pojo.Cdstorageuserdepartmentuser
 包名：com.dgut.cloud_disk.pojo
 
 列的信息：
@@ -26,10 +26,10 @@ fileName - ${tableClass.shortClassName}Test.txt
 
 基础列：
     -------------------------------------
-    列名：SHARE_ID
+    列名：DEPART_USER_ID
     列类型：VARCHAR
-    字段名：shareId
-    注释：分享表ID
+    字段名：departUserId
+    注释：映射ID
     类型包名：java.lang
     类型短名：String
     类型全名：java.lang.String
@@ -44,10 +44,10 @@ fileName - ${tableClass.shortClassName}Test.txt
     列长度：32
     列精度：0
     -------------------------------------
-    列名：SHARE_USER_ID
+    列名：DU_DEPART_ID
     列类型：VARCHAR
-    字段名：shareUserId
-    注释：分享人ID
+    字段名：duDepartId
+    注释：群组ID
     类型包名：java.lang
     类型短名：String
     类型全名：java.lang.String
@@ -62,15 +62,15 @@ fileName - ${tableClass.shortClassName}Test.txt
     列长度：32
     列精度：0
     -------------------------------------
-    列名：SHARE_TO_USER_ID
+    列名：DU_USER_ID_
     列类型：VARCHAR
-    字段名：shareToUserId
-    注释：被分享人ID
+    字段名：duUserId
+    注释：用户ID
     类型包名：java.lang
     类型短名：String
     类型全名：java.lang.String
     是否主键：false
-    是否可空：true
+    是否可空：false
     是否为BLOB列：false
     是否为String列：true
     是否为字符串列：true
@@ -78,114 +78,6 @@ fileName - ${tableClass.shortClassName}Test.txt
     是否为时间列：false
     是否为序列列：false
     列长度：32
-    列精度：0
-    -------------------------------------
-    列名：SHARE_TIME
-    列类型：TIMESTAMP
-    字段名：shareTime
-    注释：分享时间
-    类型包名：java.util
-    类型短名：Date
-    类型全名：java.util.Date
-    是否主键：false
-    是否可空：false
-    是否为BLOB列：false
-    是否为String列：false
-    是否为字符串列：false
-    是否为日期列：false
-    是否为时间列：false
-    是否为序列列：false
-    列长度：19
-    列精度：0
-    -------------------------------------
-    列名：SHARE_EXPIRE
-    列类型：TIMESTAMP
-    字段名：shareExpire
-    注释：分享有效期
-    类型包名：java.util
-    类型短名：Date
-    类型全名：java.util.Date
-    是否主键：false
-    是否可空：false
-    是否为BLOB列：false
-    是否为String列：false
-    是否为字符串列：false
-    是否为日期列：false
-    是否为时间列：false
-    是否为序列列：false
-    列长度：19
-    列精度：0
-    -------------------------------------
-    列名：SHARE_TYPE
-    列类型：TINYINT
-    字段名：shareType
-    注释：1-私密分享文件 2-私密分享文件夹 3-外链分享文件 4-外链分享文件夹
-    类型包名：java.lang
-    类型短名：Byte
-    类型全名：java.lang.Byte
-    是否主键：false
-    是否可空：false
-    是否为BLOB列：false
-    是否为String列：false
-    是否为字符串列：false
-    是否为日期列：false
-    是否为时间列：false
-    是否为序列列：false
-    列长度：3
-    列精度：0
-    -------------------------------------
-    列名：SHARE_FILE_ID
-    列类型：VARCHAR
-    字段名：shareFileId
-    注释：分享文件ID
-    类型包名：java.lang
-    类型短名：String
-    类型全名：java.lang.String
-    是否主键：false
-    是否可空：true
-    是否为BLOB列：false
-    是否为String列：true
-    是否为字符串列：true
-    是否为日期列：false
-    是否为时间列：false
-    是否为序列列：false
-    列长度：32
-    列精度：0
-    -------------------------------------
-    列名：SHARE_DIRECT_ID
-    列类型：VARCHAR
-    字段名：shareDirectId
-    注释：分享文件夹ID
-    类型包名：java.lang
-    类型短名：String
-    类型全名：java.lang.String
-    是否主键：false
-    是否可空：true
-    是否为BLOB列：false
-    是否为String列：true
-    是否为字符串列：true
-    是否为日期列：false
-    是否为时间列：false
-    是否为序列列：false
-    列长度：32
-    列精度：0
-    -------------------------------------
-    列名：SHARE_CODE
-    列类型：VARCHAR
-    字段名：shareCode
-    注释：分享密码
-    类型包名：java.lang
-    类型短名：String
-    类型全名：java.lang.String
-    是否主键：false
-    是否可空：true
-    是否为BLOB列：false
-    是否为String列：true
-    是否为字符串列：true
-    是否为日期列：false
-    是否为时间列：false
-    是否为序列列：false
-    列长度：7
     列精度：0
     -------------------------------------
     列名：USER_ID
@@ -440,10 +332,10 @@ fileName - ${tableClass.shortClassName}Test.txt
     列长度：6
     列精度：0
     -------------------------------------
-    列名：DIRECT_ID
+    列名：DEPART_ID
     列类型：VARCHAR
-    字段名：directId
-    注释：文件夹ID
+    字段名：departId
+    注释：群组ID
     类型包名：java.lang
     类型短名：String
     类型全名：java.lang.String
@@ -458,28 +350,28 @@ fileName - ${tableClass.shortClassName}Test.txt
     列长度：32
     列精度：0
     -------------------------------------
-    列名：PARENT_DIRECT_ID
+    列名：DEPART_NAME
     列类型：VARCHAR
-    字段名：parentDirectId
-    注释：父文件夹ID
+    字段名：departName
+    注释：群组名称
     类型包名：java.lang
     类型短名：String
     类型全名：java.lang.String
     是否主键：false
-    是否可空：true
+    是否可空：false
     是否为BLOB列：false
     是否为String列：true
     是否为字符串列：true
     是否为日期列：false
     是否为时间列：false
     是否为序列列：false
-    列长度：32
+    列长度：20
     列精度：0
     -------------------------------------
-    列名：DIRECT_NAME
+    列名：DEPART_ROOT
     列类型：VARCHAR
-    字段名：directName
-    注释：文件夹名
+    字段名：departRoot
+    注释：群组文件夹根目录ID
     类型包名：java.lang
     类型短名：String
     类型全名：java.lang.String
@@ -494,10 +386,10 @@ fileName - ${tableClass.shortClassName}Test.txt
     列长度：32
     列精度：0
     -------------------------------------
-    列名：DIRECT_CREATE_TIME
+    列名：DEPART_TIME
     列类型：TIMESTAMP
-    字段名：directCreateTime
-    注释：创建时间
+    字段名：departTime
+    注释：群组创建时间
     类型包名：java.util
     类型短名：Date
     类型全名：java.util.Date
@@ -512,10 +404,10 @@ fileName - ${tableClass.shortClassName}Test.txt
     列长度：19
     列精度：0
     -------------------------------------
-    列名：DIRECT_CREATE_ID
+    列名：DEPART_PERMISSION
     列类型：VARCHAR
-    字段名：directCreateId
-    注释：创建用户ID
+    字段名：departPermission
+    注释：11111111-文档管理员（上传、下载、删除、创建文件夹、分享、复制、移动、重命名）
     类型包名：java.lang
     类型短名：String
     类型全名：java.lang.String
@@ -527,115 +419,7 @@ fileName - ${tableClass.shortClassName}Test.txt
     是否为日期列：false
     是否为时间列：false
     是否为序列列：false
-    列长度：32
-    列精度：0
-    -------------------------------------
-    列名：DIRECT_TYPE
-    列类型：TINYINT
-    字段名：directType
-    注释：1-个人根目录 2-部门根目录 3-个人文件夹 4-部门文件夹 5-个人回收站
-    类型包名：java.lang
-    类型短名：Byte
-    类型全名：java.lang.Byte
-    是否主键：false
-    是否可空：false
-    是否为BLOB列：false
-    是否为String列：false
-    是否为字符串列：false
-    是否为日期列：false
-    是否为时间列：false
-    是否为序列列：false
-    列长度：3
-    列精度：0
-    -------------------------------------
-    列名：DIRECT_BELONG_USER
-    列类型：VARCHAR
-    字段名：directBelongUser
-    注释：所属用户ID
-    类型包名：java.lang
-    类型短名：String
-    类型全名：java.lang.String
-    是否主键：false
-    是否可空：true
-    是否为BLOB列：false
-    是否为String列：true
-    是否为字符串列：true
-    是否为日期列：false
-    是否为时间列：false
-    是否为序列列：false
-    列长度：32
-    列精度：0
-    -------------------------------------
-    列名：DIRECT_BELONG_DEPART
-    列类型：VARCHAR
-    字段名：directBelongDepart
-    注释：所属群组ID
-    类型包名：java.lang
-    类型短名：String
-    类型全名：java.lang.String
-    是否主键：false
-    是否可空：true
-    是否为BLOB列：false
-    是否为String列：true
-    是否为字符串列：true
-    是否为日期列：false
-    是否为时间列：false
-    是否为序列列：false
-    列长度：32
-    列精度：0
-    -------------------------------------
-    列名：DIRECT_DELETE
-    列类型：TINYINT
-    字段名：directDelete
-    注释：1-不在回收站 2-在回收站
-    类型包名：java.lang
-    类型短名：Byte
-    类型全名：java.lang.Byte
-    是否主键：false
-    是否可空：false
-    是否为BLOB列：false
-    是否为String列：false
-    是否为字符串列：false
-    是否为日期列：false
-    是否为时间列：false
-    是否为序列列：false
-    列长度：3
-    列精度：0
-    -------------------------------------
-    列名：DIRECT_SIZE
-    列类型：DECIMAL
-    字段名：directSize
-    注释：文件夹大小
-    类型包名：java.math
-    类型短名：BigDecimal
-    类型全名：java.math.BigDecimal
-    是否主键：false
-    是否可空：true
-    是否为BLOB列：false
-    是否为String列：false
-    是否为字符串列：false
-    是否为日期列：false
-    是否为时间列：false
-    是否为序列列：false
-    列长度：13
-    列精度：6
-    -------------------------------------
-    列名：DIRECT_DELETE_TIME
-    列类型：TIMESTAMP
-    字段名：directDeleteTime
-    注释：删除文件夹的时间
-    类型包名：java.util
-    类型短名：Date
-    类型全名：java.util.Date
-    是否主键：false
-    是否可空：true
-    是否为BLOB列：false
-    是否为String列：false
-    是否为字符串列：false
-    是否为日期列：false
-    是否为时间列：false
-    是否为序列列：false
-    列长度：19
+    列长度：10
     列精度：0
 
 Blob列：
@@ -643,15 +427,9 @@ Blob列：
 =====================================
 全部列：
 列名 - 字段名
-    SHARE_ID - shareId
-    SHARE_USER_ID - shareUserId
-    SHARE_TO_USER_ID - shareToUserId
-    SHARE_TIME - shareTime
-    SHARE_EXPIRE - shareExpire
-    SHARE_TYPE - shareType
-    SHARE_FILE_ID - shareFileId
-    SHARE_DIRECT_ID - shareDirectId
-    SHARE_CODE - shareCode
+    DEPART_USER_ID - departUserId
+    DU_DEPART_ID - duDepartId
+    DU_USER_ID_ - duUserId
     USER_ID - userId
     USER_WORK_ID - userWorkId
     USER_NAME - userName
@@ -666,14 +444,8 @@ Blob列：
     USER_USED - userUsed
     USER_STATUS - userStatus
     USER_PERMISSION - userPermission
-    DIRECT_ID - directId
-    PARENT_DIRECT_ID - parentDirectId
-    DIRECT_NAME - directName
-    DIRECT_CREATE_TIME - directCreateTime
-    DIRECT_CREATE_ID - directCreateId
-    DIRECT_TYPE - directType
-    DIRECT_BELONG_USER - directBelongUser
-    DIRECT_BELONG_DEPART - directBelongDepart
-    DIRECT_DELETE - directDelete
-    DIRECT_SIZE - directSize
-    DIRECT_DELETE_TIME - directDeleteTime
+    DEPART_ID - departId
+    DEPART_NAME - departName
+    DEPART_ROOT - departRoot
+    DEPART_TIME - departTime
+    DEPART_PERMISSION - departPermission
