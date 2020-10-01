@@ -69,6 +69,7 @@ public class FileController {
         String tokenValue = jedis.get(token);
         ObjectMapper mapper = new ObjectMapper();
         CdstorageUser user = mapper.readValue(tokenValue, CdstorageUser.class);
+       jedis.close();
         if(user.getUserUsed().add(new BigDecimal(fileSize)).compareTo(user.getUserSize()) > 0){
             return JSONResult.errorMsg("存储空间不足，无法上传");
         }
@@ -98,6 +99,7 @@ public class FileController {
         String tokenValue = jedis.get(token);
         ObjectMapper mapper = new ObjectMapper();
         CdstorageUser user = mapper.readValue(tokenValue, CdstorageUser.class);
+       jedis.close();
         //在文件表中插入一条数据:文件ID为UUID 文件链接就是objectName 上传时间为当前时间 引用文件夹个数为1
         Myfile newFile = new Myfile();
         newFile.setFileId(UUID.randomUUID().toString().replace("-",""));
@@ -146,6 +148,7 @@ public class FileController {
         String user = jedis.get(token);
         ObjectMapper mapper = new ObjectMapper();
         CdstorageUser cdstorageUser = mapper.readValue(user, CdstorageUser.class);
+        jedis.close();
         Directory directory = directoryService.selectDirectoryByID(directID);
         if(file==null || file.getDfGarbage()==2 || directory.getDirectBelongUser()==cdstorageUser.getUserId()){
             return JSONResult.errorMsg("不能操作此文件");
@@ -215,6 +218,7 @@ public class FileController {
         String user = jedis.get(token);
         ObjectMapper mapper = new ObjectMapper();
         CdstorageUser cdstorageUser = mapper.readValue(user, CdstorageUser.class);
+        jedis.close();
         //判断权限
         if("00000100".equals(checkPermission(newDirectID,token))){
             return JSONResult.errorMsg("");
@@ -239,6 +243,7 @@ public class FileController {
         String user = jedis.get(token);
         ObjectMapper mapper = new ObjectMapper();
         CdstorageUser cdstorageUser = mapper.readValue(user, CdstorageUser.class);
+       jedis.close();
         //判断权限
         if("00000100".equals(checkPermission(newDirectID,token))){
             return JSONResult.errorMsg("");
@@ -434,6 +439,7 @@ public class FileController {
         String user = jedis.get(token);
         ObjectMapper mapper = new ObjectMapper();
         CdstorageUser cdstorageUser = mapper.readValue(user, CdstorageUser.class);
+        jedis.close();
         //判断权限
         if("00000100".equals(checkPermission(newDirectID,token))){
             return JSONResult.errorMsg("");

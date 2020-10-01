@@ -7,6 +7,7 @@ import com.dgut.cloud_disk.pojo.DirectoryFileMyFile;
 import com.dgut.cloud_disk.pojo.bo.DirectoryBo;
 import com.dgut.cloud_disk.pojo.bo.FileBo;
 import com.dgut.cloud_disk.service.PersonalCatalogueService;
+import com.dgut.cloud_disk.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,9 +38,10 @@ public class PersonalCatalogueServiceImpl implements PersonalCatalogueService {
         for (DirectoryFileMyFile d:list){
             FileBo f  = new FileBo();
             f.setFileID(d.getFileId());
-            f.setModificationDate(d.getFileUploadTime().toString());
+            f.setModificationDate(DateUtil.transfromDate(d.getFileUploadTime()));
             f.setName(d.getDfFileName());
             f.setType(d.getFileType());
+            f.setSize(d.getFileSize().toString());
             rlist.add(f);
         }
         return rlist;
@@ -71,7 +73,7 @@ public class PersonalCatalogueServiceImpl implements PersonalCatalogueService {
             dv.setDirectID(list.get(0).getDirectId());
             dv.setName(list.get(0).getDirectName());
             dv.setSize(list.get(0).getDirectSize().toString());
-            dv.setModificationDate(list.get(0).getDirectCreateTime().toString());
+            dv.setModificationDate(DateUtil.transfromDate(list.get(0).getDirectCreateTime()));
         }
         //获取当前文件夹下的文件
         List<FileBo> fileVoList = getFileVoByDirectory(rootId);

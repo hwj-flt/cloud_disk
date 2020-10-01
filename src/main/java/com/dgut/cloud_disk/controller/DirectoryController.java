@@ -44,6 +44,7 @@ public class DirectoryController {
         ObjectMapper objectMapper=new ObjectMapper();
         CdstorageUser cdstorageUser = objectMapper.readValue(tokenValue, CdstorageUser.class);
 
+        jedis.close();
         Directory directory=new Directory();
         directory.setDirectId(UUID.randomUUID().toString().replace("-", ""));
         directory.setParentDirectId(parentDirectID);
@@ -78,7 +79,7 @@ public class DirectoryController {
         String tokenValue = jedis.get(token);
         ObjectMapper objectMapper=new ObjectMapper();
         CdstorageUser cdstorageUser = objectMapper.readValue(tokenValue, CdstorageUser.class);
-
+        jedis.close();
         Directory directory=new Directory();
         directory.setDirectId(UUID.randomUUID().toString().replace("-", ""));
         directory.setParentDirectId(parentDirectID);

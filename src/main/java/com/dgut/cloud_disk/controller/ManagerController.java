@@ -196,6 +196,7 @@ public class ManagerController {
         String tokenValue = jedis.get(token);
         ObjectMapper objectMapper=new ObjectMapper();
         CdstorageUser cdstorageUser = objectMapper.readValue(tokenValue, CdstorageUser.class);
+        jedis.close();
         //部门实体
         Department department = new Department(departId,departName,departRoot,new Date(),"00000000");
         //文件夹实体
@@ -234,6 +235,7 @@ public class ManagerController {
         String tokenValue = jedis.get(depUserVo.getToken());
         ObjectMapper objectMapper=new ObjectMapper();
         CdstorageUser cdstorageUser = objectMapper.readValue(tokenValue, CdstorageUser.class);
+        jedis.close();
         //判断权限
         if (cdstorageUser.getUserPermission() != 1){
             Boolean boo = managerService.addUserToDepart(depUserVo.getDepartId(),depUserVo.getUserIds());
@@ -266,6 +268,7 @@ public class ManagerController {
         String tokenValue = jedis.get(token);
         ObjectMapper objectMapper=new ObjectMapper();
         CdstorageUser cdstorageUser = objectMapper.readValue(tokenValue, CdstorageUser.class);
+        jedis.close();
         if (cdstorageUser.getUserPermission() != 1){
             Boolean boo = managerService.setDepPerm(departId,departPermission);
             if (boo){
@@ -294,6 +297,7 @@ public class ManagerController {
         String tokenValue = jedis.get(token);
         ObjectMapper objectMapper=new ObjectMapper();
         CdstorageUser cdstorageUser = objectMapper.readValue(tokenValue, CdstorageUser.class);
+        jedis.close();
         if (cdstorageUser.getUserPermission() != 1){
             List<Department> departments = managerService.allDepart();
             return new JSONResult(200,"部门列表",departments);
@@ -313,6 +317,7 @@ public class ManagerController {
         String tokenValue = jedis.get(token);
         ObjectMapper objectMapper=new ObjectMapper();
         CdstorageUser cdstorageUser = objectMapper.readValue(tokenValue, CdstorageUser.class);
+        jedis.close();
         if (cdstorageUser.getUserPermission() != 1){
             List<CdstorageUser> users = managerService.selUserAtDep(departId);
             return new JSONResult(200,"部门内用户列表",users);
@@ -337,6 +342,7 @@ public class ManagerController {
         String tokenValue = jedis.get(depUserVo.getToken());
         ObjectMapper objectMapper=new ObjectMapper();
         CdstorageUser cdstorageUser = objectMapper.readValue(tokenValue, CdstorageUser.class);
+        jedis.close();
         //判断权限
         if (cdstorageUser.getUserPermission() != 1){
             Boolean boo = managerService.delDepartUser(depUserVo.getDepartId(),depUserVo.getUserIds());
