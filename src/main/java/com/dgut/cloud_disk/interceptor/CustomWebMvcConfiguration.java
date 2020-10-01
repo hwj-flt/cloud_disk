@@ -24,9 +24,9 @@ public class CustomWebMvcConfiguration implements WebMvcConfigurer {
     public MyFilter myFilter(){return new MyFilter();}
     @Override
     public void addInterceptors(InterceptorRegistry registry){
-        registry.addInterceptor(userInterceptor()).addPathPatterns("/cloud/user/**");
-        registry.addInterceptor(managerInterceptor()).addPathPatterns("/cloud/user/manager/**");
-        registry.addInterceptor(supManagerInterceptor()).addPathPatterns("/cloud/user/manager/sup/**");
+        registry.addInterceptor(userInterceptor()).addPathPatterns("/cloud/user/**").excludePathPatterns("/cloud/user/manage/**");
+        registry.addInterceptor(managerInterceptor()).addPathPatterns("/cloud/user/manage/**").excludePathPatterns("/cloud/user/manage/sup/**");
+        registry.addInterceptor(supManagerInterceptor()).addPathPatterns("/cloud/user/manage/sup/**");
         WebMvcConfigurer.super.addInterceptors(registry);
     }
     @Bean

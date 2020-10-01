@@ -116,21 +116,50 @@ public class ManagerController {
         }
         return new JSONResult(200,"成功批量解禁用户",null);
     }
+
     /**
      * 更新用户信息
      * @param cdstorageUserVo
      * @return
+     * @throws JsonProcessingException
      */
     @PostMapping("/upUser")
     @CrossOrigin
     @ResponseBody
     @Transactional
-    public JSONResult updateUser(@RequestBody CdstorageUserVo cdstorageUserVo){
-        int num = userService.updateUser1(cdstorageUserVo);
-        if(num>0){
-            return new JSONResult(200,"更新用户成功",null);
-        }else{
-            return new JSONResult(500,"更新用户失败",null);
+    public JSONResult updateUser(@RequestBody CdstorageUserVo cdstorageUserVo) throws JsonProcessingException {
+        //从token中获取用户
+        Jedis jedis = jedisPool.getResource();
+        String tokenValue = jedis.get(cdstorageUserVo.getToken());
+        ObjectMapper objectMapper=new ObjectMapper();
+        //管理员
+        CdstorageUser cdstorageUser = objectMapper.readValue(tokenValue, CdstorageUser.class);
+        //被修改用户
+        CdstorageUser cdstorageUser1 = userService.selByUserId(cdstorageUserVo.getUserId());
+        if(cdstorageUser.getUserPermission() != 1){
+            if (!cdstorageUserVo.getUserMobie().equals(cdstorageUser1.getUserMobie())){
+                if (userService.selByUserMobie(cdstorageUserVo.getUserMobie()) != null) {
+                    return new JSONResult(500,"用户电话号码已经存在",null);
+                }else {
+                    //连用户电话也更新
+                    int num = userService.updateUser1(cdstorageUserVo);
+                    if(num>0){
+                        return new JSONResult(200,"更新用户成功",null);
+                    }else{
+                        return new JSONResult(500,"更新用户失败",null);
+                    }
+                }
+            }else {
+                //用户电话没变
+                int num = userService.updateUser1(cdstorageUserVo);
+                if(num>0){
+                    return new JSONResult(200,"更新用户成功",null);
+                }else{
+                    return new JSONResult(500,"更新用户失败",null);
+                }
+            }
+        }else {
+            return new JSONResult(500,"无访问权限",null);
         }
     }
     /**
@@ -283,15 +312,15 @@ public class ManagerController {
 
     /**
      * 所有部门
-     * @param token
+     * @param jsonObject
      * @return
      * @throws JsonProcessingException
      */
-    @GetMapping("/allDepart")
+    @PostMapping("/allDepart")
     @CrossOrigin
     @ResponseBody
-    public JSONResult allDepart(@Param("token") String token) throws JsonProcessingException {
-        System.out.println(token);
+    public JSONResult allDepart(@RequestBody JSONObject jsonObject) throws JsonProcessingException {
+        String token =jsonObject.getString("token");
         //从token中获取用户
         Jedis jedis = jedisPool.getResource();
         String tokenValue = jedis.get(token);
@@ -306,6 +335,12 @@ public class ManagerController {
         }
     }
 
+    /**
+     * 查询部门用户
+     * @param jsonObject
+     * @return
+     * @throws JsonProcessingException
+     */
     @PostMapping("/selUserAtDep")
     @CrossOrigin
     @ResponseBody
@@ -320,7 +355,11 @@ public class ManagerController {
         jedis.close();
         if (cdstorageUser.getUserPermission() != 1){
             List<CdstorageUser> users = managerService.selUserAtDep(departId);
-            return new JSONResult(200,"部门内用户列表",users);
+            if (users != null){
+                return new JSONResult(200,"部门内用户列表",users);
+            }else {
+                return new JSONResult(204,"该部门内用户为空",null);
+            }
         }else {
             return new JSONResult(500,"无访问权限",null);
         }
