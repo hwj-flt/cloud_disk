@@ -220,16 +220,9 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
 
     @Override
     public String fileDownload(String objectname, long expire) {
-        String ak = "VSTWKTJ92NZAI2VJ14PJ";
-        String sk = "5tpC64qnXaOFpw5zwKV0vnZoEQAVCjpE0s6BomQg";
-        String endPoint = "obs.cn-north-4.myhuaweicloud.com";
-/*
-
-    public String fileDownload(String objectname,Long time) {
         String ak = obsConfig.getAccessKeyId();
         String sk = obsConfig.getSecretAccessKey();
         String endPoint = obsConfig.getEndpoint();
-*/
 
 
         // 创建ObsClient实例
