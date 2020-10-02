@@ -32,8 +32,7 @@ public class DepartmentUserServiceImpl implements DepartmentUserService {
     @Override
     public String selectdepartPermissionByid(String dDepartId) {
         Department department=departmentMapper.selectByPrimaryKey(dDepartId);
-        //department;
-        return null;
+        return department.getDepartPermission();
     }
 
     @Override

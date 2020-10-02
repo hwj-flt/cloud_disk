@@ -2,9 +2,11 @@ server:
   port: 8080
 spring:
   datasource:
-
+<<<<<<< HEAD
     url: jdbc:mysql://10.61.166.57:8603/shixun?characterEncoding=utf-8
-
+=======
+    url: jdbc:mysql://10.61.166.57:8603/shixun?characterEncoding=utf-8&serverTimezone=UTC
+>>>>>>> master
     username: root
     password: nishuonimane
     driver-class-name: com.mysql.cj.jdbc.Driver

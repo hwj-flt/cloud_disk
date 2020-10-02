@@ -43,11 +43,6 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
     @Autowired
     private ObsConfig obsConfig;
 
-
-
-    @Resource
-    private ObsConfig obsConfig;
-
     @Override
     public List<DirectoryFile> allFile() {
         List<DirectoryFile> file=DFmapper.selectAll();
@@ -168,13 +163,14 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
 
     @Override
     public String getFileLinkByID(String id) {
-        Toshare toshare=toshareMapper.selectByPrimaryKey(id);
+        Toshare toshare = toshareMapper.selectByPrimaryKey(id);
         //toshare.getShareFileId()
-        DirectoryFile df=DFmapper.selectByPrimaryKey(toshare.getShareFileId());
-        Myfile myfile=myfileMapper.selectByPrimaryKey(df.getDfFileId());
-        String FileLink=myfile.getFileLink();
+        DirectoryFile df = DFmapper.selectByPrimaryKey(toshare.getShareFileId());
+        Myfile myfile = myfileMapper.selectByPrimaryKey(df.getDfFileId());
+        String FileLink = myfile.getFileLink();
         return FileLink;
-
+    }
+    @Override
     public String getUploadUrl(String objectName){
         String ak = obsConfig.getAccessKeyId();
         String sk = obsConfig.getSecretAccessKey();
@@ -206,7 +202,7 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
 
     /**
      * 文件下载
-     * @param objectname 文件链接
+     * @param文件链接
      * @return 下载文件的地址链接
      */
     @Override
@@ -239,7 +235,7 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
         // 创建ObsClient实例
         ObsClient obsClient = new ObsClient(ak, sk, endPoint);
         // URL有效期，3600秒
-        long expireSeconds = time;
+        long expireSeconds = expire;
         TemporarySignatureRequest request = new TemporarySignatureRequest(HttpMethodEnum.GET, expireSeconds);
         request.setBucketName(obsConfig.getBucketName());
         request.setObjectKey(objectname);
@@ -442,7 +438,7 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
         }
 
     }
-}
+
 
 
     @Override

@@ -229,7 +229,7 @@ public class FileController {
         }
 
 
-        }
+
 
         //文件复制
         DirectoryFile directoryFile = directoryFileService.selectFileById(fileID);
@@ -253,7 +253,7 @@ public class FileController {
         CdstorageUser cdstorageUser = mapper.readValue(user, CdstorageUser.class);
 
         //查用户权限
-        DepartmentUser departmentUser = departmentUserService.selectduPermissionByid(cdstorageUser.getUserId(), directory.getDirectBelongDepart());
+       // DepartmentUser departmentUser = departmentUserService.selectduPermissionByid(cdstorageUser.getUserId(), directory.getDirectBelongDepart());
 
 
 //        //判断权限
