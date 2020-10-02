@@ -11,6 +11,7 @@ import com.dgut.cloud_disk.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,7 +42,22 @@ public class PersonalCatalogueServiceImpl implements PersonalCatalogueService {
             f.setModificationDate(DateUtil.transfromDate(d.getFileUploadTime()));
             f.setName(d.getDfFileName());
             f.setType(d.getFileType());
-            f.setSize(d.getFileSize().toString());
+            String size = null;
+            //1.000000MB 0.0001KB
+            if(d.getFileSize().compareTo(new BigDecimal(1))<0){
+                String str = d.getFileSize().toString();
+                String t = str.replaceAll("0+$", "");
+                 size= t+"KB";
+            }else if((d.getFileSize().compareTo(new BigDecimal(1000))>0)){
+                String str = d.getFileSize().toString();
+                String t = str.replaceAll("0+$", "");
+                size = t+"GB";
+            }else{
+                String str = d.getFileSize().toString();
+                String t = str.replaceAll("0+$", "");
+                size = t+"MB";
+            }
+            f.setSize(size);
             rlist.add(f);
         }
         return rlist;

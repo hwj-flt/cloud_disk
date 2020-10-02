@@ -44,6 +44,8 @@ public class UserBo {
     public UserBo() {
     }
 
+
+
     public  UserBo userBo(CdstorageUser user){
         UserBo userBo = new UserBo();
         userBo.setUserSex(user.getUserSex());

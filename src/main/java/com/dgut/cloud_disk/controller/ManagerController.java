@@ -5,6 +5,7 @@ import com.dgut.cloud_disk.pojo.CdstorageUser;
 import com.dgut.cloud_disk.pojo.Department;
 import com.dgut.cloud_disk.pojo.DepartmentUser;
 import com.dgut.cloud_disk.pojo.Directory;
+import com.dgut.cloud_disk.pojo.bo.UserBo;
 import com.dgut.cloud_disk.pojo.vo.CdstorageUserVo;
 import com.dgut.cloud_disk.pojo.vo.DepUserVo;
 import com.dgut.cloud_disk.service.CdstorageUserService;
@@ -45,7 +46,16 @@ public class ManagerController {
     @CrossOrigin
     @ResponseBody
     public JSONResult allUser(){
-        return new JSONResult(200,"用户列表",userService.allUser());
+
+        List<CdstorageUser> users = userService.allUser();
+        List<UserBo> userBos = new ArrayList<UserBo>();
+        for(CdstorageUser u:users){
+            UserBo userBo = new UserBo();
+            UserBo user = userBo.userBo(u);
+            userBos.add(user);
+        }
+
+        return new JSONResult(200,"用户列表",userBos);
     }
     /**
      * 用户禁用
