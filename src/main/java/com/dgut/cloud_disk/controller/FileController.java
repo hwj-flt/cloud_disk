@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,6 +43,8 @@ public class FileController {
     private DepartmentService departmentService;
     @Autowired
     private CdstorageUserService cdstorageUserService;
+    @Value("${redis.defaultTokenValidTime}")
+    private Integer tokenValidTime;
     /**
      * 判断群组文件权限;有文件夹ID找文件夹表中文件夹有个所属群组ID。用用户ID和群组ID获得群组和用户映射表中权限，查看下载位置是否为1
      * @param directID 文件夹id
@@ -67,6 +70,7 @@ public class FileController {
         String token = jsonObject.getString("token");
         Jedis jedis = jedisPool.getResource();
         String tokenValue = jedis.get(token);
+        jedis.close();
         ObjectMapper mapper = new ObjectMapper();
         CdstorageUser user = mapper.readValue(tokenValue, CdstorageUser.class);
        jedis.close();
@@ -128,6 +132,8 @@ public class FileController {
             return JSONResult.errorMsg("更新用户表失败");
         }
         jedis.set(token,mapper.writeValueAsString(user));
+        jedis.expire(token,tokenValidTime);
+        jedis.close();
         return JSONResult.build(200,"上传成功",null);
     }
     /**
@@ -155,7 +161,9 @@ public class FileController {
         }
         //根据文件链接下载文件
         Myfile myfile = myFileService.selectFileById(fileID);
+
         String url = directoryFileService.fileDownload(myfile.getFileLink(),3600L);
+
         jsonObject.put("data",url);
         return new JSONResult(200,"",jsonObject);
     }
@@ -219,10 +227,19 @@ public class FileController {
         ObjectMapper mapper = new ObjectMapper();
         CdstorageUser cdstorageUser = mapper.readValue(user, CdstorageUser.class);
         jedis.close();
+
+        //查用户权限
+        //DepartmentUser departmentUser = departmentUserService.selectduPermissionByid(cdstorageUser.getUserId(), directory.getDirectBelongDepart());
+
         //判断权限
         if("00000100".equals(checkPermission(newDirectID,token))){
             return JSONResult.errorMsg("");
+
         }
+
+
+
+
         //文件复制
         DirectoryFile directoryFile = directoryFileService.selectFileById(fileID);
         String uuid = UUID.randomUUID().toString().replace("-", "");
@@ -244,10 +261,22 @@ public class FileController {
         ObjectMapper mapper = new ObjectMapper();
         CdstorageUser cdstorageUser = mapper.readValue(user, CdstorageUser.class);
        jedis.close();
+
+        //查用户权限
+       // DepartmentUser departmentUser = departmentUserService.selectduPermissionByid(cdstorageUser.getUserId(), directory.getDirectBelongDepart());
+
+
+//        //判断权限
+//        if(departmentUser.getDuPermission()!=1){
+//            return JSONResult.errorMsg("");
+//        }
+
+
         //判断权限
         if("00000100".equals(checkPermission(newDirectID,token))){
             return JSONResult.errorMsg("");
         }
+
         //文件夹复制
         Directory directory = directoryService.selectDirectoryByID(directID);
         directory.setParentDirectId(newDirectID);
