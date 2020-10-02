@@ -176,6 +176,7 @@ public class CdstorageUserController {
         CdstorageUser user = userService.queryByUserMobie(userPhone);
         ObjectMapper mapper = new ObjectMapper();
         jedis.set(token,mapper.writeValueAsString(user));
+        jedis.expire(token,tokenValidTime);
         jedis.close();
         return new JSONResult(200,"登录成功",null);
     }

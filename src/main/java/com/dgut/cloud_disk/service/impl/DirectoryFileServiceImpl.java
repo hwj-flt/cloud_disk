@@ -239,8 +239,12 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
         TemporarySignatureRequest request = new TemporarySignatureRequest(HttpMethodEnum.GET, expireSeconds);
         request.setBucketName(obsConfig.getBucketName());
         request.setObjectKey(objectname);
+        Map map = new HashMap<String,Object>();
+        map.put("response-content-disposition","attachment");
+        request.setQueryParams(map);
         TemporarySignatureResponse response = obsClient.createTemporarySignature(request);
         return response.getSignedUrl();
+
     }
 /*
     @Override

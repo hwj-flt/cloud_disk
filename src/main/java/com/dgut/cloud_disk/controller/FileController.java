@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,6 +43,8 @@ public class FileController {
     private DepartmentService departmentService;
     @Autowired
     private CdstorageUserService cdstorageUserService;
+    @Value("${redis.defaultTokenValidTime}")
+    private Integer tokenValidTime;
     /**
      * 判断群组文件权限;有文件夹ID找文件夹表中文件夹有个所属群组ID。用用户ID和群组ID获得群组和用户映射表中权限，查看下载位置是否为1
      * @param directID 文件夹id
@@ -67,6 +70,7 @@ public class FileController {
         String token = jsonObject.getString("token");
         Jedis jedis = jedisPool.getResource();
         String tokenValue = jedis.get(token);
+        jedis.close();
         ObjectMapper mapper = new ObjectMapper();
         CdstorageUser user = mapper.readValue(tokenValue, CdstorageUser.class);
         if(user.getUserUsed().add(new BigDecimal(fileSize)).compareTo(user.getUserSize()) > 0){
@@ -126,6 +130,8 @@ public class FileController {
             return JSONResult.errorMsg("更新用户表失败");
         }
         jedis.set(token,mapper.writeValueAsString(user));
+        jedis.expire(token,tokenValidTime);
+        jedis.close();
         return JSONResult.build(200,"上传成功",null);
     }
     /**

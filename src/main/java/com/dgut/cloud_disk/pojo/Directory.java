@@ -77,20 +77,7 @@ public class Directory implements Serializable {
     private static final long serialVersionUID = 1L;
 
     public Directory() {
-    }
 
-    public Directory(String directId, String parentDirectId, String directName, Date directCreateTime, String directCreateId, Byte directType, String directBelongUser, String directBelongDepart, Byte directDelete, BigDecimal directSize, Date directDeleteTime) {
-        this.directId = directId;
-        this.parentDirectId = parentDirectId;
-        this.directName = directName;
-        this.directCreateTime = directCreateTime;
-        this.directCreateId = directCreateId;
-        this.directType = directType;
-        this.directBelongUser = directBelongUser;
-        this.directBelongDepart = directBelongDepart;
-        this.directDelete = directDelete;
-        this.directSize = directSize;
-        this.directDeleteTime = directDeleteTime;
     }
 
     /**
@@ -288,6 +275,20 @@ public class Directory implements Serializable {
      * @param directDeleteTime 删除文件夹的时间
      */
     public void setDirectDeleteTime(Date directDeleteTime) {
+        this.directDeleteTime = directDeleteTime;
+    }
+
+    public Directory(String directId, String parentDirectId, String directName, Date directCreateTime, String directCreateId, Byte directType, String directBelongUser, String directBelongDepart, Byte directDelete, BigDecimal directSize, Date directDeleteTime) {
+        this.directId = directId;
+        this.parentDirectId = parentDirectId;
+        this.directName = directName;
+        this.directCreateTime = directCreateTime;
+        this.directCreateId = directCreateId;
+        this.directType = directType;
+        this.directBelongUser = directBelongUser;
+        this.directBelongDepart = directBelongDepart;
+        this.directDelete = directDelete;
+        this.directSize = directSize;
         this.directDeleteTime = directDeleteTime;
     }
 }

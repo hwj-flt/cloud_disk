@@ -13,7 +13,6 @@ public interface DirectoryMapper extends tk.mybatis.mapper.common.Mapper<Directo
     public int deleteDirectoryByPId(String Pid);//根据父id删除文件夹
 
     public List<String> selectIdByPid(String Pid);//根据父id查找id
-
 }
 
 

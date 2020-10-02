@@ -94,14 +94,19 @@ public class ManagerServiceImpl implements ManagerService {
         Example example = new Example(DepartmentUser.class);
         Example.Criteria criteria = example.createCriteria();
         criteria.andEqualTo("duDepartId",departId);
-        List<DepartmentUser> departmentUsers = departmentUserMapper.selectByExample(example);
-        Example example1 = new Example(CdstorageUser.class);
-        Example.Criteria criteria1 = example1.createCriteria();
-        List<String> userIds = new ArrayList<String>();
-        for (DepartmentUser d:departmentUsers) {
-            userIds.add(d.getDuUserId());
+        int count = departmentUserMapper.selectCountByExample(example);
+        if (count > 0){
+            List<DepartmentUser> departmentUsers = departmentUserMapper.selectByExample(example);
+            Example example1 = new Example(CdstorageUser.class);
+            Example.Criteria criteria1 = example1.createCriteria();
+            List<String> userIds = new ArrayList<String>();
+            for (DepartmentUser d:departmentUsers) {
+                userIds.add(d.getDuUserId());
+            }
+            criteria1.andIn("userId",userIds);
+            return cdstorageUserMapper.selectByExample(example1);
+        }else {
+            return null;
         }
-        criteria1.andIn("userId",userIds);
-        return cdstorageUserMapper.selectByExample(example1);
     }
 }
