@@ -1,102 +1,69 @@
-package com.dgut.cloud_disk.pojo;
+package com.dgut.cloud_disk.pojo.bo;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.dgut.cloud_disk.pojo.CdstorageUser;
+import com.dgut.cloud_disk.util.DateUtil;
 
-import java.io.Serializable;
+import javax.persistence.Column;
+import javax.persistence.Id;
 import java.math.BigDecimal;
 import java.util.Date;
-import javax.persistence.*;
 
-@Table(name = "`cdstorage_user`")
-public class CdstorageUser implements Serializable {
-    /**
-     * 用户ID
-     */
-    @Id
-    @Column(name = "`USER_ID`")
+public class UserBo {
+
     private String userId;
 
-    /**
-     * 工号
-     */
-    @Column(name = "`USER_WORK_ID`")
+
     private Long userWorkId;
 
-    /**
-     * 用户名
-     */
-    @Column(name = "`USER_NAME`")
     private String userName;
 
-    /**
-     * 用户性别
-     */
-    @Column(name = "`USER_SEX`")
     private String userSex;
 
-    /**
-     * 用户创建时间
-     */
-    @Column(name = "`USER_TIME`")
-    private Date userTime;
+    private String userTime;
 
-    /**
-     * 密码
-     */
-    @Column(name = "`USER_PASSWORD`")
     private String userPassword;
 
-    /**
-     * 手机号码
-     */
-    @Column(name = "`USER_MOBIE`")
     private String userMobie;
 
-    /**
-     * 邮箱地址
-     */
-    @Column(name = "`USER_EMAIL`")
     private String userEmail;
 
-    /**
-     * 用户根目录ID
-     */
-    @Column(name = "`USER_ROOT_ID`")
     private String userRootId;
 
-    /**
-     * 回收站ID
-     */
-    @Column(name = "`USER_GARBAGE`")
     private String userGarbage;
 
-    /**
-     * 存储空间大小使用MB作为单位。最大可以表示1TB，最小可以表示1位
-     */
-    @Column(name = "`USER_SIZE`")
     private BigDecimal userSize;
 
-    /**
-     * 存储空间大小使用MB作为单位。最大可以表示1TB，最小可以表示1位
-     */
-    @Column(name = "`USER_USED`")
     private BigDecimal userUsed;
 
-    /**
-     * 1-表示用户正常 0-表示用户注销 其它状态可以继续添加
-     */
-    @Column(name = "`USER_STATUS`")
     private Byte userStatus;
 
-    /**
-     * 0-表示普通用户权限 2-表示文档管理员权限 3-表示超级管理员  其它权限可以继续添加
-     */
-    @Column(name = "`USER_PERMISSION`")
     private Integer userPermission;
 
     private static final long serialVersionUID = 1L;
 
+    public UserBo() {
+    }
+
+
+
+    public  UserBo userBo(CdstorageUser user){
+        UserBo userBo = new UserBo();
+        userBo.setUserSex(user.getUserSex());
+        userBo.setUserEmail(user.getUserEmail());
+        userBo.setUserName(user.getUserName());
+        userBo.setUserGarbage(user.getUserGarbage());
+        userBo.setUserId(user.getUserId());
+        userBo.setUserMobie(user.getUserMobie());
+        userBo.setUserPassword(user.getUserPassword());
+        userBo.setUserPermission(user.getUserPermission());
+        userBo.setUserRootId(user.getUserRootId());
+        userBo.setUserSize(user.getUserSize());
+        userBo.setUserStatus(user.getUserStatus());
+        userBo.setUserTime(DateUtil.transfromDate(user.getUserTime()));
+        userBo.setUserWorkId(user.getUserWorkId());
+        userBo.setUserUsed(user.getUserUsed());
+        return  userBo;
+    }
     /**
      * 获取用户ID
      *
@@ -169,21 +136,11 @@ public class CdstorageUser implements Serializable {
         this.userSex = userSex;
     }
 
-    /**
-     * 获取用户创建时间
-     *
-     * @return USER_TIME - 用户创建时间
-     */
-    public Date getUserTime() {
+    public String getUserTime() {
         return userTime;
     }
 
-    /**
-     * 设置用户创建时间
-     *
-     * @param userTime 用户创建时间
-     */
-    public void setUserTime(Date userTime) {
+    public void setUserTime(String userTime) {
         this.userTime = userTime;
     }
 
@@ -192,7 +149,6 @@ public class CdstorageUser implements Serializable {
      *
      * @return USER_PASSWORD - 密码
      */
-    @JsonIgnore
     public String getUserPassword() {
         return userPassword;
     }
@@ -202,7 +158,6 @@ public class CdstorageUser implements Serializable {
      *
      * @param userPassword 密码
      */
-    @JsonProperty
     public void setUserPassword(String userPassword) {
         this.userPassword = userPassword;
     }
@@ -350,4 +305,6 @@ public class CdstorageUser implements Serializable {
     public void setUserPermission(Integer userPermission) {
         this.userPermission = userPermission;
     }
+
+
 }

@@ -10,11 +10,13 @@ import com.dgut.cloud_disk.pojo.bo.ToShareBo;
 
 
 import com.dgut.cloud_disk.pojo.bo.FileBo;
+import com.dgut.cloud_disk.pojo.bo.ShareUserBo;
 import com.dgut.cloud_disk.pojo.bo.ToShareBo;
 
 import com.dgut.cloud_disk.service.DirectoryFileService;
 import com.dgut.cloud_disk.service.PersonalCatalogueService;
 import com.dgut.cloud_disk.service.ShareService;
+import com.dgut.cloud_disk.util.DateUtil;
 import com.dgut.cloud_disk.util.JSONResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -64,6 +66,8 @@ public class ShareServiceImpl implements ShareService {
     @Resource
     private SelectbesharefordirectorynottypeMapper selectbesharefordirectorynottypeMapper;
 
+    @Autowired(required = false)
+    private CdstorageUserMapper cdstorageUserMapper;
 
     //@Autowired(required = false)
    // private SelectbesharefordirectorynottypeMapper selectbesharefordirectorynottypeMapper;
@@ -81,7 +85,7 @@ public class ShareServiceImpl implements ShareService {
                 BeShareBo beShareBo = new BeShareBo();
                 beShareBo.setDirectName(s.getDirectName());
                 beShareBo.setShareID(s.getShareId());
-                beShareBo.setShareTime(s.getShareTime().toString());
+                beShareBo.setShareTime(DateUtil.transfromDate(s.getShareTime()));
                 beShareBo.setShareUserName(s.getUserName());
                 beShareBos.add(beShareBo);
             }
@@ -96,7 +100,7 @@ public class ShareServiceImpl implements ShareService {
                 BeShareBo beShareBo = new BeShareBo();
                 beShareBo.setFileName(s.getDfFileName());
                 beShareBo.setShareID(s.getShareId());
-                beShareBo.setShareTime(s.getShareTime().toString());
+                beShareBo.setShareTime(DateUtil.transfromDate(s.getShareTime()));
                 beShareBo.setShareUserName(s.getUserName());
                 beShareBos.add(beShareBo);
             }
@@ -120,7 +124,7 @@ public class ShareServiceImpl implements ShareService {
             ToShareBo toShareBo = new ToShareBo();
             toShareBo.setShareID(s.getShareId());
             toShareBo.setDirectName(s.getDirectName());
-            toShareBo.setShareTime(s.getShareTime().toString());
+            toShareBo.setShareTime(DateUtil.transfromDate(s.getShareTime()));
             String type = null;
             switch ((int)s.getShareType()){
                 case 1:
@@ -153,7 +157,7 @@ public class ShareServiceImpl implements ShareService {
             ToShareBo toShareBo = new ToShareBo();
             toShareBo.setShareID(s.getShareId());
             toShareBo.setFileName(s.getDfFileName());
-            toShareBo.setShareTime(s.getShareTime().toString());
+            toShareBo.setShareTime(DateUtil.transfromDate(s.getShareTime()));
             String type = null;
             switch ((int)s.getShareType()){
                 case 1:
@@ -319,8 +323,6 @@ public class ShareServiceImpl implements ShareService {
         toshare.setShareId(shareID);
         Toshare toshare1 = toshareMapper.selectOne(toshare);
         Long t = (long)time*1000;
-        System.out.println(toshare1.getShareTime());
-        System.out.println(new Date(toshare1.getShareTime().getTime()+t));
         toshare1.setShareExpire(new Date(toshare1.getShareTime().getTime()+t));
         toshareMapper.updateByPrimaryKey(toshare1);
     }
@@ -338,6 +340,20 @@ public class ShareServiceImpl implements ShareService {
         Toshare toshare1 = toshareMapper.selectOne(toshare);
         toshare1.setShareCode(code);
         toshareMapper.updateByPrimaryKey(toshare1);
+    }
+
+    @Override
+    public List<ShareUserBo> showShareUser() {
+        List<ShareUserBo> shareUserBos = new ArrayList<ShareUserBo>();
+        List<CdstorageUser> cdstorageUsers = cdstorageUserMapper.selectAll();
+        for(CdstorageUser u: cdstorageUsers){
+            ShareUserBo shareUserBo = new ShareUserBo();
+            shareUserBo.setUserID(u.getUserId());
+            shareUserBo.setUserName(u.getUserName());
+            shareUserBo.setWorkID(u.getUserWorkId().toString());
+            shareUserBos.add(shareUserBo);
+        }
+        return shareUserBos;
     }
 
     /**

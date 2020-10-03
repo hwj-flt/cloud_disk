@@ -12,6 +12,12 @@ import tk.mybatis.mapper.entity.Example;
 public class MyFileServiceImpl implements MyFileService {
     @Autowired(required = false)
     MyfileMapper myfileMapper;
+
+    @Override
+    public boolean insertFile(Myfile myfile) {
+        return myfileMapper.insert(myfile) > 0;
+    }
+
     @Override
     public Myfile selectFileById(String fileId) {
         Example example = new Example(Myfile.class);

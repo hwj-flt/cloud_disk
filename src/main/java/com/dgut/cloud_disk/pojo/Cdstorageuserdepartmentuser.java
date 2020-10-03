@@ -1,19 +1,33 @@
 package com.dgut.cloud_disk.pojo;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.*;
 
-@Table(name = "`cdstorage_user`")
-public class CdstorageUser implements Serializable {
+@Table(name = "`CDSTORAGEUSERDEPARTMENTUSER`")
+public class Cdstorageuserdepartmentuser implements Serializable {
+    /**
+     * 映射ID
+     */
+    @Column(name = "`DEPART_USER_ID`")
+    private String departUserId;
+
+    /**
+     * 群组ID
+     */
+    @Column(name = "`DU_DEPART_ID`")
+    private String duDepartId;
+
     /**
      * 用户ID
      */
-    @Id
+    @Column(name = "`DU_USER_ID_`")
+    private String duUserId;
+
+    /**
+     * 用户ID
+     */
     @Column(name = "`USER_ID`")
     private String userId;
 
@@ -95,7 +109,91 @@ public class CdstorageUser implements Serializable {
     @Column(name = "`USER_PERMISSION`")
     private Integer userPermission;
 
+    /**
+     * 群组ID
+     */
+    @Column(name = "`DEPART_ID`")
+    private String departId;
+
+    /**
+     * 群组名称
+     */
+    @Column(name = "`DEPART_NAME`")
+    private String departName;
+
+    /**
+     * 群组文件夹根目录ID
+     */
+    @Column(name = "`DEPART_ROOT`")
+    private String departRoot;
+
+    /**
+     * 群组创建时间
+     */
+    @Column(name = "`DEPART_TIME`")
+    private Date departTime;
+
+    /**
+     * 11111111-文档管理员（上传、下载、删除、创建文件夹、分享、复制、移动、重命名）
+     */
+    @Column(name = "`DEPART_PERMISSION`")
+    private String departPermission;
+
     private static final long serialVersionUID = 1L;
+
+    /**
+     * 获取映射ID
+     *
+     * @return DEPART_USER_ID - 映射ID
+     */
+    public String getDepartUserId() {
+        return departUserId;
+    }
+
+    /**
+     * 设置映射ID
+     *
+     * @param departUserId 映射ID
+     */
+    public void setDepartUserId(String departUserId) {
+        this.departUserId = departUserId;
+    }
+
+    /**
+     * 获取群组ID
+     *
+     * @return DU_DEPART_ID - 群组ID
+     */
+    public String getDuDepartId() {
+        return duDepartId;
+    }
+
+    /**
+     * 设置群组ID
+     *
+     * @param duDepartId 群组ID
+     */
+    public void setDuDepartId(String duDepartId) {
+        this.duDepartId = duDepartId;
+    }
+
+    /**
+     * 获取用户ID
+     *
+     * @return DU_USER_ID_ - 用户ID
+     */
+    public String getDuUserId() {
+        return duUserId;
+    }
+
+    /**
+     * 设置用户ID
+     *
+     * @param duUserId 用户ID
+     */
+    public void setDuUserId(String duUserId) {
+        this.duUserId = duUserId;
+    }
 
     /**
      * 获取用户ID
@@ -192,7 +290,6 @@ public class CdstorageUser implements Serializable {
      *
      * @return USER_PASSWORD - 密码
      */
-    @JsonIgnore
     public String getUserPassword() {
         return userPassword;
     }
@@ -202,7 +299,6 @@ public class CdstorageUser implements Serializable {
      *
      * @param userPassword 密码
      */
-    @JsonProperty
     public void setUserPassword(String userPassword) {
         this.userPassword = userPassword;
     }
@@ -349,5 +445,95 @@ public class CdstorageUser implements Serializable {
      */
     public void setUserPermission(Integer userPermission) {
         this.userPermission = userPermission;
+    }
+
+    /**
+     * 获取群组ID
+     *
+     * @return DEPART_ID - 群组ID
+     */
+    public String getDepartId() {
+        return departId;
+    }
+
+    /**
+     * 设置群组ID
+     *
+     * @param departId 群组ID
+     */
+    public void setDepartId(String departId) {
+        this.departId = departId;
+    }
+
+    /**
+     * 获取群组名称
+     *
+     * @return DEPART_NAME - 群组名称
+     */
+    public String getDepartName() {
+        return departName;
+    }
+
+    /**
+     * 设置群组名称
+     *
+     * @param departName 群组名称
+     */
+    public void setDepartName(String departName) {
+        this.departName = departName;
+    }
+
+    /**
+     * 获取群组文件夹根目录ID
+     *
+     * @return DEPART_ROOT - 群组文件夹根目录ID
+     */
+    public String getDepartRoot() {
+        return departRoot;
+    }
+
+    /**
+     * 设置群组文件夹根目录ID
+     *
+     * @param departRoot 群组文件夹根目录ID
+     */
+    public void setDepartRoot(String departRoot) {
+        this.departRoot = departRoot;
+    }
+
+    /**
+     * 获取群组创建时间
+     *
+     * @return DEPART_TIME - 群组创建时间
+     */
+    public Date getDepartTime() {
+        return departTime;
+    }
+
+    /**
+     * 设置群组创建时间
+     *
+     * @param departTime 群组创建时间
+     */
+    public void setDepartTime(Date departTime) {
+        this.departTime = departTime;
+    }
+
+    /**
+     * 获取11111111-文档管理员（上传、下载、删除、创建文件夹、分享、复制、移动、重命名）
+     *
+     * @return DEPART_PERMISSION - 11111111-文档管理员（上传、下载、删除、创建文件夹、分享、复制、移动、重命名）
+     */
+    public String getDepartPermission() {
+        return departPermission;
+    }
+
+    /**
+     * 设置11111111-文档管理员（上传、下载、删除、创建文件夹、分享、复制、移动、重命名）
+     *
+     * @param departPermission 11111111-文档管理员（上传、下载、删除、创建文件夹、分享、复制、移动、重命名）
+     */
+    public void setDepartPermission(String departPermission) {
+        this.departPermission = departPermission;
     }
 }

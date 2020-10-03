@@ -79,5 +79,4 @@ public class DepartmentUser implements Serializable {
     public void setDuUserId(String duUserId) {
         this.duUserId = duUserId;
     }
-
 }

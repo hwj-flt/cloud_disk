@@ -11,14 +11,19 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
+
 import javax.annotation.Resource;
 import java.util.ArrayList;
+
+import java.math.BigDecimal;
+
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -63,17 +68,101 @@ public class FileController {
     private DepartmentUserService departmentUserService;
     @Autowired
     private DepartmentService departmentService;
+    @Autowired
+    private CdstorageUserService cdstorageUserService;
+    @Value("${redis.defaultTokenValidTime}")
+    private Integer tokenValidTime;
     /**
      * 判断群组文件权限;有文件夹ID找文件夹表中文件夹有个所属群组ID。用用户ID和群组ID获得群组和用户映射表中权限，查看下载位置是否为1
      * @param directID 文件夹id
      * @return 权限值
      * @throws JsonProcessingException
      */
+
     public String checkPermission(String directID){
 
         Directory directory = directoryService.selectDirectoryByID(directID);
         Department department = departmentService.selDepart(directory.getDirectBelongDepart());
         return department.getDepartPermission();
+    }
+    /**
+     * 获取上传的链接
+     * @param jsonObject 接收前端数据
+     * @return uploadUrl
+     * @throws JsonProcessingException json字符转对象异常
+     */
+    @RequestMapping("/getUploadUrl")
+    public JSONResult getUploadUrl(@RequestBody JSONObject jsonObject) throws JsonProcessingException {
+        String fileName = jsonObject.getString("fileName");
+        String fileSize = jsonObject.getString("fileSize");
+        String token = jsonObject.getString("token");
+        Jedis jedis = jedisPool.getResource();
+        String tokenValue = jedis.get(token);
+        jedis.close();
+        ObjectMapper mapper = new ObjectMapper();
+        CdstorageUser user = mapper.readValue(tokenValue, CdstorageUser.class);
+       jedis.close();
+        if(user.getUserUsed().add(new BigDecimal(fileSize)).compareTo(user.getUserSize()) > 0){
+            return JSONResult.errorMsg("存储空间不足，无法上传");
+        }
+        //objectName为工号加文件名
+        String objectName = user.getUserWorkId() + "/" + fileName;
+        String url = directoryFileService.getUploadUrl(objectName);
+        JSONObject res = new JSONObject();
+        res.put("uploadUrl",url);
+        return JSONResult.build(200,"上传链接",res);
+    }
+
+    /**
+     * 前端返回上传成功后操作数据库
+     * @param jsonObject 接收前端数据
+     * @return 操作结果
+     * @throws JsonProcessingException json字符转对象异常
+     */
+    @RequestMapping("/upload")
+    public JSONResult upload(@RequestBody JSONObject jsonObject) throws JsonProcessingException {
+        String fileName = jsonObject.getString("fileName");
+        String directID = jsonObject.getString("directID");
+        String fileSize = jsonObject.getString("fileSize");
+        String fileType = jsonObject.getString("fileType");
+        String token = jsonObject.getString("token");
+        //将用户对象从redis中读出
+        Jedis jedis = jedisPool.getResource();
+        String tokenValue = jedis.get(token);
+        ObjectMapper mapper = new ObjectMapper();
+        CdstorageUser user = mapper.readValue(tokenValue, CdstorageUser.class);
+       jedis.close();
+        //在文件表中插入一条数据:文件ID为UUID 文件链接就是objectName 上传时间为当前时间 引用文件夹个数为1
+        Myfile newFile = new Myfile();
+        newFile.setFileId(UUID.randomUUID().toString().replace("-",""));
+        newFile.setFileLink(user.getUserWorkId() + "/" + fileName);
+        newFile.setFileUploadTime(new Date());
+        newFile.setFileRefere((byte)1);
+        newFile.setFileSize(new BigDecimal(fileSize));
+        newFile.setFileType(fileType);
+        newFile.setFileUploadId(user.getUserId());
+        if(!myFileService.insertFile(newFile)) {
+            return JSONResult.errorMsg("插入文件表失败");
+        }
+        //在映射表中插入一条数据:映射ID由UUID生成 文件夹ID是前端传入的 文件ID为前面的文件ID 文件名为前端传入 Garbage未被删除 其它为空
+        DirectoryFile directoryFile = new DirectoryFile();
+        directoryFile.setDirectFileId(UUID.randomUUID().toString().replace("-",""));
+        directoryFile.setDfFileId(newFile.getFileId());
+        directoryFile.setDfFileName(fileName);
+        directoryFile.setDfGarbage((byte)1);
+        directoryFile.setDfDirectId(directID);
+        if(!directoryFileService.insertDirectoryFile(directoryFile)) {
+            return JSONResult.errorMsg("插入映射表失败");
+        }
+        //修改用户表的用户使用空间，更新redis中用户信息
+        user.setUserUsed(user.getUserUsed().add(new BigDecimal(fileSize)));
+        if(!cdstorageUserService.updateUser(user)) {
+            return JSONResult.errorMsg("更新用户表失败");
+        }
+        jedis.set(token,mapper.writeValueAsString(user));
+        jedis.expire(token,tokenValidTime);
+        jedis.close();
+        return JSONResult.build(200,"上传成功",null);
     }
     /**
      * 文件下载
@@ -93,13 +182,16 @@ public class FileController {
         String user = jedis.get(token);
         ObjectMapper mapper = new ObjectMapper();
         CdstorageUser cdstorageUser = mapper.readValue(user, CdstorageUser.class);
+        jedis.close();
         Directory directory = directoryService.selectDirectoryByID(directID);
         if(file==null || file.getDfGarbage()==2 || directory.getDirectBelongUser()==cdstorageUser.getUserId()){
             return JSONResult.errorMsg("不能操作此文件");
         }
         //根据文件链接下载文件
         Myfile myfile = myFileService.selectFileById(fileID);
+
         String url = directoryFileService.fileDownload(myfile.getFileLink(),3600L);
+
         jsonObject.put("data",url);
         return new JSONResult(200,"",jsonObject);
     }
@@ -128,7 +220,7 @@ public class FileController {
      * @param jsonObject
      * @return 前端需要的json数据
      */
-    @RequestMapping("/redefilename")
+    @RequestMapping("/redirectfilename")
     public JSONResult reDeFileName(@RequestBody JSONObject jsonObject){
         loggqer.info(jsonObject.toJSONString());
         //新文件夹名
@@ -162,6 +254,7 @@ public class FileController {
         String user = jedis.get(token);
         ObjectMapper mapper = new ObjectMapper();
         CdstorageUser cdstorageUser = mapper.readValue(user, CdstorageUser.class);
+        jedis.close();
 
         //文件复制
         DirectoryFile directoryFile = directoryFileService.selectFileById(fileID);
@@ -191,6 +284,8 @@ public class FileController {
         String user = jedis.get(token);
         ObjectMapper mapper = new ObjectMapper();
         CdstorageUser cdstorageUser = mapper.readValue(user, CdstorageUser.class);
+        jedis.close();
+
         //文件夹复制
         directoryService.copyDirectory(newDirectID,cdstorageUser.getUserId(),directID);
         return new JSONResult(200,"",null);
@@ -281,7 +376,9 @@ public class FileController {
      * @param jsonObject
      * @return
      */
-    @RequestMapping("/redepatdifilename")
+
+    @RequestMapping("/redepatdirectfilename")
+
     public JSONResult reDepatDeFileName(@RequestBody JSONObject jsonObject) throws JsonProcessingException {
         //新文件夹名
         String newName = jsonObject.getString("newName");
@@ -367,6 +464,7 @@ public class FileController {
         String user = jedis.get(token);
         ObjectMapper mapper = new ObjectMapper();
         CdstorageUser cdstorageUser = mapper.readValue(user, CdstorageUser.class);
+        jedis.close();
         //判断权限
         if("00000100".equals(checkPermission(newDirectID))){
             return JSONResult.errorMsg("");

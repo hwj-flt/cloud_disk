@@ -2,16 +2,19 @@ package com.dgut.cloud_disk.service.impl;
 
 import com.dgut.cloud_disk.mapper.CdstorageUserMapper;
 import com.dgut.cloud_disk.pojo.CdstorageUser;
+import com.dgut.cloud_disk.pojo.bo.UserBo;
 import com.dgut.cloud_disk.pojo.vo.CdstorageUserVo;
 import com.dgut.cloud_disk.service.CdstorageUserService;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.catalina.User;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -21,7 +24,12 @@ public class CdstorageUserServiceImpl implements CdstorageUserService {
 
     @Override
     public List<CdstorageUser> allUser() {
-        List<CdstorageUser> users= cdstorageUserMapper.selectAll();
+        Example example = new Example(CdstorageUser.class);
+        Example.Criteria criteria = example.createCriteria();
+        List<Integer> lists = new ArrayList<>();
+        lists.add(3);
+        criteria.andNotIn("userPermission",lists);
+        List<CdstorageUser> users= cdstorageUserMapper.selectByExample(example);
         return users;
     }
 
@@ -59,14 +67,14 @@ public class CdstorageUserServiceImpl implements CdstorageUserService {
         if(StringUtils.isNotBlank(cdstorageUserVo.getUserEmail())){
             cdstorageUser.setUserEmail(cdstorageUserVo.getUserEmail());
         }
-        if(StringUtils.isNotBlank(cdstorageUserVo.getUserPassword())){
-            cdstorageUser.setUserPassword(cdstorageUserVo.getUserPassword());
+        if(StringUtils.isNotBlank(cdstorageUserVo.getUserWorkId().toString())){
+            cdstorageUser.setUserWorkId(cdstorageUserVo.getUserWorkId());
         }
         if(StringUtils.isNotBlank(cdstorageUserVo.getUserMobie())){
             cdstorageUser.setUserMobie(cdstorageUserVo.getUserMobie());
         }
-        if(cdstorageUserVo.getUserSize()!=null){
-            cdstorageUser.setUserSize(cdstorageUserVo.getUserSize());
+        if(StringUtils.isNotBlank(cdstorageUserVo.getUserSex())){
+            cdstorageUser.setUserSex(cdstorageUserVo.getUserSex());
         }
         int num = cdstorageUserMapper.updateByPrimaryKey(cdstorageUser);
         return num;
@@ -91,6 +99,11 @@ public class CdstorageUserServiceImpl implements CdstorageUserService {
     }
 
     @Override
+    public CdstorageUser selByUserId(String userId) {
+        return cdstorageUserMapper.selectByPrimaryKey(userId);
+    }
+
+    @Override
     public List<CdstorageUser> selByUserPhone(String token, String userMobie) {
         Example example = new Example(CdstorageUser.class);
         Example.Criteria criteria = example.createCriteria();
@@ -98,6 +111,16 @@ public class CdstorageUserServiceImpl implements CdstorageUserService {
         List<CdstorageUser> users = cdstorageUserMapper.selectByExample(example);
         return users;
     }
+
+    @Override
+    public CdstorageUser selByUserMobie(String userMobie) {
+        Example example = new Example(CdstorageUser.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("userMobie",userMobie);
+        CdstorageUser user = cdstorageUserMapper.selectOneByExample(example);
+        return user;
+    }
+
     /**
      *根据手机号查询用户
      * @param userMobie

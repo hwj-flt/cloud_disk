@@ -7,9 +7,12 @@ import com.dgut.cloud_disk.pojo.DirectoryFileMyFile;
 import com.dgut.cloud_disk.pojo.bo.DirectoryBo;
 import com.dgut.cloud_disk.pojo.bo.FileBo;
 import com.dgut.cloud_disk.service.PersonalCatalogueService;
+import com.dgut.cloud_disk.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,12 +38,33 @@ public class PersonalCatalogueServiceImpl implements PersonalCatalogueService {
         List<FileBo> rlist = new ArrayList<FileBo>();
         List<DirectoryFileMyFile> list=directoryFileMyFileMapper.queryFileVoByDirectoryID(directoryId);
         for (DirectoryFileMyFile d:list){
-            FileBo f  = new FileBo();
-            f.setFileID(d.getFileId());
-            f.setModificationDate(d.getFileUploadTime().toString());
-            f.setName(d.getDfFileName());
-            f.setType(d.getFileType());
-            rlist.add(f);
+            if((byte)d.getDfGarbage()!=2){
+                FileBo f  = new FileBo();
+                f.setFileID(d.getFileId());
+                f.setModificationDate(DateUtil.transfromDate(d.getFileUploadTime()));
+                f.setName(d.getDfFileName());
+                f.setType(d.getFileType());
+                d.setFileSize(d.getFileSize().setScale(2,BigDecimal.ROUND_HALF_UP));
+
+                String size = null;
+                //1.000000MB 0.0001KB
+                if(d.getFileSize().compareTo(new BigDecimal(1))<0){
+                    String str = d.getFileSize().toString();
+                    String t = str.replaceAll("0+$", "");
+                    size= t+"KB";
+                }else if((d.getFileSize().compareTo(new BigDecimal(1000))>0)){
+                    String str = d.getFileSize().toString();
+                    String t = str.replaceAll("0+$", "");
+                    size = t+"GB";
+                }else{
+                    String str = d.getFileSize().toString();
+                    String t = str.replaceAll("0+$", "");
+                    size = t+"MB";
+                }
+
+                f.setSize(size);
+                rlist.add(f);
+            }
         }
         return rlist;
     }
@@ -71,7 +95,7 @@ public class PersonalCatalogueServiceImpl implements PersonalCatalogueService {
             dv.setDirectID(list.get(0).getDirectId());
             dv.setName(list.get(0).getDirectName());
             dv.setSize(list.get(0).getDirectSize().toString());
-            dv.setModificationDate(list.get(0).getDirectCreateTime().toString());
+            dv.setModificationDate(DateUtil.transfromDate(list.get(0).getDirectCreateTime()));
         }
         //获取当前文件夹下的文件
         List<FileBo> fileVoList = getFileVoByDirectory(rootId);
@@ -80,8 +104,10 @@ public class PersonalCatalogueServiceImpl implements PersonalCatalogueService {
         List<DirectoryBo> dl = new ArrayList<DirectoryBo>();
         List<Directory> dlist = getDirectorysByParent(rootId);
         for(Directory directory1:dlist){
-            DirectoryBo q = getAllCatalogueb(directory1.getDirectId(),new DirectoryBo());
-            dl.add(q);
+            if(directory1.getDirectDelete()!=2) {
+                DirectoryBo q = getAllCatalogueb(directory1.getDirectId(), new DirectoryBo());
+                dl.add(q);
+            }
         }
         dv.setIncludeDirects(dl);
         return dv;

@@ -5,6 +5,7 @@ public class FileBo {
     private String type;
     private String name;
     private String modificationDate;
+    private String size;
 
     public String getFileID() {
         return fileID;
@@ -36,5 +37,13 @@ public class FileBo {
 
     public void setModificationDate(String modificationDate) {
         this.modificationDate = modificationDate;
+    }
+
+    public String getSize() {
+        return size;
+    }
+
+    public void setSize(String size) {
+        this.size = size;
     }
 }

@@ -76,31 +76,27 @@ public class ManagerImportUserController {
         return new JSONResult(200,"",null);
     }
 
-    @RequestMapping("/uploadfile")
-    public JSONResult uploadedfile(@RequestParam("file") MultipartFile file) throws ParameterException, IOException {
-       String token = request.getHeader("token");
+
+    @RequestMapping("/importservals")
+    public JSONResult ImportUsers(@RequestParam("file") MultipartFile file) throws Exception{
+        String token = request.getHeader("token");
         if (file.isEmpty()) {
             throw new ParameterException("参数为空");
         }
         managerImportUserService.storageFile(file,token);
-        //返回前端json
-        return new JSONResult(200,"",null);
-    }
 
-    @RequestMapping("/importservals")
-    public JSONResult ImportUsers(@RequestBody TokenVo tokenVo) throws Exception{
         jedisPool.getResource();
         Jedis jedis = jedisPool.getResource();
-        String tokenValue = jedis.get(tokenVo.getToken());
+        String tokenValue = jedis.get(token);
         jedis.close();
         ObjectMapper mapper = new ObjectMapper();
         CdstorageUser user = mapper.readValue(tokenValue, CdstorageUser.class);
         String workID = user.getUserWorkId().toString();
-        File file = new File(path + workID+".xls");
-        if(!file.exists()){
+        File file1 = new File(path + workID+".xls");
+        if(!file1.exists()){
             throw new ParameterException("找不到上传的xls");
         }
-        List<ImportUserVo.UserVo> list = ReadExcel.readExcelToUser(file);
+        List<ImportUserVo.UserVo> list = ReadExcel.readExcelToUser(file1);
         managerImportUserService.insertUsers(list);
         //返回前端json
         return new JSONResult(200,"",null);
