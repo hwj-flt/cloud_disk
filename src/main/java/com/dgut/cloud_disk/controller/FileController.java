@@ -19,7 +19,6 @@ import redis.clients.jedis.JedisPool;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -38,8 +37,6 @@ public class FileController {
     private MyFileService myFileService;
     @Autowired
     private ToshareService toshareService;
-    @Autowired
-    private DepartmentUserService departmentUserService;
     @Autowired
     private DepartmentService departmentService;
     @Autowired
