@@ -6,6 +6,7 @@ import com.dgut.cloud_disk.pojo.Cdstorageuserdepartmentuser;
 import com.dgut.cloud_disk.pojo.Department;
 import com.dgut.cloud_disk.pojo.bo.DepartmentBo;
 import com.dgut.cloud_disk.service.DepartmentService;
+import com.dgut.cloud_disk.util.DateUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -42,7 +43,7 @@ public class DepartmentServiceImpl implements DepartmentService {
             DepartmentBo departmentBo = new DepartmentBo();
             departmentBo.setDepartID(c.getDepartId());
             departmentBo.setDepartName(c.getDepartName());
-            departmentBo.setDepartTime(c.getDepartTime().toString());
+            departmentBo.setDepartTime(DateUtil.transfromDate(c.getDepartTime()));
             departmentBo.setPermission(c.getDepartPermission());
             departmentBos.add(departmentBo);
         }
