@@ -9,6 +9,7 @@ import com.dgut.cloud_disk.pojo.bo.ToShareBo;
 import com.dgut.cloud_disk.service.DirectoryFileService;
 import com.dgut.cloud_disk.service.PersonalCatalogueService;
 import com.dgut.cloud_disk.service.ShareService;
+import com.dgut.cloud_disk.util.DateUtil;
 import com.dgut.cloud_disk.util.JSONResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -68,7 +69,7 @@ public class ShareServiceImpl implements ShareService {
                 BeShareBo beShareBo = new BeShareBo();
                 beShareBo.setDirectName(s.getDirectName());
                 beShareBo.setShareID(s.getShareId());
-                beShareBo.setShareTime(s.getShareTime().toString());
+                beShareBo.setShareTime(DateUtil.transfromDate(s.getShareTime()));
                 beShareBo.setShareUserName(s.getUserName());
                 beShareBos.add(beShareBo);
             }
@@ -83,7 +84,7 @@ public class ShareServiceImpl implements ShareService {
                 BeShareBo beShareBo = new BeShareBo();
                 beShareBo.setFileName(s.getDfFileName());
                 beShareBo.setShareID(s.getShareId());
-                beShareBo.setShareTime(s.getShareTime().toString());
+                beShareBo.setShareTime(DateUtil.transfromDate(s.getShareTime()));
                 beShareBo.setShareUserName(s.getUserName());
                 beShareBos.add(beShareBo);
             }
@@ -107,7 +108,7 @@ public class ShareServiceImpl implements ShareService {
             ToShareBo toShareBo = new ToShareBo();
             toShareBo.setShareID(s.getShareId());
             toShareBo.setDirectName(s.getDirectName());
-            toShareBo.setShareTime(s.getShareTime().toString());
+            toShareBo.setShareTime(DateUtil.transfromDate(s.getShareTime()));
             String type = null;
             switch ((int)s.getShareType()){
                 case 1:
@@ -140,7 +141,7 @@ public class ShareServiceImpl implements ShareService {
             ToShareBo toShareBo = new ToShareBo();
             toShareBo.setShareID(s.getShareId());
             toShareBo.setFileName(s.getDfFileName());
-            toShareBo.setShareTime(s.getShareTime().toString());
+            toShareBo.setShareTime(DateUtil.transfromDate(s.getShareTime()));
             String type = null;
             switch ((int)s.getShareType()){
                 case 1:
@@ -306,8 +307,6 @@ public class ShareServiceImpl implements ShareService {
         toshare.setShareId(shareID);
         Toshare toshare1 = toshareMapper.selectOne(toshare);
         Long t = (long)time*1000;
-        System.out.println(toshare1.getShareTime());
-        System.out.println(new Date(toshare1.getShareTime().getTime()+t));
         toshare1.setShareExpire(new Date(toshare1.getShareTime().getTime()+t));
         toshareMapper.updateByPrimaryKey(toshare1);
     }

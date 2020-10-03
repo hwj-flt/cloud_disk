@@ -3,8 +3,10 @@ package com.dgut.cloud_disk.controller;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.dgut.cloud_disk.pojo.CdstorageUser;
+import com.dgut.cloud_disk.pojo.bo.UserBo;
 import com.dgut.cloud_disk.pojo.vo.CdstorageUserVo;
 import com.dgut.cloud_disk.service.CdstorageUserService;
+import com.dgut.cloud_disk.util.DateUtil;
 import com.dgut.cloud_disk.util.JSONResult;
 import com.dgut.cloud_disk.util.SendCodeUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -14,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -287,7 +290,9 @@ public class CdstorageUserController {
         CdstorageUser user = mapper.readValue(tokenValue, CdstorageUser.class);
         user.setUserSize(user.getUserSize().divide(new BigDecimal(1000)));
         user.setUserUsed(user.getUserUsed().divide(new BigDecimal(1000)));
-        return new JSONResult(JSONObject.toJSON(user));
+        UserBo userBo = new UserBo();
+        UserBo userbo = userBo.userBo(user);
+        return new JSONResult(userbo);
     }
 
    /**
@@ -330,6 +335,7 @@ public class CdstorageUserController {
         ObjectMapper mapper = new ObjectMapper();
         String tokenValue = jedis.get(token);
         CdstorageUser user = mapper.readValue(tokenValue, CdstorageUser.class);
+       jedis.close();
         //修改密码
         if (!userService.updateUserPassword(user.getUserMobie(),MD5.stringMD5(userPassword))){
             return new JSONResult(500,"修改密码失败",null);

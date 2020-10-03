@@ -2,16 +2,19 @@ package com.dgut.cloud_disk.service.impl;
 
 import com.dgut.cloud_disk.mapper.CdstorageUserMapper;
 import com.dgut.cloud_disk.pojo.CdstorageUser;
+import com.dgut.cloud_disk.pojo.bo.UserBo;
 import com.dgut.cloud_disk.pojo.vo.CdstorageUserVo;
 import com.dgut.cloud_disk.service.CdstorageUserService;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.catalina.User;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -21,7 +24,12 @@ public class CdstorageUserServiceImpl implements CdstorageUserService {
 
     @Override
     public List<CdstorageUser> allUser() {
-        List<CdstorageUser> users= cdstorageUserMapper.selectAll();
+        Example example = new Example(CdstorageUser.class);
+        Example.Criteria criteria = example.createCriteria();
+        List<Integer> lists = new ArrayList<>();
+        lists.add(3);
+        criteria.andNotIn("userPermission",lists);
+        List<CdstorageUser> users= cdstorageUserMapper.selectByExample(example);
         return users;
     }
 

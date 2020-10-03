@@ -127,7 +127,7 @@ public class DirectoryFileController {
         String tokenValue = jedis.get(token);
         ObjectMapper objectMapper=new ObjectMapper();
         CdstorageUser cdstorageUser = objectMapper.readValue(tokenValue, CdstorageUser.class);
-
+        jedis.close();
         //System.out.println(cdstorageUser.getUserId()+Did+Fid+shareTime+"---"+userIDs[0]+userIDs[1]);
         for (int i=0;i<userIDs.length;i++){
         Toshare toshare=new Toshare();
@@ -166,8 +166,8 @@ public class DirectoryFileController {
         String tokenValue = jedis.get(token);
         ObjectMapper objectMapper = new ObjectMapper();
         CdstorageUser cdstorageUser = objectMapper.readValue(tokenValue, CdstorageUser.class);
-
-        Toshare toshare = new Toshare();
+        jedis.close();
+        Toshare toshare=new Toshare();
         toshare.setShareId(UUID.randomUUID().toString().replace("-", ""));
         toshare.setShareUserId(cdstorageUser.getUserId());
         toshare.setShareToUserId("0");//被分享人id为0，表示不指定
