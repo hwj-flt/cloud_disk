@@ -4,8 +4,15 @@ import com.dgut.cloud_disk.exception.ParameterException;
 import com.dgut.cloud_disk.mapper.*;
 import com.dgut.cloud_disk.pojo.*;
 import com.dgut.cloud_disk.pojo.bo.BeShareBo;
-import com.dgut.cloud_disk.pojo.bo.FileBo;
+
+
 import com.dgut.cloud_disk.pojo.bo.ToShareBo;
+
+
+import com.dgut.cloud_disk.pojo.bo.FileBo;
+import com.dgut.cloud_disk.pojo.bo.ShareUserBo;
+import com.dgut.cloud_disk.pojo.bo.ToShareBo;
+
 import com.dgut.cloud_disk.service.DirectoryFileService;
 import com.dgut.cloud_disk.service.PersonalCatalogueService;
 import com.dgut.cloud_disk.service.ShareService;
@@ -16,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
 import tk.mybatis.mapper.entity.Example;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -54,8 +62,16 @@ public class ShareServiceImpl implements ShareService {
     @Autowired(required = false)
     private SelectbeshareforfilenottypeMapper selectbeshareforfilenottypeMapper;
 
-    @Autowired(required = false)
+
+    @Resource
     private SelectbesharefordirectorynottypeMapper selectbesharefordirectorynottypeMapper;
+
+    @Autowired(required = false)
+    private CdstorageUserMapper cdstorageUserMapper;
+
+    //@Autowired(required = false)
+   // private SelectbesharefordirectorynottypeMapper selectbesharefordirectorynottypeMapper;
+
 
     @Override
     public List<BeShareBo> showBeShare(String beshareID) {
@@ -324,6 +340,20 @@ public class ShareServiceImpl implements ShareService {
         Toshare toshare1 = toshareMapper.selectOne(toshare);
         toshare1.setShareCode(code);
         toshareMapper.updateByPrimaryKey(toshare1);
+    }
+
+    @Override
+    public List<ShareUserBo> showShareUser() {
+        List<ShareUserBo> shareUserBos = new ArrayList<ShareUserBo>();
+        List<CdstorageUser> cdstorageUsers = cdstorageUserMapper.selectAll();
+        for(CdstorageUser u: cdstorageUsers){
+            ShareUserBo shareUserBo = new ShareUserBo();
+            shareUserBo.setUserID(u.getUserId());
+            shareUserBo.setUserName(u.getUserName());
+            shareUserBo.setWorkID(u.getUserWorkId().toString());
+            shareUserBos.add(shareUserBo);
+        }
+        return shareUserBos;
     }
 
     /**

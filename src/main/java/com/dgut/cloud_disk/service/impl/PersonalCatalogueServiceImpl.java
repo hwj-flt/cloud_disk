@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,6 +44,8 @@ public class PersonalCatalogueServiceImpl implements PersonalCatalogueService {
                 f.setModificationDate(DateUtil.transfromDate(d.getFileUploadTime()));
                 f.setName(d.getDfFileName());
                 f.setType(d.getFileType());
+                d.setFileSize(d.getFileSize().setScale(2,BigDecimal.ROUND_HALF_UP));
+
                 String size = null;
                 //1.000000MB 0.0001KB
                 if(d.getFileSize().compareTo(new BigDecimal(1))<0){
@@ -58,6 +61,7 @@ public class PersonalCatalogueServiceImpl implements PersonalCatalogueService {
                     String t = str.replaceAll("0+$", "");
                     size = t+"MB";
                 }
+
                 f.setSize(size);
                 rlist.add(f);
             }

@@ -1,6 +1,6 @@
 package com.dgut.cloud_disk;
 
-import org.springframework.beans.factory.config.PropertyOverrideConfigurer;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletComponentScan;
