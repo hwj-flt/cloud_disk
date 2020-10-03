@@ -17,7 +17,8 @@ public interface DirectoryService {
      * @return
      */
     Boolean insertDirectory(Directory directory);
-
+    public void copyFileToNew(String directoryId,String newDirectoryId);
+    public void copyDirectory(String directID, String userID,String dID);
 }
 
 
