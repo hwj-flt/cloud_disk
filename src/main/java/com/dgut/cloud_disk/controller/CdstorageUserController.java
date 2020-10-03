@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.math.RoundingMode;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -75,6 +76,8 @@ public class CdstorageUserController {
             System.out.println(user.getUserPassword()+"/t"+MD5.stringMD5(userPassword));
             return JSONResult.errorMsg("密码错误");
         }
+        user.setUserUsed(user.getUserUsed().setScale(2, RoundingMode.HALF_UP));
+        user.setUserSize(user.getUserSize().setScale(2, RoundingMode.HALF_UP));
         //创建所需对象
         Jedis jedis = jedisPool.getResource();
         JSONObject jsonObject = new JSONObject();
@@ -182,7 +185,6 @@ public class CdstorageUserController {
         CdstorageUser user = userService.queryByUserMobie(userPhone);
         ObjectMapper mapper = new ObjectMapper();
         jedis.set(token,mapper.writeValueAsString(user));
-        jedis.expire(token,tokenValidTime);
         jedis.close();
         return new JSONResult(200,"登录成功",null);
     }
@@ -291,8 +293,8 @@ public class CdstorageUserController {
         }
         ObjectMapper mapper = new ObjectMapper();
         CdstorageUser user = mapper.readValue(tokenValue, CdstorageUser.class);
-        user.setUserSize(user.getUserSize().divide(new BigDecimal(1000)));
-        user.setUserUsed(user.getUserUsed().divide(new BigDecimal(1000)));
+        user.setUserSize(user.getUserSize().divide(new BigDecimal(1000)).setScale(2, RoundingMode.HALF_UP));
+        user.setUserUsed(user.getUserUsed().divide(new BigDecimal(1000)).setScale(2, RoundingMode.HALF_UP));
         UserBo userBo = new UserBo();
         UserBo userbo = userBo.userBo(user);
         return new JSONResult(userbo);
