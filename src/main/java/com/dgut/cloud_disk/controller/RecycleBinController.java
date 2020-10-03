@@ -41,7 +41,7 @@ public class RecycleBinController {
 
         List<Directory> dList=DFService.getDeletedDirectoryByID(cdstorageUser.getUserId());
 
-        System.out.println(dList.size());
+        //System.out.println(dList.size());
         List list=new ArrayList();
         if(dfList!=null){//被删除文件列表
             for(int i=0;i<dfList.size();i++){
@@ -53,7 +53,7 @@ public class RecycleBinController {
             obj.put("id",dfList.get(i).getDirectFileId());
             obj.put("name",dfList.get(i).getDfFileName());
 
-            obj.put("deleteTime",dfList.get(i).getDfDeleteTime());
+            obj.put("deleteTime",DateUtil.transfromDate(dfList.get(i).getDfDeleteTime()));
                 //System.out.println(DateUtil.transfromDate(dfList.get(i).getDfDeleteTime()));
             list.add(obj);
             }
@@ -68,7 +68,7 @@ public class RecycleBinController {
                 obj.put("type",null);//文件夹类型为null
                 obj.put("id",dList.get(i).getDirectId());
                 obj.put("name",dList.get(i).getDirectName());
-                obj.put("deleteTime",dList.get(i).getDirectDeleteTime());
+                obj.put("deleteTime",DateUtil.transfromDate(dList.get(i).getDirectDeleteTime()));
                 //System.out.println(DateUtil.transfromDate(dList.get(i).getDirectDeleteTime()));
                 list.add(obj);
                 //System.out.println(obj);
