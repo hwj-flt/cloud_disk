@@ -290,8 +290,8 @@ public class CdstorageUserController {
         }
         ObjectMapper mapper = new ObjectMapper();
         CdstorageUser user = mapper.readValue(tokenValue, CdstorageUser.class);
-        user.setUserSize(user.getUserSize().divide(new BigDecimal(1000)));
-        user.setUserUsed(user.getUserUsed().divide(new BigDecimal(1000)));
+        user.setUserSize(user.getUserSize().divide(new BigDecimal(1000)).setScale(2, RoundingMode.HALF_UP));
+        user.setUserUsed(user.getUserUsed().divide(new BigDecimal(1000)).setScale(2, RoundingMode.HALF_UP));
         UserBo userBo = new UserBo();
         UserBo userbo = userBo.userBo(user);
         return new JSONResult(userbo);
