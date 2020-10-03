@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -23,7 +24,12 @@ public class CdstorageUserServiceImpl implements CdstorageUserService {
 
     @Override
     public List<CdstorageUser> allUser() {
-        List<CdstorageUser> users= cdstorageUserMapper.selectAll();
+        Example example = new Example(CdstorageUser.class);
+        Example.Criteria criteria = example.createCriteria();
+        List<Integer> lists = new ArrayList<>();
+        lists.add(3);
+        criteria.andNotIn("userPermission",lists);
+        List<CdstorageUser> users= cdstorageUserMapper.selectByExample(example);
         return users;
     }
 
