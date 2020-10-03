@@ -105,7 +105,7 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
         }else if(type==2){
             i=DFmapper.deleteByPrimaryKey(id);
         }
-        System.out.println(i);
+        //System.out.println(i);
             if(i>0){
                 return true;
             }else {
@@ -347,7 +347,7 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
     public List<Directory> getDeletedDirectoryByID(String id) {
         Example example = new Example(Directory.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("directBelongUser",id);
+        criteria.andEqualTo("directBelongUser",id).andIsNotNull("directDeleteTime");//删除时间非空
         List<Directory> list=Dmapper.selectByExample(example);
         return list;
     }
