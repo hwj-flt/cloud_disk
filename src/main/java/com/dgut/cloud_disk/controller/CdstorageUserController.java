@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -69,6 +70,8 @@ public class CdstorageUserController {
             System.out.println(user.getUserPassword()+"/t"+MD5.stringMD5(userPassword));
             return JSONResult.errorMsg("密码错误");
         }
+        user.setUserUsed(user.getUserUsed().setScale(2, RoundingMode.HALF_UP));
+        user.setUserSize(user.getUserSize().setScale(2, RoundingMode.HALF_UP));
         //创建所需对象
         Jedis jedis = jedisPool.getResource();
         JSONObject jsonObject = new JSONObject();
