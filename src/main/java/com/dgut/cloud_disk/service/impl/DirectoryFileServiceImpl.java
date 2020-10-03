@@ -14,7 +14,6 @@ import com.obs.services.ObsClient;
 import com.obs.services.model.HttpMethodEnum;
 import com.obs.services.model.TemporarySignatureRequest;
 import com.obs.services.model.TemporarySignatureResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
@@ -32,11 +31,9 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
     private DirectoryFileMapper DFmapper;
     @Resource
     private DirectoryMapper Dmapper;
-    @Resource
+    @Autowired(required = false)
     private ToshareMapper toshareMapper;
 
-    @Resource
-    DirectoryFileMapper directoryFileMapper;
     @Resource
     private MyfileMapper myfileMapper;
 
