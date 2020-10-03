@@ -259,8 +259,7 @@ public class FileController {
         CdstorageUser cdstorageUser = mapper.readValue(user, CdstorageUser.class);
         jedis.close();
         //文件夹复制
-        ShareServiceImpl service = new ShareServiceImpl();
-        service.copyDirectory(newDirectID,cdstorageUser.getUserId(),directID);
+        directoryService.copyDirectory(newDirectID,cdstorageUser.getUserId(),directID);
         return new JSONResult(200,"",null);
     }
     /**

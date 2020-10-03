@@ -1,13 +1,17 @@
 package com.dgut.cloud_disk.service.impl;
 
 
+import com.dgut.cloud_disk.mapper.DirectoryFileMapper;
+import com.dgut.cloud_disk.mapper.DirectoryFileMyFileMapper;
 import com.dgut.cloud_disk.mapper.DirectoryMapper;
 
+import com.dgut.cloud_disk.mapper.MyfileMapper;
 import com.dgut.cloud_disk.pojo.Directory;
 import com.dgut.cloud_disk.pojo.DirectoryFile;
 import com.dgut.cloud_disk.pojo.DirectoryFileMyFile;
 import com.dgut.cloud_disk.pojo.Myfile;
 import com.dgut.cloud_disk.service.DirectoryService;
+import com.dgut.cloud_disk.service.PersonalCatalogueService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
@@ -21,6 +25,19 @@ public class DirectoryServiceImpl implements DirectoryService {
 
     @Autowired(required = false)
     DirectoryMapper directoryMapper;
+
+    @Autowired(required = false)
+    private MyfileMapper myfileMapper;
+
+    @Autowired(required = false)
+    private DirectoryFileMapper directoryFileMapper;
+
+    @Autowired(required = false)
+    private DirectoryFileMyFileMapper directoryFileMyFileMapper;
+
+    @Autowired(required = false)
+    private PersonalCatalogueService personalCatalogueService;
+
 
     /**
      * 根据文件夹id查询文件夹
@@ -60,6 +77,12 @@ public class DirectoryServiceImpl implements DirectoryService {
             return false;
         }
     }
+
+    /**
+     * 复制文件夹下的文件
+     * @param directoryId 被复制的文件夹
+     * @param newDirectoryId 复制的新文件夹
+     */
     @Override
     public void copyFileToNew(String directoryId, String newDirectoryId){
         List<DirectoryFileMyFile> list=directoryFileMyFileMapper.queryFileVoByDirectoryID(directoryId);
@@ -80,6 +103,12 @@ public class DirectoryServiceImpl implements DirectoryService {
         }
     }
 
+    /**
+     *
+     * @param directID 要转存到的文件夹ID
+     * @param userID   操作的用户ID
+     * @param dID 被转存的文件夹ID
+     */
     @Override
     public void copyDirectory(String directID, String userID, String dID) {
         //复制文件夹
