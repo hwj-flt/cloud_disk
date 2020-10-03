@@ -259,7 +259,7 @@ public class FileController {
      * @param jsonObject
      * @return
      */
-    @RequestMapping("/redepatdefilename")
+    @RequestMapping("/redepatdifilename")
     public JSONResult reDepatDeFileName(@RequestBody JSONObject jsonObject) throws JsonProcessingException {
         //新文件夹名
         String newName = jsonObject.getString("newName");
