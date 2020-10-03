@@ -194,7 +194,7 @@ public class FileController {
      * @param jsonObject
      * @return 前端需要的json数据
      */
-    @RequestMapping("/redefilename")
+    @RequestMapping("/redirectfilename")
     public JSONResult reDeFileName(@RequestBody JSONObject jsonObject){
         loggqer.info(jsonObject.toJSONString());
         //新文件夹名
@@ -349,7 +349,7 @@ public class FileController {
      * @param jsonObject
      * @return
      */
-    @RequestMapping("/redepatdefilename")
+    @RequestMapping("/redepatdirectfilename")
     public JSONResult reDepatDeFileName(@RequestBody JSONObject jsonObject) throws JsonProcessingException {
         //新文件夹名
         String newName = jsonObject.getString("newName");
