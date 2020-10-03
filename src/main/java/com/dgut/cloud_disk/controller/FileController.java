@@ -1,6 +1,7 @@
 package com.dgut.cloud_disk.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.dgut.cloud_disk.mapper.*;
 import com.dgut.cloud_disk.pojo.*;
 import com.dgut.cloud_disk.service.*;
 import com.dgut.cloud_disk.service.impl.ShareServiceImpl;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
+import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -26,8 +29,28 @@ public class FileController {
 
     private final Logger loggqer = LoggerFactory.getLogger(FileController.class);
 
+
+
     @Autowired(required = false)
     private DirectoryFileService directoryFileService;
+
+    @Autowired(required = false)
+    private MyfileMapper myfileMapper;
+
+
+
+    @Autowired(required = false)
+    private DirectoryMapper directoryMapper;
+
+    @Autowired(required = false)
+    private DirectoryFileMapper directoryFileMapper;
+
+    @Autowired(required = false)
+    private DirectoryFileMyFileMapper directoryFileMyFileMapper;
+
+    @Autowired(required = false)
+    private PersonalCatalogueService personalCatalogueService;
+
     @Autowired
     private DirectoryService directoryService;
     @Autowired
@@ -149,6 +172,7 @@ public class FileController {
         return new JSONResult(200,"",null);
     }
 
+
     /**
      * 个人文件夹复制
      * @param jsonObject
@@ -167,10 +191,8 @@ public class FileController {
         String user = jedis.get(token);
         ObjectMapper mapper = new ObjectMapper();
         CdstorageUser cdstorageUser = mapper.readValue(user, CdstorageUser.class);
-
         //文件夹复制
-        ShareServiceImpl service = new ShareServiceImpl();
-        service.copyDirectory(directID,cdstorageUser.getUserId(),newDirectID);
+        directoryService.copyDirectory(newDirectID,cdstorageUser.getUserId(),directID);
         return new JSONResult(200,"",null);
     }
     /**

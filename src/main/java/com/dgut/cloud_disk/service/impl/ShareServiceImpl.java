@@ -346,7 +346,7 @@ public class ShareServiceImpl implements ShareService {
      * @param newDirectoryId 复制的新文件夹
      */
     public void copyFileToNew(String directoryId,String newDirectoryId) {
-        List<Myfile> rlist = new ArrayList<Myfile>();
+
         List<DirectoryFileMyFile> list=directoryFileMyFileMapper.queryFileVoByDirectoryID(directoryId);
         for (DirectoryFileMyFile d:list){
             DirectoryFile directoryFile = new DirectoryFile();
