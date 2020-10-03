@@ -95,20 +95,19 @@ public class DirectoryController {
         BigDecimal bigDecimal=new BigDecimal(0);
         directory.setDirectSize(bigDecimal);//暂时初始为0
 
-        DepartmentUser Duser=DUService.selectduPermissionByid(cdstorageUser.getUserId(),DUService.getDepartIDByid(cdstorageUser.getUserId()));
-//        String dePermission=Duser.getDuPermission();
-//        String p=dePermission.substring(3,4);//截取第四位（即新建文件夹的权限）
+        String dePermission=DUService.selectdepartPermissionByid(DUService.getDepartIDByid(cdstorageUser.getUserId()));
+        String p=dePermission.substring(3,4);//截取第四位（即新建文件夹的权限）
+
         //System.out.println("++++"+p);
-        int i=0;
-//        if(p.equals("1")){//判断为1说明有该权限
-//            i = DService.insertDirectory(directory);
-//        }else{
-//            System.out.println("无相应权限！");
-//        }
-        //int i = DService.insertDirectory(directory);
-        if(i>0){
-            return new JSONResult(200,"新建成功！","");
-        }else {
+
+        if(p.equals("1")){//判断为1说明有该权限
+            if(DService.insertDirectory(directory)){
+                return new JSONResult(200,"新建成功！","");
+            }else {
+                return new JSONResult(500,"新建失败！","");
+            }
+        }else{
+            System.out.println("无相应权限！");
             return new JSONResult(500,"新建失败！","");
         }
     }

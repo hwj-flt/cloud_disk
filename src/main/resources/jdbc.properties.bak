@@ -1,5 +1,8 @@
 jdbc.username=root
 jdbc.password=nishuonimane
-
+<<<<<<< HEAD
+jdbc.url=jdbc:mysql://dgutsu.cn:8603/shixun?characterEncoding=utf-8
+=======
 jdbc.url=jdbc:mysql://10.61.166.57:8603/shixun?characterEncoding=utf-8
+>>>>>>> master
 jdbc.driverClassName=com.mysql.cj.jdbc.Driver

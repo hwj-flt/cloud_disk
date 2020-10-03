@@ -5,6 +5,7 @@ import com.dgut.cloud_disk.mapper.CdstorageUserMapper;
 import com.dgut.cloud_disk.pojo.CdstorageUser;
 import com.dgut.cloud_disk.pojo.bo.BeShareBo;
 import com.dgut.cloud_disk.pojo.bo.ShareBo;
+import com.dgut.cloud_disk.pojo.bo.ShareUserBo;
 import com.dgut.cloud_disk.pojo.bo.ToShareBo;
 import com.dgut.cloud_disk.pojo.vo.*;
 import com.dgut.cloud_disk.service.ShareService;
@@ -132,5 +133,11 @@ public class ShareController {
     public JSONResult changeShareCode(@RequestBody  ChangeShareCodeVo changeShareCodeVo){
         shareService.changeShareCodeByCode(changeShareCodeVo.getShareID(),changeShareCodeVo.getSharecode());
         return  JSONResult.ok();
+    }
+
+    @RequestMapping("showUserForShare")
+    public JSONResult showUserForShare(@RequestBody TokenVo tokenVo){
+        List<ShareUserBo> shareUserBos = shareService.showShareUser();
+        return  JSONResult.ok(shareUserBos);
     }
 }
