@@ -2,6 +2,7 @@ package com.dgut.cloud_disk.service;
 
 import com.dgut.cloud_disk.pojo.CdstorageUser;
 import com.dgut.cloud_disk.pojo.DepartmentUser;
+import com.dgut.cloud_disk.pojo.bo.ShareUserBo;
 import com.dgut.cloud_disk.pojo.vo.CdstorageUserVo;
 
 import java.util.List;
@@ -78,5 +79,7 @@ public interface CdstorageUserService {
     public List<CdstorageUser> allManages();
     public boolean addManage(String userId);
     public boolean delManage(String userId);
+
+    public List<ShareUserBo> simpleUserExcludeManager();
 
 }

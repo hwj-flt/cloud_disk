@@ -343,9 +343,12 @@ public class ShareServiceImpl implements ShareService {
     }
 
     @Override
-    public List<ShareUserBo> showShareUser() {
+    public List<ShareUserBo> showShareUser(String userId) {
         List<ShareUserBo> shareUserBos = new ArrayList<ShareUserBo>();
-        List<CdstorageUser> cdstorageUsers = cdstorageUserMapper.selectAll();
+        Example example = new Example(CdstorageUser.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andNotEqualTo("userId",userId);
+        List<CdstorageUser> cdstorageUsers = cdstorageUserMapper.selectByExample(example);
         for(CdstorageUser u: cdstorageUsers){
             ShareUserBo shareUserBo = new ShareUserBo();
             shareUserBo.setUserID(u.getUserId());

@@ -136,8 +136,16 @@ public class ShareController {
     }
 
     @RequestMapping("showUserForShare")
-    public JSONResult showUserForShare(@RequestBody TokenVo tokenVo){
-        List<ShareUserBo> shareUserBos = shareService.showShareUser();
+    public JSONResult showUserForShare(@RequestBody TokenVo tokenVo) throws ParameterException, JsonProcessingException {
+        Jedis jedis = jedisPool.getResource();
+        String tokenValue = jedis.get(tokenVo.getToken());
+        if (tokenValue==null){
+            throw  new ParameterException("请登录");
+        }
+        ObjectMapper objectMapper = new ObjectMapper();
+        CdstorageUser cdstorageUser = objectMapper.readValue(tokenValue, CdstorageUser.class);
+        jedis.close();
+        List<ShareUserBo> shareUserBos = shareService.showShareUser(cdstorageUser.getUserId());
         return  JSONResult.ok(shareUserBos);
     }
 }

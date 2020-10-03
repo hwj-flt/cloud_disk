@@ -68,5 +68,10 @@ public interface ShareService {
      */
     void changeShareCodeByCode(String shareID,String code);
 
-    public List<ShareUserBo> showShareUser();
+    /**
+     * 显示让用户分享的用户信息
+     * @param userId 用户ID
+     * @return 简单用户信息
+     */
+    public List<ShareUserBo> showShareUser(String userId);
 }
