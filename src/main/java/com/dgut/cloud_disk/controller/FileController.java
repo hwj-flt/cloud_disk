@@ -257,7 +257,7 @@ public class FileController {
         String user = jedis.get(token);
         ObjectMapper mapper = new ObjectMapper();
         CdstorageUser cdstorageUser = mapper.readValue(user, CdstorageUser.class);
-       jedis.close();
+        jedis.close();
         //文件夹复制
         ShareServiceImpl service = new ShareServiceImpl();
         service.copyDirectory(directID,cdstorageUser.getUserId(),newDirectID);

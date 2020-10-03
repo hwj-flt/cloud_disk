@@ -192,7 +192,7 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
 
     @Override
     public Boolean insertDirectoryFile(DirectoryFile directoryFile) {
-        return directoryFileMapper.insertSelective(directoryFile)>0;
+        return DFmapper.insertSelective(directoryFile)>0;
 
     }
 
