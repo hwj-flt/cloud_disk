@@ -45,7 +45,10 @@ public class RecycleBinController {
         if(dfList!=null){//被删除文件列表
             for(int i=0;i<dfList.size();i++){
             JSONObject obj=new JSONObject();
-            obj.put("type",1);
+            String fileName=dfList.get(i).getDfFileName();
+            String type=fileName.substring(fileName.lastIndexOf(".")+1,fileName.length());
+                System.out.println(fileName);
+            obj.put("type",type);//输出文件对应的类型
             obj.put("id",dfList.get(i).getDirectFileId());
             obj.put("name",dfList.get(i).getDfFileName());
             obj.put("deleteTime",dfList.get(i).getDfDeleteTime());
@@ -60,7 +63,7 @@ public class RecycleBinController {
             //System.out.println(dList);
             for(int i=0;i<dList.size();i++){
                 JSONObject obj=new JSONObject();
-                obj.put("type",2);
+                obj.put("type",null);//文件夹类型为null
                 obj.put("id",dList.get(i).getDirectId());
                 obj.put("name",dList.get(i).getDirectName());
                 obj.put("deleteTime",dList.get(i).getDirectDeleteTime());
@@ -131,6 +134,19 @@ public class RecycleBinController {
         }else{
             return new JSONResult(500,"类型错误","");
         }
+    }
+
+    @RequestMapping("/deleteForever")//回收站中的永久删除
+    public JSONResult deleteForever(@RequestBody JSONObject jsonObject){
+        //1-文件夹，2-文件
+        int type =jsonObject.getInteger("type");
+        String id =jsonObject.getString("id");
+
+            if (DFService.deleteDorDF(type, id)) {
+                return new JSONResult(200, "删除成功！", "");
+            } else {
+                return new JSONResult(500, "删除失败！", "");
+            }
 
     }
 }
