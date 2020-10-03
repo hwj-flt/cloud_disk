@@ -1,18 +1,14 @@
 package com.dgut.cloud_disk.pojo.bo;
 
-import com.dgut.cloud_disk.pojo.bo.DirectoryVo;
-import com.dgut.cloud_disk.pojo.bo.FileVo;
-
 import java.util.List;
 
-public class DepartmentDirectoryVo {
+public class DirectoryBo {
     private String directID;
     private String name;
     private String size;
     private String modificationDate;
-    private Integer permission;
-    private List<DirectoryVo> includeDirects;
-    private List<FileVo> includeFiles;
+    private List<DirectoryBo> includeDirects;
+    private List<FileBo> includeFiles;
 
     public String getDirectID() {
         return directID;
@@ -46,27 +42,31 @@ public class DepartmentDirectoryVo {
         this.modificationDate = modificationDate;
     }
 
-    public Integer getPermission() {
-        return permission;
-    }
-
-    public void setPermission(Integer permission) {
-        this.permission = permission;
-    }
-
-    public List<DirectoryVo> getIncludeDrects() {
+    public List<DirectoryBo> getIncludeDirects() {
         return includeDirects;
     }
 
-    public void setIncludeDrects(List<DirectoryVo> includeDrects) {
-        this.includeDirects = includeDrects;
+    public void setIncludeDirects(List<DirectoryBo> includeDirects) {
+        this.includeDirects = includeDirects;
     }
 
-    public List<FileVo> getIncludeFiles() {
+    public List<FileBo> getIncludeFiles() {
         return includeFiles;
     }
 
-    public void setIncludeFiles(List<FileVo> includeFiles) {
+    public void setIncludeFiles(List<FileBo> includeFiles) {
         this.includeFiles = includeFiles;
+    }
+
+    @Override
+    public String toString() {
+        return "DirectoryBo{" +
+                "directID='" + directID + '\'' +
+                ", name='" + name + '\'' +
+                ", size='" + size + '\'' +
+                ", modificationDate='" + modificationDate + '\'' +
+                ", includeDirects=" + includeDirects +
+                ", includeFiles=" + includeFiles +
+                '}';
     }
 }

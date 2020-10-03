@@ -47,10 +47,7 @@ public class FileController {
      * @throws JsonProcessingException
      */
     public String checkPermission(String directID){
-<<<<<<< Updated upstream
 
-=======
->>>>>>> Stashed changes
         Directory directory = directoryService.selectDirectoryByID(directID);
         Department department = departmentService.selDepart(directory.getDirectBelongDepart());
         return department.getDepartPermission();
@@ -134,7 +131,6 @@ public class FileController {
         String newDirectID = jsonObject.getString("newDirectID");
         String token = jsonObject.getString("token");
         String fileID = jsonObject.getString("fileID");
-<<<<<<< Updated upstream
         //查群组id
         Directory directory = directoryService.selectDirectoryByID(newDirectID);
         //创建redis对象
@@ -143,13 +139,7 @@ public class FileController {
         String user = jedis.get(token);
         ObjectMapper mapper = new ObjectMapper();
         CdstorageUser cdstorageUser = mapper.readValue(user, CdstorageUser.class);
-        //判断权限
-        if("00000100".equals(checkPermission(newDirectID))){
-            return JSONResult.errorMsg("");
-        }
-=======
 
->>>>>>> Stashed changes
         //文件复制
         DirectoryFile directoryFile = directoryFileService.selectFileById(fileID);
         String uuid = UUID.randomUUID().toString().replace("-", "");
@@ -165,7 +155,7 @@ public class FileController {
      * @return 前端需要的json数据
      * @throws JsonProcessingException
      */
-    @RequestMapping("/copydilectfile")
+    @RequestMapping("/copydirectfile")
     public JSONResult copyDilectFile(@RequestBody JSONObject jsonObject) throws JsonProcessingException {
         String newDirectID = jsonObject.getString("newDirectID");
         String token = jsonObject.getString("token");
@@ -177,13 +167,7 @@ public class FileController {
         String user = jedis.get(token);
         ObjectMapper mapper = new ObjectMapper();
         CdstorageUser cdstorageUser = mapper.readValue(user, CdstorageUser.class);
-<<<<<<< Updated upstream
-        //判断权限
-        if("00000100".equals(checkPermission(newDirectID))){
-            return JSONResult.errorMsg("");
-        }
-=======
->>>>>>> Stashed changes
+
         //文件夹复制
         ShareServiceImpl service = new ShareServiceImpl();
         service.copyDirectory(directID,cdstorageUser.getUserId(),newDirectID);
@@ -379,7 +363,7 @@ public class FileController {
      * @return 前端需要的json数据
      * @throws JsonProcessingException
      */
-    @RequestMapping("/copydepartdilectfile")
+    @RequestMapping("/copydepartdirectfile")
     public JSONResult copyDepartDilectFile(@RequestBody JSONObject jsonObject) throws JsonProcessingException {
         String newDirectID = jsonObject.getString("newDirectID");
         String token = jsonObject.getString("token");
