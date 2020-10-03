@@ -5,6 +5,7 @@ import com.dgut.cloud_disk.mapper.*;
 import com.dgut.cloud_disk.pojo.*;
 import com.dgut.cloud_disk.pojo.bo.BeShareBo;
 import com.dgut.cloud_disk.pojo.bo.FileBo;
+import com.dgut.cloud_disk.pojo.bo.ShareUserBo;
 import com.dgut.cloud_disk.pojo.bo.ToShareBo;
 import com.dgut.cloud_disk.service.DirectoryFileService;
 import com.dgut.cloud_disk.service.PersonalCatalogueService;
@@ -56,6 +57,9 @@ public class ShareServiceImpl implements ShareService {
 
     @Autowired(required = false)
     private SelectbesharefordirectorynottypeMapper selectbesharefordirectorynottypeMapper;
+
+    @Autowired(required = false)
+    private CdstorageUserMapper cdstorageUserMapper;
 
     @Override
     public List<BeShareBo> showBeShare(String beshareID) {
@@ -324,6 +328,20 @@ public class ShareServiceImpl implements ShareService {
         Toshare toshare1 = toshareMapper.selectOne(toshare);
         toshare1.setShareCode(code);
         toshareMapper.updateByPrimaryKey(toshare1);
+    }
+
+    @Override
+    public List<ShareUserBo> showShareUser() {
+        List<ShareUserBo> shareUserBos = new ArrayList<ShareUserBo>();
+        List<CdstorageUser> cdstorageUsers = cdstorageUserMapper.selectAll();
+        for(CdstorageUser u: cdstorageUsers){
+            ShareUserBo shareUserBo = new ShareUserBo();
+            shareUserBo.setUserID(u.getUserId());
+            shareUserBo.setUserName(u.getUserName());
+            shareUserBo.setWorkID(u.getUserWorkId().toString());
+            shareUserBos.add(shareUserBo);
+        }
+        return shareUserBos;
     }
 
     /**

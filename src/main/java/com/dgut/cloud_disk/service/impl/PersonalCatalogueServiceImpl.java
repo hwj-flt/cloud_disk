@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,7 +59,13 @@ public class PersonalCatalogueServiceImpl implements PersonalCatalogueService {
                     String t = str.replaceAll("0+$", "");
                     size = t+"MB";
                 }
-                f.setSize(size);
+                if(size.matches("[0-9]+.[0-9]{0,2}")){
+                    f.setSize(size);
+                }else {
+                    DecimalFormat format = new DecimalFormat("0.00");
+                    String a = format.format(new BigDecimal(size));
+                    f.setSize(a);
+                }
                 rlist.add(f);
             }
         }

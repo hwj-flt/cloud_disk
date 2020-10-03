@@ -1,6 +1,7 @@
 package com.dgut.cloud_disk.service;
 
 import com.dgut.cloud_disk.pojo.bo.BeShareBo;
+import com.dgut.cloud_disk.pojo.bo.ShareUserBo;
 import com.dgut.cloud_disk.pojo.bo.ToShareBo;
 
 import java.util.List;
@@ -66,4 +67,6 @@ public interface ShareService {
      * @param code  分享密码
      */
     void changeShareCodeByCode(String shareID,String code);
+
+    public List<ShareUserBo> showShareUser();
 }

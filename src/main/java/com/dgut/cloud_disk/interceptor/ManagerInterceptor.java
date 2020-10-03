@@ -23,7 +23,7 @@ public class ManagerInterceptor implements HandlerInterceptor {
             throws Exception {
         MyWrapper requestWrapper = new MyWrapper(request);
         JSONObject jsonObject = JSONObject.parseObject(requestWrapper.getBody());
-        String token = jsonObject.getString("token");
+        String token = jsonObject==null?request.getHeader("token"):jsonObject.getString("token");
         if(token==null) {
             Utils.renderJson(response, JSONResult.errorMsg("没传token，不允许访问"));
             return false;
