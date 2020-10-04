@@ -103,8 +103,8 @@ public class RecycleBinController {
         }else if(type==2){
             if(DFService.restoreFile(id)){
                 return new JSONResult(200,"还原成功","");
-        }else{
-            return new JSONResult(601,"还原的文件夹不存在","");
+            }else{
+                return new JSONResult(601,"还原的文件夹不存在","");
         }
         }else {
             return new JSONResult(500,"类型错误","");
