@@ -356,6 +356,9 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
     public Boolean restoreDirectory(String id) {//还原文件夹
         Directory d=Dmapper.selectByPrimaryKey(id);
         Directory dParent=Dmapper.selectByPrimaryKey(d.getParentDirectId());
+        if(dParent==null){
+            return false;
+        }
         if(dParent.getDirectDelete()==1){//判断父文件夹是否被删除,否的话进行还原，是的话报错
             d.setDirectDelete((byte) 1);
             d.setDirectDeleteTime(null);
@@ -376,6 +379,11 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
     public Boolean restoreFile(String id) {//还原文件
         DirectoryFile df=DFmapper.selectByPrimaryKey(id);
         Directory dParent=Dmapper.selectByPrimaryKey(df.getDfDirectId());
+
+        //System.out.println(id+"---"+df+"---"+dParent);
+        if(dParent==null){
+            return false;
+        }
         if(dParent.getDirectDelete()==1){//判断父文件夹是否被删除,否的话进行还原，是的话报错
             df.setDfGarbage((byte) 1);
             df.setDfDeleteTime(null);
