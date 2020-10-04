@@ -64,9 +64,12 @@ public class ManagerImportUserController {
         if(!Verify.verifyEmail(userVo.getUser().getUserEmail())) {
             throw new ParameterException("邮箱错误");
         }//验证手机格式
-        else if(!Verify.verifyPhone(userVo.getUser().getUserPhone())){
+        else if(Verify.verifyPhone(userVo.getUser().getUserPhone())==2){
             throw new ParameterException("电话错误");
-        }//验证性别
+        }else if(Verify.verifyPhone(userVo.getUser().getUserPhone())==1){
+            throw new ParameterException("电话已存在");
+        }
+        //验证性别
         else if(!userVo.getUser().getUserSex().equals("男")&&!userVo.getUser().getUserSex().equals("女")){
             throw new ParameterException("性别参数错误");
         }
