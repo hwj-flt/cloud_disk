@@ -257,6 +257,8 @@ public class FileController {
         jedis.close();
         //文件夹复制
         directoryService.copyDirectory(newDirectID,cdstorageUser.getUserId(),directID);
+        ShareServiceImpl service = new ShareServiceImpl();
+        service.copyDirectory(newDirectID,cdstorageUser.getUserId(),directID);
         return new JSONResult(200,"",null);
     }
     /**

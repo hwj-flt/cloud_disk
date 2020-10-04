@@ -40,6 +40,9 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
     @Autowired
     private ObsConfig obsConfig;
 
+    @Resource
+    private DirectoryFileMapper directoryFileMapper;
+
     @Override
     public List<DirectoryFile> allFile() {
         List<DirectoryFile> file=DFmapper.selectAll();

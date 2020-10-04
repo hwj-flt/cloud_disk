@@ -2,6 +2,7 @@ package com.dgut.cloud_disk.service.impl;
 
 import com.dgut.cloud_disk.mapper.CdstorageUserMapper;
 import com.dgut.cloud_disk.pojo.CdstorageUser;
+import com.dgut.cloud_disk.pojo.bo.ShareUserBo;
 import com.dgut.cloud_disk.pojo.bo.UserBo;
 import com.dgut.cloud_disk.pojo.vo.CdstorageUserVo;
 import com.dgut.cloud_disk.service.CdstorageUserService;
@@ -206,5 +207,22 @@ public class CdstorageUserServiceImpl implements CdstorageUserService {
                 return false;
             }
         }
+    }
+
+    @Override
+    public List<ShareUserBo> simpleUserExcludeManager() {
+        List<ShareUserBo> shareUserBos = new ArrayList<ShareUserBo>();
+        Example example = new Example(CdstorageUser.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("userPermission",0);
+        List<CdstorageUser> cdstorageUsers= cdstorageUserMapper.selectByExample(example);
+        for(CdstorageUser u: cdstorageUsers){
+            ShareUserBo shareUserBo = new ShareUserBo();
+            shareUserBo.setUserID(u.getUserId());
+            shareUserBo.setUserName(u.getUserName());
+            shareUserBo.setWorkID(u.getUserWorkId().toString());
+            shareUserBos.add(shareUserBo);
+        }
+        return shareUserBos;
     }
 }
