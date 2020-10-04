@@ -19,7 +19,6 @@ import redis.clients.jedis.JedisPool;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -38,8 +37,6 @@ public class FileController {
     private MyFileService myFileService;
     @Autowired
     private ToshareService toshareService;
-    @Autowired
-    private DepartmentUserService departmentUserService;
     @Autowired
     private DepartmentService departmentService;
     @Autowired
@@ -194,7 +191,7 @@ public class FileController {
      * @param jsonObject
      * @return 前端需要的json数据
      */
-    @RequestMapping("/redefilename")
+    @RequestMapping("/redirectfilename")
     public JSONResult reDeFileName(@RequestBody JSONObject jsonObject){
         loggqer.info(jsonObject.toJSONString());
         //新文件夹名
@@ -257,10 +254,11 @@ public class FileController {
         String user = jedis.get(token);
         ObjectMapper mapper = new ObjectMapper();
         CdstorageUser cdstorageUser = mapper.readValue(user, CdstorageUser.class);
-       jedis.close();
+        jedis.close();
         //文件夹复制
+        directoryService.copyDirectory(newDirectID,cdstorageUser.getUserId(),directID);
         ShareServiceImpl service = new ShareServiceImpl();
-        service.copyDirectory(directID,cdstorageUser.getUserId(),newDirectID);
+        service.copyDirectory(newDirectID,cdstorageUser.getUserId(),directID);
         return new JSONResult(200,"",null);
     }
     /**
@@ -349,7 +347,7 @@ public class FileController {
      * @param jsonObject
      * @return
      */
-    @RequestMapping("/redepatdefilename")
+    @RequestMapping("/redepatdirectfilename")
     public JSONResult reDepatDeFileName(@RequestBody JSONObject jsonObject) throws JsonProcessingException {
         //新文件夹名
         String newName = jsonObject.getString("newName");
