@@ -133,7 +133,7 @@ public class DirectoryFileController {
         Toshare toshare=new Toshare();
         toshare.setShareId(UUID.randomUUID().toString().replace("-", ""));
         toshare.setShareUserId(cdstorageUser.getUserId());
-        toshare.setShareToUserId(userIDs[i]);
+        toshare.setShareToUserId(userIDs[i].trim());
         Date date=new Date();
         toshare.setShareTime(date);
         toshare.setShareExpire(new Date(date.getTime() + shareTime * 1000L));
