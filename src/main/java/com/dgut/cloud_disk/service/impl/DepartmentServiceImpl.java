@@ -34,11 +34,18 @@ public class DepartmentServiceImpl implements DepartmentService {
      * @return 群组Bo
      */
     @Override
-    public List<DepartmentBo> showDepart(String userId) {
+    public List<DepartmentBo> showDepart(String userId,Integer i) {
         List<DepartmentBo> departmentBos = new ArrayList<DepartmentBo>();
-        Cdstorageuserdepartmentuser cdstorageuserdepartmentuser = new Cdstorageuserdepartmentuser();
-        cdstorageuserdepartmentuser.setDuUserId(userId);
-        List<Cdstorageuserdepartmentuser> cdstorageuserdepartmentusers = cdstorageuserdepartmentuserMapper.select(cdstorageuserdepartmentuser);
+        List<Cdstorageuserdepartmentuser> cdstorageuserdepartmentusers=null;
+        if(i!=1){
+
+            Cdstorageuserdepartmentuser cdstorageuserdepartmentuser = new Cdstorageuserdepartmentuser();
+            cdstorageuserdepartmentuser.setDuUserId(userId);
+            cdstorageuserdepartmentusers = cdstorageuserdepartmentuserMapper.select(cdstorageuserdepartmentuser);
+        }else{
+            cdstorageuserdepartmentusers = cdstorageuserdepartmentuserMapper.selectAll();
+        }
+
         for (Cdstorageuserdepartmentuser c: cdstorageuserdepartmentusers){
             DepartmentBo departmentBo = new DepartmentBo();
             departmentBo.setDepartID(c.getDepartId());
