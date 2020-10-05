@@ -8,9 +8,11 @@ import com.dgut.cloud_disk.pojo.Directory;
 import com.dgut.cloud_disk.pojo.bo.UserBo;
 import com.dgut.cloud_disk.pojo.vo.CdstorageUserVo;
 import com.dgut.cloud_disk.pojo.vo.DepUserVo;
+import com.dgut.cloud_disk.pojo.vo.DepartmentVo;
 import com.dgut.cloud_disk.service.CdstorageUserService;
 import com.dgut.cloud_disk.service.DirectoryService;
 import com.dgut.cloud_disk.service.ManagerService;
+import com.dgut.cloud_disk.util.DateUtil;
 import com.dgut.cloud_disk.util.JSONResult;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -338,8 +340,19 @@ public class ManagerController {
         CdstorageUser cdstorageUser = objectMapper.readValue(tokenValue, CdstorageUser.class);
         jedis.close();
         if (cdstorageUser.getUserPermission() != 1){
+            List<DepartmentVo> departmentVos  = new ArrayList<DepartmentVo>();
             List<Department> departments = managerService.allDepart();
-            return new JSONResult(200,"部门列表",departments);
+            for(Department s:departments){
+                DepartmentVo departmentVo = new DepartmentVo();
+                departmentVo.setDepartId(s.getDepartId());
+                departmentVo.setDepartName(s.getDepartName());
+                departmentVo.setDepartPermission(s.getDepartPermission());
+                departmentVo.setDepartRoot(s.getDepartRoot());
+                departmentVo.setDepartTime(DateUtil.transfromDate(s.getDepartTime()));
+                departmentVos.add(departmentVo);
+            }
+
+            return new JSONResult(200,"部门列表",departmentVos);
         }else {
             return new JSONResult(500,"无访问权限",null);
         }

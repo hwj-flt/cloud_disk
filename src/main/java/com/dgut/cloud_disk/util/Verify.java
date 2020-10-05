@@ -6,13 +6,14 @@ import com.dgut.cloud_disk.pojo.CdstorageUser;
 import org.apache.logging.log4j.core.tools.picocli.CommandLine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Repository
+@Service
 public class Verify {
 
-    @Autowired(required = false)
+
     private static CdstorageUserMapper cdstorageUserMapper;
 
     private static String emailReg ="^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+$";
@@ -33,5 +34,14 @@ public class Verify {
             r=2;
         }
         return r;
+    }
+
+    public CdstorageUserMapper getCdstorageUserMapper() {
+        return cdstorageUserMapper;
+    }
+
+    @Autowired(required = false)
+    public void setCdstorageUserMapper(CdstorageUserMapper cdstorageUserMapper) {
+        Verify.cdstorageUserMapper = cdstorageUserMapper;
     }
 }
