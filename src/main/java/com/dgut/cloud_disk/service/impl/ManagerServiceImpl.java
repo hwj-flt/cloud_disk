@@ -1,13 +1,8 @@
 package com.dgut.cloud_disk.service.impl;
 
-import com.dgut.cloud_disk.mapper.CdstorageUserMapper;
-import com.dgut.cloud_disk.mapper.DepartmentMapper;
-import com.dgut.cloud_disk.mapper.DepartmentUserMapper;
-import com.dgut.cloud_disk.mapper.DirectoryMapper;
-import com.dgut.cloud_disk.pojo.CdstorageUser;
-import com.dgut.cloud_disk.pojo.Department;
-import com.dgut.cloud_disk.pojo.DepartmentUser;
-import com.dgut.cloud_disk.pojo.Directory;
+import com.dgut.cloud_disk.mapper.*;
+import com.dgut.cloud_disk.pojo.*;
+import com.dgut.cloud_disk.pojo.bo.UserBo;
 import com.dgut.cloud_disk.service.ManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +22,8 @@ public class ManagerServiceImpl implements ManagerService {
     private DirectoryMapper directoryMapper;
     @Autowired(required = false)
     private CdstorageUserMapper cdstorageUserMapper;
+    @Autowired(required = false)
+    private CdstorageuserdepartmentuserMapper cdstorageuserdepartmentuserMapper;
     @Override
     public Boolean delDepartUser(String departId, List<String> userIds) {
         Example example = new Example(DepartmentUser.class);
@@ -109,4 +106,44 @@ public class ManagerServiceImpl implements ManagerService {
             return null;
         }
     }
+
+    @Override
+    public List<UserBo> getUserForAdd(String departId) {
+        Example example = new Example(Cdstorageuserdepartmentuser.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.orEqualTo("departId",departId);
+        List<Cdstorageuserdepartmentuser> cdstorageuserdepartmentusers = cdstorageuserdepartmentuserMapper.selectByExample(example);
+        if(cdstorageuserdepartmentusers.size()<=0){
+            Example example1 = new Example(CdstorageUser.class);
+            Example.Criteria criteria1 = example1.createCriteria();
+            criteria1.andEqualTo("userPermission",0);
+            List<CdstorageUser> cdstorageUsers = cdstorageUserMapper.selectByExample(example1);
+            List<UserBo> userBos = new ArrayList<UserBo>();
+            for(CdstorageUser u:cdstorageUsers){
+                UserBo userBo = new UserBo();
+                UserBo user = userBo.userBo(u);
+                userBos.add(user);
+            }
+            return userBos;
+        }
+
+        List<String> userids = new ArrayList<String>();
+        for(Cdstorageuserdepartmentuser s:cdstorageuserdepartmentusers){
+            userids.add(s.getUserId());
+        }
+        Example example1 = new Example(CdstorageUser.class);
+        Example.Criteria criteria1 = example1.createCriteria();
+        criteria1.orNotIn("userId",userids);
+        criteria1.andEqualTo("userPermission",0);
+        List<CdstorageUser> cdstorageUsers = cdstorageUserMapper.selectByExample(example1);
+        List<UserBo> userBos = new ArrayList<UserBo>();
+        for(CdstorageUser u:cdstorageUsers){
+            UserBo userBo = new UserBo();
+            UserBo user = userBo.userBo(u);
+            userBos.add(user);
+        }
+        return userBos;
+    }
+
+
 }

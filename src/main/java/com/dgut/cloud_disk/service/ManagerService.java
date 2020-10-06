@@ -3,6 +3,7 @@ package com.dgut.cloud_disk.service;
 import com.dgut.cloud_disk.pojo.CdstorageUser;
 import com.dgut.cloud_disk.pojo.Department;
 import com.dgut.cloud_disk.pojo.DepartmentUser;
+import com.dgut.cloud_disk.pojo.bo.UserBo;
 
 import java.util.List;
 
@@ -50,4 +51,6 @@ public interface ManagerService {
      * @return
      */
     public List<CdstorageUser> selUserAtDep(String departId);
+
+    public List<UserBo> getUserForAdd(String departId);
 }
