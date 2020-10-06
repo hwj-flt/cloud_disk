@@ -257,8 +257,6 @@ public class FileController {
         jedis.close();
         //文件夹复制
         directoryService.copyDirectory(newDirectID,cdstorageUser.getUserId(),directID);
-        ShareServiceImpl service = new ShareServiceImpl();
-        service.copyDirectory(newDirectID,cdstorageUser.getUserId(),directID);
         return new JSONResult(200,"",null);
     }
     /**
@@ -447,7 +445,7 @@ public class FileController {
         return new JSONResult(200,"",null);
     }
     /**
-     * 个人文件夹复制
+     * 群组文件夹复制
      * @param jsonObject
      * @return 前端需要的json数据
      * @throws JsonProcessingException
@@ -469,8 +467,7 @@ public class FileController {
             return JSONResult.errorMsg("");
         }
         //文件夹复制
-        ShareServiceImpl service = new ShareServiceImpl();
-        service.copyDirectory(directID,cdstorageUser.getUserId(),newDirectID);
+        directoryService.copyDirectory(newDirectID,cdstorageUser.getUserId(),directID);
         return new JSONResult(200,"",null);
     }
 }

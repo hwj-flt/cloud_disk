@@ -200,7 +200,7 @@ public class CdstorageUserServiceImpl implements CdstorageUserService {
         if (cdstorageUser == null) {
             return false;
         } else {
-            cdstorageUser.setUserPermission(1);
+            cdstorageUser.setUserPermission(0);
             if (cdstorageUserMapper.updateByPrimaryKey(cdstorageUser) == 1) {
                 return true;
             } else {

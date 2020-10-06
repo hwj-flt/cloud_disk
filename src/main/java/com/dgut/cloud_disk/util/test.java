@@ -11,30 +11,30 @@ import java.util.Map;
 
 public class test {
     public static void main(String[] args) {
-        String ak = "QDTDAOD1R8MIXYV2LWWN";
-        String sk = "xPF0opcKE3oMNbNwNrdlOl9BK7jdFOzkgJFOWBjn";
-        String endPoint = "obs.cn-south-1.myhuaweicloud.com";
+//        String ak = "QDTDAOD1R8MIXYV2LWWN";
+//        String sk = "xPF0opcKE3oMNbNwNrdlOl9BK7jdFOzkgJFOWBjn";
+//        String endPoint = "obs.cn-south-1.myhuaweicloud.com";
+//
+//        // 创建ObsClient实例
+//        ObsClient obsClient = new ObsClient(ak, sk, endPoint);
+//        // URL有效期，3600秒
+//        long expireSeconds = 3600L;
+//        Map<String, String> headers = new HashMap<String, String>();
+//        String contentType = "multipart/form-data";
+//        headers.put("Content-Type", contentType);
+//
+//        TemporarySignatureRequest request = new TemporarySignatureRequest(HttpMethodEnum.PUT, expireSeconds);
+//        request.setBucketName("obs-signal-zrx");
+//        request.setObjectKey("aaa.docx");
+//        request.setHeaders(headers);
+////        System.out.println(request);
+//        TemporarySignatureResponse response = obsClient.createTemporarySignature(request);
+//        for (Map.Entry<String, String> entry : response.getActualSignedRequestHeaders().entrySet()) {
+//            System.out.println(entry.getKey()+":"+entry.getValue());
+//        }
+//        System.out.println(response.getSignedUrl());
 
-        // 创建ObsClient实例
-        ObsClient obsClient = new ObsClient(ak, sk, endPoint);
-        // URL有效期，3600秒
-        long expireSeconds = 3600L;
-        Map<String, String> headers = new HashMap<String, String>();
-        String contentType = "multipart/form-data";
-        headers.put("Content-Type", contentType);
-
-        TemporarySignatureRequest request = new TemporarySignatureRequest(HttpMethodEnum.PUT, expireSeconds);
-        request.setBucketName("obs-signal-zrx");
-        request.setObjectKey("aaa.docx");
-        request.setHeaders(headers);
-//        System.out.println(request);
-        TemporarySignatureResponse response = obsClient.createTemporarySignature(request);
-        for (Map.Entry<String, String> entry : response.getActualSignedRequestHeaders().entrySet()) {
-            System.out.println(entry.getKey()+":"+entry.getValue());
-        }
-        System.out.println(response.getSignedUrl());
-
-//        String s = MD5.stringMD5("111111");
-//        System.out.println(s);
+        String s = MD5.stringMD5("111111");
+        System.out.println(s);
     }
 }

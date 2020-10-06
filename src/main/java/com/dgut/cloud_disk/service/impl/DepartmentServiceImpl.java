@@ -34,19 +34,34 @@ public class DepartmentServiceImpl implements DepartmentService {
      * @return 群组Bo
      */
     @Override
-    public List<DepartmentBo> showDepart(String userId) {
+    public List<DepartmentBo> showDepart(String userId,Integer i) {
         List<DepartmentBo> departmentBos = new ArrayList<DepartmentBo>();
-        Cdstorageuserdepartmentuser cdstorageuserdepartmentuser = new Cdstorageuserdepartmentuser();
-        cdstorageuserdepartmentuser.setDuUserId(userId);
-        List<Cdstorageuserdepartmentuser> cdstorageuserdepartmentusers = cdstorageuserdepartmentuserMapper.select(cdstorageuserdepartmentuser);
-        for (Cdstorageuserdepartmentuser c: cdstorageuserdepartmentusers){
-            DepartmentBo departmentBo = new DepartmentBo();
-            departmentBo.setDepartID(c.getDepartId());
-            departmentBo.setDepartName(c.getDepartName());
-            departmentBo.setDepartTime(DateUtil.transfromDate(c.getDepartTime()));
-            departmentBo.setPermission(c.getDepartPermission());
-            departmentBos.add(departmentBo);
+        if(i!=1){
+            List<Cdstorageuserdepartmentuser> cdstorageuserdepartmentusers=null;
+            Cdstorageuserdepartmentuser cdstorageuserdepartmentuser = new Cdstorageuserdepartmentuser();
+            cdstorageuserdepartmentuser.setDuUserId(userId);
+            cdstorageuserdepartmentusers = cdstorageuserdepartmentuserMapper.select(cdstorageuserdepartmentuser);
+            for (Cdstorageuserdepartmentuser c: cdstorageuserdepartmentusers){
+                DepartmentBo departmentBo = new DepartmentBo();
+                departmentBo.setDepartID(c.getDepartId());
+                departmentBo.setDepartName(c.getDepartName());
+                departmentBo.setDepartTime(DateUtil.transfromDate(c.getDepartTime()));
+                departmentBo.setPermission(c.getDepartPermission());
+                departmentBos.add(departmentBo);
+            }
+        }else{
+            List<Department> departments = departmentMapper.selectAll();
+            for (Department c: departments){
+                DepartmentBo departmentBo = new DepartmentBo();
+                departmentBo.setDepartID(c.getDepartId());
+                departmentBo.setDepartName(c.getDepartName());
+                departmentBo.setDepartTime(DateUtil.transfromDate(c.getDepartTime()));
+                departmentBo.setPermission(c.getDepartPermission());
+                departmentBos.add(departmentBo);
+            }
         }
+
+
         return departmentBos;
     }
 }

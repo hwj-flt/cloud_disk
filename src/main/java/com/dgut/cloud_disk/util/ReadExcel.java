@@ -57,8 +57,11 @@ public class ReadExcel {
                     } else if (!Verify.verifyEmail(email)) {
                         errormsg.append("第" + row + "行邮箱错误,");
                         lag = 1;
-                    } else if (!Verify.verifyPhone(phone)) {
-                        errormsg.append("第" + row + "行电话错误,");
+                    } else if(Verify.verifyPhone(phone)==2){
+                        errormsg.append("第" + row + "行电话号码错误,");
+                        lag = 1;
+                    }else if(Verify.verifyPhone(phone)==1){
+                        errormsg.append("第" + row + "行电话号码已存在,");
                         lag = 1;
                     }
                     if (lag != 1) {

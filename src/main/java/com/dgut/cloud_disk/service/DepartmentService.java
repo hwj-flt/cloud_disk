@@ -12,8 +12,9 @@ public interface DepartmentService {
     /**
      * 查询群组
      * @param userId 用户ID
+     * @param  i 1表示全部显示
      * @return  群组Bo
      */
-    public List<DepartmentBo> showDepart(String userId);
+    public List<DepartmentBo> showDepart(String userId,Integer i);
 
 }

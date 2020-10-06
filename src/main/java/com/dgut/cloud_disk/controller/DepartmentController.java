@@ -48,7 +48,11 @@ public class DepartmentController {
         ObjectMapper objectMapper = new ObjectMapper();
         CdstorageUser cdstorageUser = objectMapper.readValue(tokenValue, CdstorageUser.class);
         jedis.close();
-        List<DepartmentBo> departmentBoList = departmentService.showDepart(cdstorageUser.getUserId());
+        Integer f = 0;
+        if(cdstorageUser.getUserPermission()!=0){
+            f=1;
+        }
+        List<DepartmentBo> departmentBoList = departmentService.showDepart(cdstorageUser.getUserId(),f);
         return  JSONResult.ok(departmentBoList);
     }
 
