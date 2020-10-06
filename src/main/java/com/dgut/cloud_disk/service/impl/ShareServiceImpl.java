@@ -168,9 +168,11 @@ public class ShareServiceImpl implements ShareService {
                     break;
                 case 3:
                     type = "外链";
+                    toShareBo.setShareCode(s.getShareCode());
                     break;
                 case 4:
                     type = "外链";
+                    toShareBo.setShareCode(s.getShareCode());
                     break;
             }
             toShareBo.setType(type);
