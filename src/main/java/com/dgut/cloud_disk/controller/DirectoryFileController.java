@@ -3,6 +3,7 @@ package com.dgut.cloud_disk.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.dgut.cloud_disk.mapper.DirectoryFileMapper;
 import com.dgut.cloud_disk.mapper.DirectoryMapper;
+import com.dgut.cloud_disk.mapper.ToshareMapper;
 import com.dgut.cloud_disk.pojo.CdstorageUser;
 import com.dgut.cloud_disk.pojo.Directory;
 import com.dgut.cloud_disk.pojo.DirectoryFile;
@@ -35,6 +36,8 @@ public class DirectoryFileController {
     private DirectoryMapper Dmapper;
     @Resource
     private DirectoryFileMapper DFmapper;
+    @Resource
+    private ToshareMapper TSmapper;
     @Resource
     private DepartmentUserService DUService;
     @Autowired
@@ -188,9 +191,22 @@ public class DirectoryFileController {
         obj.put("shareID",toshare.getShareId());
         return new JSONResult(200,"分享成功！",obj);
     }
+    @RequestMapping("/getShareInfo")
+    public JSONResult getShareInfo(@RequestBody JSONObject jsonObject){
+        String shareID=jsonObject.getString("shareID");
+        Toshare toshare=TSmapper.selectByPrimaryKey(shareID);
 
+        String code=toshare.getShareCode();
+        String shareName=DFService.getShareName(toshare.getShareUserId());
+
+        JSONObject obj=new JSONObject();
+        obj.put("shareName",shareName);
+        obj.put("code",code);
+        return new JSONResult(200,"",obj);
+
+    }
         //验证密码
-    @RequestMapping("/user/publicVerifyCode")
+    @RequestMapping("/publicVerifyCode")
     public JSONResult publicVerifyCode(@RequestBody JSONObject jsonObject) {
         String shareID=jsonObject.getString("shareID");
         String code=jsonObject.getString("code");

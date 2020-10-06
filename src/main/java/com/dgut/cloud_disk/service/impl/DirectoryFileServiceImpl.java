@@ -1,14 +1,8 @@
 package com.dgut.cloud_disk.service.impl;
 
 import com.dgut.cloud_disk.config.ObsConfig;
-import com.dgut.cloud_disk.mapper.DirectoryFileMapper;
-import com.dgut.cloud_disk.mapper.DirectoryMapper;
-import com.dgut.cloud_disk.mapper.MyfileMapper;
-import com.dgut.cloud_disk.mapper.ToshareMapper;
-import com.dgut.cloud_disk.pojo.Directory;
-import com.dgut.cloud_disk.pojo.DirectoryFile;
-import com.dgut.cloud_disk.pojo.Myfile;
-import com.dgut.cloud_disk.pojo.Toshare;
+import com.dgut.cloud_disk.mapper.*;
+import com.dgut.cloud_disk.pojo.*;
 import com.dgut.cloud_disk.service.DirectoryFileService;
 import com.obs.services.ObsClient;
 import com.obs.services.model.HttpMethodEnum;
@@ -33,7 +27,8 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
     private DirectoryMapper Dmapper;
     @Autowired(required = false)
     private ToshareMapper toshareMapper;
-
+    @Resource
+    private CdstorageUserMapper userMapper;
     @Resource
     private MyfileMapper myfileMapper;
 
@@ -197,6 +192,12 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
     public Boolean insertDirectoryFile(DirectoryFile directoryFile) {
         return DFmapper.insertSelective(directoryFile)>0;
 
+    }
+
+    @Override
+    public String getShareName(String id) {
+        CdstorageUser user=userMapper.selectByPrimaryKey(id);
+        return user.getUserName();
     }
 
 

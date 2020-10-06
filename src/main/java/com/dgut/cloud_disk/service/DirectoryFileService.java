@@ -58,4 +58,6 @@ public interface DirectoryFileService {
     String getUploadUrl(String objectName);
     Boolean insertDirectoryFile(DirectoryFile directoryFile);
 
+    public String getShareName(String id);
+
 }
