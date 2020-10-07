@@ -307,9 +307,9 @@ public class FileController {
         String directID = jsonObject.getString("directID");//文件夹id
         String fileID = jsonObject.getString("fileID");//文件id
         String token = jsonObject.getString("token");//登录token
-        if ("01000000".equals(checkPermission(directID))){
-            return JSONResult.errorMsg("无权限操作此文件");
-        }
+//        if ("01000000".equals(checkPermission(directID))){
+//            return JSONResult.errorMsg("无权限操作此文件");
+//        }
         //根据文件链接下载文件
         Myfile myfile = myFileService.selectFileById(fileID);
         String url = directoryFileService.fileDownload(myfile.getFileLink(),3600L);
@@ -328,10 +328,10 @@ public class FileController {
         String directID = jsonObject.getString("directID");//文件夹id
         String fileID = jsonObject.getString("fileID");//文件id
         String token = jsonObject.getString("token");//用户
-        //判断权限
-        if ("00000001".equals(checkPermission(directID))){
-            return JSONResult.errorMsg("无权限操作此文件");
-        }
+//        //判断权限
+//        if ("00000001".equals(checkPermission(directID))){
+//            return JSONResult.errorMsg("无权限操作此文件");
+//        }
         //根据文件夹id和文件id对所选的文件进行重命名
         DirectoryFile directoryFile = new DirectoryFile();
         directoryFile.setDfFileName(newName);
@@ -353,10 +353,10 @@ public class FileController {
         String directID = jsonObject.getString("directID");
         //用户
         String token = jsonObject.getString("token");
-        //判断权限
-        if("00000001".equals(checkPermission(directID))){
-            return JSONResult.errorMsg("无权限操作此文件");
-        }
+//        //判断权限
+//        if("00000001".equals(checkPermission(directID))){
+//            return JSONResult.errorMsg("无权限操作此文件");
+//        }
         //根据文件夹id对文件夹表的文件夹名字段进行修改
         Directory directory = new Directory();
         directory.setDirectName(newName);
@@ -379,10 +379,10 @@ public class FileController {
         String fileID = jsonObject.getString("fileID");
         //原文件夹id
         String directID = jsonObject.getString("directID");
-        //判断权限
-        if("00000001".equals(checkPermission(directID))){
-            return JSONResult.errorMsg("无权限操作此文件");
-        }
+//        //判断权限
+//        if("00000001".equals(checkPermission(directID))){
+//            return JSONResult.errorMsg("无权限操作此文件");
+//        }
         //根据文件id查询映射表
         DirectoryFile directoryFile = directoryFileService.selectFileById(directID,fileID);
         //修改文件夹id
@@ -402,10 +402,10 @@ public class FileController {
         String newDirectID = jsonObject.getString("newDirectID");
         //文件夹ID
         String directID = jsonObject.getString("directID");
-        //判断权限
-        if("00000001".equals(checkPermission(directID))){
-            return JSONResult.errorMsg("无权限操作此文件");
-        }
+//        //判断权限
+//        if("00000001".equals(checkPermission(directID))){
+//            return JSONResult.errorMsg("无权限操作此文件");
+//        }
         //根据文件夹id查询文件夹表
         Directory directory = directoryService.selectDirectoryByID(directID);
         //修改父文件夹id
@@ -432,10 +432,10 @@ public class FileController {
         ObjectMapper mapper = new ObjectMapper();
         CdstorageUser cdstorageUser = mapper.readValue(user, CdstorageUser.class);
         jedis.close();
-        //判断权限
-        if("00000100".equals(checkPermission(newDirectID))){
-            return JSONResult.errorMsg("");
-        }
+//        //判断权限
+//        if("00000100".equals(checkPermission(newDirectID))){
+//            return JSONResult.errorMsg("");
+//        }
         //文件复制
         DirectoryFile directoryFile = directoryFileService.selectFileById(fileID);
         String uuid = UUID.randomUUID().toString().replace("-", "");
@@ -462,10 +462,10 @@ public class FileController {
         String user = jedis.get(token);
         ObjectMapper mapper = new ObjectMapper();
         CdstorageUser cdstorageUser = mapper.readValue(user, CdstorageUser.class);
-        //判断权限
-        if("00000100".equals(checkPermission(newDirectID))){
-            return JSONResult.errorMsg("");
-        }
+//        //判断权限
+//        if("00000100".equals(checkPermission(newDirectID))){
+//            return JSONResult.errorMsg("");
+//        }
         //文件夹复制
         directoryService.copyDirectory(newDirectID,cdstorageUser.getUserId(),directID);
         return new JSONResult(200,"",null);

@@ -10,6 +10,7 @@ import com.obs.services.model.TemporarySignatureRequest;
 import com.obs.services.model.TemporarySignatureResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
@@ -86,27 +87,23 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
 
 
     @Override
+    @Transactional
     public Boolean deleteDorDF(int type, String id) {
-        int i=0;
-        if(type==1){
+        int i = 0;
+        if (type == 1) {
             //删除文件夹需要删除所有子文件夹及其子文件夹
-            List<String> list =Dmapper.selectIdByPid(id);
+            List<String> list = Dmapper.selectIdByPid(id);
             Dmapper.deleteByPrimaryKey(id);
             Dmapper.deleteDirectoryByPId(id);
-                for(int n=0;n<list.size();n++){
-                    //System.out.println(list.get(n));
-                    i=Dmapper.deleteDirectoryByPId(list.get(n));
-                }
-        }else if(type==2){
-            i=DFmapper.deleteByPrimaryKey(id);
-        }
-        //System.out.println(i);
-            if(i>0){
-                return true;
-            }else {
-                return false;
+            for (int n = 0; n < list.size(); n++) {
+                //System.out.println(list.get(n));
+                i = Dmapper.deleteDirectoryByPId(list.get(n));
             }
+        } else if (type == 2) {
+            i = DFmapper.deleteByPrimaryKey(id);
         }
+        return true;
+    }
 
     @Override
     public Boolean insertShare(Toshare toshare) {

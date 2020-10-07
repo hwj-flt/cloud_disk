@@ -11,6 +11,7 @@ import com.dgut.cloud_disk.pojo.Toshare;
 import com.dgut.cloud_disk.service.DepartmentUserService;
 import com.dgut.cloud_disk.service.DirectoryFileService;
 import com.dgut.cloud_disk.service.DirectoryService;
+import com.dgut.cloud_disk.util.DateUtil;
 import com.dgut.cloud_disk.util.JSONResult;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -57,7 +58,7 @@ public class DirectoryFileController {
         String tokenValue = jedis.get(token);
         ObjectMapper objectMapper=new ObjectMapper();
         CdstorageUser cdstorageUser = objectMapper.readValue(tokenValue, CdstorageUser.class);
-
+        jedis.close();
         String directID=jsonObject.getString("directID");
         String fileID=jsonObject.getString("fileID");
         if(DFService.deleteFile(directID,fileID,cdstorageUser.getUserId())){
@@ -86,8 +87,9 @@ public class DirectoryFileController {
 
 
     @RequestMapping("/user/deleteDorDF")//彻底删除(群组中的删除)
-    public JSONResult deleteDirectoryFileOrDirectory(@RequestBody JSONObject jsonObject){
+    public JSONResult deleteDirectoryFileOrDirectory(@RequestBody JSONObject jsonObject) throws JsonProcessingException {
         //1-文件夹，2-文件
+        String token = jsonObject.getString("token");
         int type =jsonObject.getInteger("type");
         String id =jsonObject.getString("id");
 
@@ -101,17 +103,31 @@ public class DirectoryFileController {
             return new JSONResult(500,"类型错误！","");
         }
 
-        String dePermission=DUService.selectdepartPermissionByid(directory.getDirectBelongDepart());
-        String p=dePermission.substring(2,3);//截取第三位（即删除文件夹的权限）
+        Jedis jedis = jedisPool.getResource();
+        String tokenValue = jedis.get(token);
+        ObjectMapper objectMapper=new ObjectMapper();
+        CdstorageUser cdstorageUser = objectMapper.readValue(tokenValue, CdstorageUser.class);
+        jedis.close();
 
-        if(p.equals("1")) {//判断为1说明有该权限
+        if(cdstorageUser.getUserPermission()==0) {
+            String dePermission = DUService.selectdepartPermissionByid(directory.getDirectBelongDepart());
+            String p = dePermission.substring(2, 3);//截取第三位（即删除文件夹的权限）
+
+            if (p.equals("1")) {//判断为1说明有该权限
+                if (DFService.deleteDorDF(type, id)) {
+                    return new JSONResult(200, "删除成功！", "");
+                } else {
+                    return new JSONResult(500, "删除失败！", "");
+                }
+            } else {
+                return new JSONResult(500, "权限不足！", "");
+            }
+        }else{
             if (DFService.deleteDorDF(type, id)) {
                 return new JSONResult(200, "删除成功！", "");
             } else {
                 return new JSONResult(500, "删除失败！", "");
             }
-        }else{
-            return new JSONResult(500, "权限不足！", "");
         }
     }
     @RequestMapping("/user/privateShare")//私密分享
@@ -222,7 +238,7 @@ public class DirectoryFileController {
 
             JSONObject obj=new JSONObject();
             obj.put("fileName",fileName);
-            obj.put("shareTime",shareTime);
+            obj.put("shareTime", DateUtil.transfromDate(shareTime));
             obj.put("downloadURL",downloadUrl);
 
             return new JSONResult(200,"可以访问！",obj);
