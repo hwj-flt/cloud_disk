@@ -179,9 +179,12 @@ public class FileController {
         String directID = jsonObject.getString("directID");
         String fileID = jsonObject.getString("fileID");
         //根据文件夹id和文件id对所选的文件进行重命名
-        DirectoryFile directoryFile = new DirectoryFile();
+        DirectoryFile directoryFile = directoryFileService.selectFileById(directID,fileID);
+        if(directoryFileService.selectFile(directID,newName)!=null){
+            return new JSONResult(500,"此文件名已经存在",null);
+        }
         directoryFile.setDfFileName(newName);
-        directoryFileService.ReFilename(directoryFile,directID,fileID);
+        //directoryFileService.ReFilename(directoryFile,directID,fileID);
         //重命名后对分享表记录进行删除
         toshareService.deleteRecord(fileID,directID);
        return new JSONResult(200,"",null);
@@ -199,9 +202,13 @@ public class FileController {
         //文件夹id
         String directID = jsonObject.getString("directID");
         //根据文件夹id对文件夹表的文件夹名字段进行修改
-        Directory directory = new Directory();
+
+        Directory directory = directoryService.selectDirectoryByID(directID);
+        if(directoryService.selectDirectory(directory.getParentDirectId(),newName)!=null){
+            return new JSONResult(500,"此文件名已经存在",null);
+        }
         directory.setDirectName(newName);
-        directoryService.updateDirectoryByID(directory,directID);
+        //directoryService.updateDirectoryByID(directory,directID);
         //重命名后对分享表记录进行删除
         toshareService.deleteDirectRecord(directID);
         return new JSONResult(200,"",null);
@@ -217,6 +224,7 @@ public class FileController {
         String newDirectID = jsonObject.getString("newDirectID");
         String token = jsonObject.getString("token");
         String fileID = jsonObject.getString("fileID");
+        String directID = jsonObject.getString("directID");
         //查群组id
         Directory directory = directoryService.selectDirectoryByID(newDirectID);
         //创建redis对象
@@ -228,7 +236,10 @@ public class FileController {
         jedis.close();
 
         //文件复制
-        DirectoryFile directoryFile = directoryFileService.selectFileById(fileID);
+        DirectoryFile directoryFile = directoryFileService.selectFileById(directID,fileID);
+        if(directoryFileService.selectFile(newDirectID,directoryFile.getDfFileName())!=null){
+            return new JSONResult(500,"此文件名已经存在",null);
+        }
         String uuid = UUID.randomUUID().toString().replace("-", "");
         directoryFile.setDirectFileId(uuid);
         directoryFile.setDfDirectId(newDirectID);
@@ -255,6 +266,10 @@ public class FileController {
         ObjectMapper mapper = new ObjectMapper();
         CdstorageUser cdstorageUser = mapper.readValue(user, CdstorageUser.class);
         jedis.close();
+        Directory directory = directoryService.selectDirectoryByID(directID);
+        if(directoryService.selectDirectory(newDirectID,directory.getDirectName())!=null){
+            return new JSONResult(500,"此文件名已经存在",null);
+        }
         //文件夹复制
         directoryService.copyDirectory(newDirectID,cdstorageUser.getUserId(),directID);
         return new JSONResult(200,"",null);
@@ -274,6 +289,9 @@ public class FileController {
         //原文件夹id
         String directID = jsonObject.getString("directID");
         DirectoryFile directoryFile = directoryFileService.selectFileById(directID,fileID);
+        if(directoryFileService.selectFile(newDirectID,directoryFile.getDfFileName())!=null){
+            return new JSONResult(500,"此文件名已经存在",null);
+        }
         directoryFile.setDfDirectId(newDirectID);
         directoryFileService.updateDirectFileById(directoryFile,fileID);
         return new JSONResult(200,"",null);
@@ -292,6 +310,9 @@ public class FileController {
         //文件夹ID
         String directID = jsonObject.getString("directID");
         Directory directory = directoryService.selectDirectoryByID(directID);
+        if(directoryService.selectDirectory(newDirectID,directory.getDirectName())!=null){
+            return new JSONResult(500,"此文件名已经存在",null);
+        }
         directory.setParentDirectId(newDirectID);
         directoryService.updateDirectoryByID(directory,directID);
         return new JSONResult(200,"",null);
@@ -333,9 +354,12 @@ public class FileController {
             return JSONResult.errorMsg("无权限操作此文件");
         }
         //根据文件夹id和文件id对所选的文件进行重命名
-        DirectoryFile directoryFile = new DirectoryFile();
+        DirectoryFile directoryFile = directoryFileService.selectFileById(directID,fileID);
+        if(directoryFileService.selectFile(directID,newName)!=null){
+            return new JSONResult(500,"此文件名已经存在",null);
+        }
         directoryFile.setDfFileName(newName);
-        directoryFileService.ReFilename(directoryFile,directID,fileID);
+        //directoryFileService.ReFilename(directoryFile,directID,fileID);
         //重命名后对分享表记录进行删除
         toshareService.deleteRecord(fileID,directID);
         return new JSONResult(200,"",null);
@@ -358,9 +382,12 @@ public class FileController {
             return JSONResult.errorMsg("无权限操作此文件");
         }
         //根据文件夹id对文件夹表的文件夹名字段进行修改
-        Directory directory = new Directory();
+        Directory directory = directoryService.selectDirectoryByID(directID);
+        if(directoryService.selectDirectory(directory.getParentDirectId(),newName)!=null){
+            return new JSONResult(500,"此文件名已经存在",null);
+        }
         directory.setDirectName(newName);
-        directoryService.updateDirectoryByID(directory,directID);
+        //directoryService.updateDirectoryByID(directory,directID);
         //重命名后对分享表记录进行删除
         toshareService.deleteDirectRecord(directID);
         return new JSONResult(200,"",null);
@@ -385,6 +412,9 @@ public class FileController {
         }
         //根据文件id查询映射表
         DirectoryFile directoryFile = directoryFileService.selectFileById(directID,fileID);
+        if(directoryFileService.selectFile(newDirectID,directoryFile.getDfFileName())!=null){
+            return new JSONResult(500,"此文件名已经存在",null);
+        }
         //修改文件夹id
         directoryFile.setDfDirectId(newDirectID);
         directoryFileService.updateDirectFileById(directoryFile,fileID);
@@ -408,6 +438,9 @@ public class FileController {
         }
         //根据文件夹id查询文件夹表
         Directory directory = directoryService.selectDirectoryByID(directID);
+        if(directoryService.selectDirectory(newDirectID,directory.getDirectName())!=null){
+            return new JSONResult(500,"此文件名已经存在",null);
+        }
         //修改父文件夹id
         directory.setParentDirectId(newDirectID);
         directoryService.updateDirectoryByID(directory,directID);
@@ -425,6 +458,7 @@ public class FileController {
         String newDirectID = jsonObject.getString("newDirectID");
         String token = jsonObject.getString("token");
         String fileID = jsonObject.getString("fileID");
+        String directID = jsonObject.getString("directID");
         //创建redis对象
         Jedis jedis = jedisPool.getResource();
         //接收token查找用户对象
@@ -437,7 +471,10 @@ public class FileController {
             return JSONResult.errorMsg("");
         }
         //文件复制
-        DirectoryFile directoryFile = directoryFileService.selectFileById(fileID);
+        DirectoryFile directoryFile = directoryFileService.selectFileById(directID,fileID);
+        if(directoryFileService.selectFile(newDirectID,directoryFile.getDfFileName())!=null){
+            return new JSONResult(500,"此文件名已经存在",null);
+        }
         String uuid = UUID.randomUUID().toString().replace("-", "");
         directoryFile.setDirectFileId(uuid);
         directoryFile.setDfDirectId(newDirectID);
@@ -465,6 +502,10 @@ public class FileController {
         //判断权限
         if("00000100".equals(checkPermission(newDirectID))){
             return JSONResult.errorMsg("");
+        }
+        Directory directory = directoryService.selectDirectoryByID(directID);
+        if(directoryService.selectDirectory(newDirectID,directory.getDirectName())!=null){
+            return new JSONResult(500,"此文件名已经存在",null);
         }
         //文件夹复制
         directoryService.copyDirectory(newDirectID,cdstorageUser.getUserId(),directID);

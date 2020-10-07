@@ -29,9 +29,10 @@ public interface DirectoryFileService {
     DirectoryFile selectFileById(String directID,String fileID);
     int ReFilename(DirectoryFile directoryFile,String directID, String fileID);
     int copyToDirect(DirectoryFile directoryFile);
-    DirectoryFile selectFileById(String fileID);
+    //DirectoryFile selectFileById(String fileID);
     List<DirectoryFile> selectFileByDirectId(String directID);
     int updateDirectFileById(DirectoryFile directoryFile,String dfFileId);
+    DirectoryFile selectFile(String directID, String fileName);
     public Date getShareTimeByID(String id);
 
     public String getFileNameByID(String id);

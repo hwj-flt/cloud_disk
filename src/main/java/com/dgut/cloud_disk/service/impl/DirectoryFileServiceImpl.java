@@ -277,6 +277,23 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
     }
 
     /**
+     * 根据文件夹id和文件名查询
+     * @param directID
+     * @param fileName
+     * @return
+     */
+    @Override
+    public DirectoryFile selectFile(String directID, String fileName) {
+
+        Example example = new Example(DirectoryFile.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("dfDirectId", directID);
+        criteria.andEqualTo("dfFileName",fileName);
+        DirectoryFile directoryFile = DFmapper.selectOneByExample(example);
+        return directoryFile;
+
+    }
+    /**
      * 文件重命名
      * @param directoryFile 文件和文件夹映射表对象
      * @param directID 文件夹id
@@ -310,14 +327,14 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
      * @param fileID 文件id
      * @return 映射表对象
      */
-    @Override
-    public DirectoryFile selectFileById(String fileID) {
-        Example example = new Example(DirectoryFile.class);
-        Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("dfFileId",fileID);
-        DirectoryFile directoryFile = DFmapper.selectOneByExample(example);
-        return directoryFile;
-    }
+//    @Override
+//    public DirectoryFile selectFileById(String fileID) {
+//        Example example = new Example(DirectoryFile.class);
+//        Example.Criteria criteria = example.createCriteria();
+//        criteria.andEqualTo("dfFileId",fileID);
+//        DirectoryFile directoryFile = DFmapper.selectOneByExample(example);
+//        return directoryFile;
+//    }
 
     /**
      * 根据文件夹id遍历映射表

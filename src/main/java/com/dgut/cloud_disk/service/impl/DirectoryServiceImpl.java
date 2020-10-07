@@ -54,6 +54,22 @@ public class DirectoryServiceImpl implements DirectoryService {
     }
 
     /**
+     * 根据父文件id和文件名查询文件是否存在
+     * @param parentDirectId
+     * @param directName
+     * @return
+     */
+    @Override
+    public Directory selectDirectory(String parentDirectId,String directName) {
+        Example example = new Example(Directory.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("parentDirectId",parentDirectId);
+        criteria.andEqualTo("directName",directName);
+        Directory directory = directoryMapper.selectOneByExample(example);
+        return directory;
+    }
+
+    /**
      * 根据文件夹id修改文件夹
      * @param directory 文件夹对象
      * @param directID 文件夹id
