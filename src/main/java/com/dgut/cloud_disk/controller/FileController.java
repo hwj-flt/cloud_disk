@@ -220,19 +220,8 @@ public class FileController {
     @RequestMapping("/copyfile")
     public JSONResult copyToDiretory(@RequestBody JSONObject jsonObject) throws JsonProcessingException {
         String newDirectID = jsonObject.getString("newDirectID");
-        String token = jsonObject.getString("token");
         String fileID = jsonObject.getString("fileID");
         String directID = jsonObject.getString("directID");
-        //查群组id
-        Directory directory = directoryService.selectDirectoryByID(newDirectID);
-        //创建redis对象
-        Jedis jedis = jedisPool.getResource();
-        //接收token查找用户对象
-        String user = jedis.get(token);
-        ObjectMapper mapper = new ObjectMapper();
-        CdstorageUser cdstorageUser = mapper.readValue(user, CdstorageUser.class);
-        jedis.close();
-
         //文件复制
         DirectoryFile directoryFile = directoryFileService.selectFileById(directID,fileID);
         if(directoryFileService.selectFile(newDirectID,directoryFile.getDfFileName())!=null){
@@ -241,6 +230,7 @@ public class FileController {
         String uuid = UUID.randomUUID().toString().replace("-", "");
         directoryFile.setDirectFileId(uuid);
         directoryFile.setDfDirectId(newDirectID);
+        directoryFile.setDfFileId(uuid);
         directoryFileService.copyToDirect(directoryFile);
         return new JSONResult(200,"",null);
     }
