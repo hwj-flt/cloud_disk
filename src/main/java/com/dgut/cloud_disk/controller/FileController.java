@@ -174,7 +174,6 @@ public class FileController {
      */
     @RequestMapping("/refilename")
     public JSONResult reFileName(@RequestBody JSONObject jsonObject){
-        loggqer.info(jsonObject.toJSONString());
         String newName = jsonObject.getString("newName");
         String directID = jsonObject.getString("directID");
         String fileID = jsonObject.getString("fileID");
@@ -184,7 +183,7 @@ public class FileController {
             return new JSONResult(500,"此文件名已经存在",null);
         }
         directoryFile.setDfFileName(newName);
-        //directoryFileService.ReFilename(directoryFile,directID,fileID);
+        directoryFileService.ReFilename(directoryFile,directID,fileID);
         //重命名后对分享表记录进行删除
         toshareService.deleteRecord(fileID,directID);
        return new JSONResult(200,"",null);
@@ -196,7 +195,6 @@ public class FileController {
      */
     @RequestMapping("/redirectfilename")
     public JSONResult reDeFileName(@RequestBody JSONObject jsonObject){
-        loggqer.info(jsonObject.toJSONString());
         //新文件夹名
         String newName = jsonObject.getString("newName");
         //文件夹id
@@ -208,7 +206,7 @@ public class FileController {
             return new JSONResult(500,"此文件名已经存在",null);
         }
         directory.setDirectName(newName);
-        //directoryService.updateDirectoryByID(directory,directID);
+        directoryService.updateDirectoryByID(directory,directID);
         //重命名后对分享表记录进行删除
         toshareService.deleteDirectRecord(directID);
         return new JSONResult(200,"",null);
@@ -359,7 +357,7 @@ public class FileController {
             return new JSONResult(500,"此文件名已经存在",null);
         }
         directoryFile.setDfFileName(newName);
-        //directoryFileService.ReFilename(directoryFile,directID,fileID);
+        directoryFileService.ReFilename(directoryFile,directID,fileID);
         //重命名后对分享表记录进行删除
         toshareService.deleteRecord(fileID,directID);
         return new JSONResult(200,"",null);
@@ -387,7 +385,7 @@ public class FileController {
             return new JSONResult(500,"此文件名已经存在",null);
         }
         directory.setDirectName(newName);
-        //directoryService.updateDirectoryByID(directory,directID);
+        directoryService.updateDirectoryByID(directory,directID);
         //重命名后对分享表记录进行删除
         toshareService.deleteDirectRecord(directID);
         return new JSONResult(200,"",null);

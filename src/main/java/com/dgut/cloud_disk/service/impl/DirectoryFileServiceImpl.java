@@ -36,6 +36,12 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
     @Autowired
     private ObsConfig obsConfig;
 
+    @Autowired
+    private DirectoryFileMyFileMapper directoryFileMyFileMapper;
+
+    @Autowired(required = false)
+    private CdstorageUserMapper cdstorageUserMapper;
+
     @Resource
     private DirectoryFileMapper directoryFileMapper;
 
@@ -61,6 +67,12 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
        df.setDfDeleteTime(date);
        df.setDfDeleteId(DeleteID);
        int i=DFmapper.updateByPrimaryKeySelective(df);
+
+
+        Example example2 = new Example(Toshare.class);
+        Example.Criteria criteria2=example2.createCriteria();
+        criteria2.andEqualTo("shareFileId",df.getDirectFileId());
+        toshareMapper.deleteByExample(example2);
        if(i>0){
            return true;
        }else {
@@ -78,6 +90,11 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
         Date date=new Date();
         directory.setDirectDeleteTime(date);
         int i = Dmapper.updateByPrimaryKeySelective(directory);
+
+        Example example2 = new Example(Toshare.class);
+        Example.Criteria criteria2=example2.createCriteria();
+        criteria2.andEqualTo("shareDirectId",directID);
+        toshareMapper.deleteByExample(example2);
         if(i>0){
             return true;
         }else {
@@ -88,7 +105,7 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
 
     @Override
     @Transactional
-    public Boolean deleteDorDF(int type, String id) {
+    public Boolean deleteDorDF(int type, String id,CdstorageUser User) {
         int i = 0;
         if (type == 1) {
             //删除文件夹需要删除所有子文件夹及其子文件夹
@@ -100,6 +117,16 @@ public class DirectoryFileServiceImpl implements DirectoryFileService {
                 i = Dmapper.deleteDirectoryByPId(list.get(n));
             }
         } else if (type == 2) {
+            Example example = new Example(DirectoryFile.class);
+            Example.Criteria criteria = example.createCriteria();
+            criteria.andEqualTo("directFileId",id);
+            DirectoryFile directoryFile = directoryFileMapper.selectOneByExample(example);
+
+            Myfile myfile = myfileMapper.selectByPrimaryKey(directoryFile.getDfFileId());
+            CdstorageUser cdstorageUser = new CdstorageUser();
+            cdstorageUser.setUserId(User.getUserId());
+            cdstorageUser.setUserSize(User.getUserSize().subtract(myfile.getFileSize()));
+            cdstorageUserMapper.updateByPrimaryKeySelective(cdstorageUser);
             i = DFmapper.deleteByPrimaryKey(id);
         }
         return true;

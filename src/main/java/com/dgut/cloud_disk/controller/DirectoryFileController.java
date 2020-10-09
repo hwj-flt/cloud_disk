@@ -21,8 +21,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
+import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
+import javax.persistence.Column;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -92,13 +94,18 @@ public class DirectoryFileController {
         String token = jsonObject.getString("token");
         int type =jsonObject.getInteger("type");
         String id =jsonObject.getString("id");
+        String directId = jsonObject.getString("directID");
 
         Directory directory=new Directory();
         if(type==1){
             directory=Dmapper.selectByPrimaryKey(id);
         }else if(type==2){
-            DirectoryFile directoryFile=DFmapper.selectByPrimaryKey(id);
-            directory=Dmapper.selectByPrimaryKey(directoryFile.getDfDirectId());
+            Example example = new Example(DirectoryFile.class);
+            Example.Criteria criteria= example.createCriteria();
+            criteria.andEqualTo("dfDirectId",directId);
+            criteria.andEqualTo("dfFileId",id);
+            DirectoryFile directoryFile=DFmapper.selectOneByExample(example);
+            id = directoryFile.getDirectFileId();
         }else{
             return new JSONResult(500,"类型错误！","");
         }
@@ -114,7 +121,7 @@ public class DirectoryFileController {
             String p = dePermission.substring(2, 3);//截取第三位（即删除文件夹的权限）
 
             if (p.equals("1")) {//判断为1说明有该权限
-                if (DFService.deleteDorDF(type, id)) {
+                if (DFService.deleteDorDF(type, id,cdstorageUser)) {
                     return new JSONResult(200, "删除成功！", "");
                 } else {
                     return new JSONResult(500, "删除失败！", "");
@@ -123,7 +130,7 @@ public class DirectoryFileController {
                 return new JSONResult(500, "权限不足！", "");
             }
         }else{
-            if (DFService.deleteDorDF(type, id)) {
+            if (DFService.deleteDorDF(type, id,cdstorageUser)) {
                 return new JSONResult(200, "删除成功！", "");
             } else {
                 return new JSONResult(500, "删除失败！", "");

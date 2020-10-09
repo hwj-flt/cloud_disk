@@ -122,6 +122,7 @@ public class RecycleBinController {
         ObjectMapper objectMapper=new ObjectMapper();
         CdstorageUser cdstorageUser = objectMapper.readValue(tokenValue, CdstorageUser.class);
 
+        jedis.close();
         if(type==1){
             if(DFService.restoreDirectorytoNew(id,Did)){
                 return new JSONResult(200,"还原成功","");
@@ -140,12 +141,19 @@ public class RecycleBinController {
     }
 
     @RequestMapping("/deleteForever")//回收站中的永久删除
-    public JSONResult deleteForever(@RequestBody JSONObject jsonObject){
+    public JSONResult deleteForever(@RequestBody JSONObject jsonObject) throws JsonProcessingException {
+        String token = jsonObject.getString("token");
+        //从token中获取分享人id
+        Jedis jedis = jedisPool.getResource();
+        String tokenValue = jedis.get(token);
+        ObjectMapper objectMapper=new ObjectMapper();
+        CdstorageUser cdstorageUser = objectMapper.readValue(tokenValue, CdstorageUser.class);
+        jedis.close();
         //1-文件夹，2-文件
         int type =jsonObject.getInteger("type");
         String id =jsonObject.getString("id");
 
-            if (DFService.deleteDorDF(type, id)) {
+            if (DFService.deleteDorDF(type, id,cdstorageUser)) {
                 return new JSONResult(200, "删除成功！", "");
             } else {
                 return new JSONResult(500, "删除失败！", "");

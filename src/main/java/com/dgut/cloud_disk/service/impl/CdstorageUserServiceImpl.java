@@ -68,9 +68,6 @@ public class CdstorageUserServiceImpl implements CdstorageUserService {
         if(StringUtils.isNotBlank(cdstorageUserVo.getUserEmail())){
             cdstorageUser.setUserEmail(cdstorageUserVo.getUserEmail());
         }
-        if(StringUtils.isNotBlank(cdstorageUserVo.getUserWorkId().toString())){
-            cdstorageUser.setUserWorkId(cdstorageUserVo.getUserWorkId());
-        }
         if(StringUtils.isNotBlank(cdstorageUserVo.getUserMobie())){
             cdstorageUser.setUserMobie(cdstorageUserVo.getUserMobie());
         }

@@ -1,5 +1,6 @@
 package com.dgut.cloud_disk.service;
 
+import com.dgut.cloud_disk.pojo.CdstorageUser;
 import com.dgut.cloud_disk.pojo.Directory;
 import com.dgut.cloud_disk.pojo.DirectoryFile;
 import com.dgut.cloud_disk.pojo.Toshare;
@@ -16,7 +17,7 @@ public interface DirectoryFileService {
 
     public Boolean deleteDirectory(String directID);
 
-    public Boolean deleteDorDF(int type,String id);
+    public Boolean deleteDorDF(int type, String id, CdstorageUser cdstorageUser);
 
     public Boolean insertShare(Toshare toshare);
 
