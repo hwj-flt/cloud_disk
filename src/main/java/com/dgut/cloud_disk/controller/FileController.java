@@ -230,7 +230,7 @@ public class FileController {
         String uuid = UUID.randomUUID().toString().replace("-", "");
         directoryFile.setDirectFileId(uuid);
         directoryFile.setDfDirectId(newDirectID);
-        directoryFile.setDfFileId(uuid);
+
         directoryFileService.copyToDirect(directoryFile);
         return new JSONResult(200,"",null);
     }
